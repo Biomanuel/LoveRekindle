@@ -1,0 +1,2 @@
+rootProject.name='LoveRekindle'
+include ':app'
