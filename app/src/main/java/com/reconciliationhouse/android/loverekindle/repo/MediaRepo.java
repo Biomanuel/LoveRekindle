@@ -10,19 +10,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.reconciliationhouse.android.loverekindle.models.MedialModel;
+import com.google.firebase.firestore.QuerySnapshot;;
+import com.reconciliationhouse.android.loverekindle.models.MediaItem;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class MediaRepo {
-    MedialModel mMedialModel;
-    ArrayList<MedialModel> mList;
+    MediaItem mMediaItem;
+    ArrayList<MediaItem> mList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     //this is a function to get All media
-    public ArrayList<MedialModel> getAllAudio(final Context context) {
+    public ArrayList<MediaItem> getAllAudio(final Context context) {
 
         //make sure there is internet connection
         String audio = "audio";
@@ -33,9 +33,9 @@ public class MediaRepo {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        mMedialModel = document.toObject(MedialModel.class);
-                        mList.add(mMedialModel);
-                        assert mMedialModel != null;
+                        mMediaItem = document.toObject(MediaItem.class);
+                        mList.add(mMediaItem);
+                        assert mMediaItem != null;
 
                     }
                 } else {
@@ -50,7 +50,7 @@ public class MediaRepo {
     }
 
     //this is a function to get All Ebooks 
-    public ArrayList<MedialModel> getEbookMedia(final Context context) {
+    public ArrayList<MediaItem> getEbookMedia(final Context context) {
 
         //make sure there is internet connection
         String ebook = "ebook";
@@ -61,9 +61,9 @@ public class MediaRepo {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        mMedialModel = document.toObject(MedialModel.class);
-                        mList.add(mMedialModel);
-                        assert mMedialModel != null;
+                        mMediaItem = document.toObject(MediaItem.class);
+                        mList.add(mMediaItem);
+                        assert mMediaItem != null;
 
                     }
                 } else {
@@ -76,7 +76,7 @@ public class MediaRepo {
     }
     
     //this is a function to get All spiritual media 
-    public ArrayList<MedialModel>getSpiritualMedia(final Context context){
+    public ArrayList<MediaItem>getSpiritualMedia(final Context context){
         //make sure there is internet connection
         String category="spiritual";
         mList=new ArrayList<>();
@@ -86,9 +86,9 @@ public class MediaRepo {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
                     for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())){
-                        mMedialModel = document.toObject(MedialModel.class);
-                        mList.add(mMedialModel);
-                        assert mMedialModel != null;
+                        mMediaItem = document.toObject(MediaItem.class);
+                        mList.add(mMediaItem);
+                        assert mMediaItem != null;
 
                     }
                 }
@@ -102,7 +102,7 @@ public class MediaRepo {
         return mList;
     }
     //this is a function to get All Godly parenting media 
-    public ArrayList<MedialModel>getParentingMedia(final Context context){
+    public ArrayList<MediaItem>getParentingMedia(final Context context){
 
         //make sure there is internet connection
         String category="parenting";
@@ -113,9 +113,9 @@ public class MediaRepo {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
                     for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())){
-                        mMedialModel = document.toObject(MedialModel.class);
-                        mList.add(mMedialModel);
-                        assert mMedialModel != null;
+                        mMediaItem = document.toObject(MediaItem.class);
+                        mList.add(mMediaItem);
+                        assert mMediaItem != null;
 
                     }
                 }
@@ -129,7 +129,7 @@ public class MediaRepo {
         return mList;
     }
     //this is a function to get All marriage and relationship media 
-    public ArrayList<MedialModel>getRelationshipMedia(final Context context){
+    public ArrayList<MediaItem>getRelationshipMedia(final Context context){
         //make sure there is internet connection
         String category="relationship";
         mList=new ArrayList<>();
@@ -139,14 +139,14 @@ public class MediaRepo {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
                     for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())){
-                        mMedialModel = document.toObject(MedialModel.class);
-                        mList.add(mMedialModel);
-                        assert mMedialModel != null;
+                        mMediaItem = document.toObject(MediaItem.class);
+                        mList.add(mMediaItem);
+                        assert mMediaItem != null;
 
                     }
                 }
                 else {
-                    Toast.makeText(context,"Error reading all relaionship category",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Error reading all relationship category",Toast.LENGTH_SHORT).show();
                 }
 
             }

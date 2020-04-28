@@ -4,4 +4,46 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="explore_fragment_label">Explore Fragment</string>
+    <string name="medial_detail_fragment_label">MediaDetail Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_audio">Audio</string>
+    <string name="title_ebook">E-book</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_add_new_media">Add New Media</string>
+    <string name="action_save">Save</string>
+    <string name="action_discard">Discard</string>
+    <string name="btn_select_cover_image">Select Cover Image</string>
+    <string name="etxt_media_title">Title</string>
+    <string name="etxt_release_date">Release Date</string>
+    <string name="etxt_media_author">Author</string>
+    <string name="etxt_media_price">Price</string>
+    <string name="etxt_media_length">Length</string>
+    <string name="etxt_about_book">About Book</string>
+    <string name="btn_media_upload">Upload</string>
+    <string name="txt_about_book_dummy">God\'s got many titles: Jehovah, Jehovah-Jireh, Rapha, Manasses, oh, many. He\'s got seven compound redemptive Names. He\'s got many titles: Rose of Sharon, Lily of the Valley, Morning Star, Father, Son, Holy Ghost, all that; but He\'s got one human Name. God only had one Name, and that was the Lord Jesus Christ.When He was born Christ the Lord, eight days later the Holy Spirit called His Name Jesus. His mother had Him circumcised, and called Him Jesus. He was borned a Christ, like I was borned a Branham. I was a Branham when I was born and given the name of William. Amen. And He was born Christ the Saviour, and when He was eight days old He was given the Name of Jesus. And He was the Lord of glory made manifest, so He is the Lord Jesus Christ, the God of glory made manifest among us. Oh, there He is. If you show me the page or anything, you write it and lay it up on here for me tonight, and I\'ll walk out of this church saying, I am a hypocrite; I have taught people wrong; if you can show me one text of Scripture or bring me one history, authentic history, that\'ll show me that where that people ever baptized in the Bible in the name of Father, Son, Holy Ghost; or bring me one script or one book of history, one page, one quotation in history where anybody was ever baptized in the name of Father, Son, and Holy Ghost until the Nicene Council of the Catholic church, come bring it to me; and I\'ll pin a sign on my back and walk through Jeffersonville, and you behind with a horn, blowing; I\'ll put on there, A false prophet, misleading the people. And, pastor, if you\'re here this morning and do that, you\'d ought to let me do that to you. See? Shows how many be afraid.</string>
+    <string name="txt_about_book_title">About Book</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="log_in">log in</string>
+    <string name="forgot_pass">Forgot Password?</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_email">user@usermail.com</string>
+    <string name="text_btn_update">Update</string>
+    <string name="naira_sign">\u20A6</string>
+
+    <array name="categories">
+        <item>Godly Parenting</item>
+        <item>Spiritual Growth</item>
+        <item>Marriage and Relationship</item>
+    </array>
 </resources>

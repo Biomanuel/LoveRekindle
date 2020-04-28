@@ -1,11 +1,113 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorPrimary</item>
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
+        <item name="textInputStyle">@style/MyTextInputStyle</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="fontFamily">@font/open_sans_semibold</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryLightColor</item>
+    </style>
+
+    <style name="AppTheme.AuthActivityTheme">
+        <item name="android:textColorPrimary">@color/secondaryTextColor</item>
+        <item name="textInputStyle">@style/AuthTextInputStyle</item>
+    </style>
+
+    <style name="NewMediaActivityTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--        <item name="android:windowTranslucentStatus">true</item>-->
+        <item name="textInputStyle">@style/MyTextInputStyle</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="fontFamily">@font/open_sans_semibold</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="itemBookCardTextStyle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="pre_main_button_style">
+        <!--        <item name="android:fontFamily">@font/poppins"</item>-->
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/colorAccent</item>
+        <item name="android:paddingEnd">32dp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="android:elevation" tools:targetApi="lollipop">8dp</item>
+
+    </style>
+    <style name="pre_main_white_button_style" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <!--        <item name="android:fontFamily">@font/poppins"</item>-->
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@android:color/white</item>
+        <item name="strokeColor">@android:color/black</item>
+        <item name="android:paddingEnd">32dp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="cornerRadius">24dp</item>
+        <item name="android:elevation" tools:targetApi="lollipop">8dp</item>
+
+    </style>
+
+    <style name="MyTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="backgroundColor">@android:color/transparent</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="drawableTint">@color/text_input_drawable_color</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:drawableTint" tools:targetApi="m">@color/text_input_drawable_color</item>
+    </style>
+
+    <style name="AuthTextInputStyle" parent="MyTextInputStyle">
+        <item name="lineHeight">19sp</item>
+        <item name="android:background">#66FDFDEF</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="boxStrokeColor">@color/secondaryLightColor</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:textColor">@color/auth_input_text_color_state</item>
+        <item name="android:textColorHint">@color/auth_input_text_color_state</item>
+        <item name="counterTextColor">@color/auth_input_text_color_state</item>
+        <item name="passwordToggleTint">@color/secondaryColor</item>
+    </style>
+
+    <style name="forgot_pass">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/secondaryLightColor</item>
+        <!--        <item name="android:fontFamily">@font/poppins</item>-->
     </style>
 
 </resources>
