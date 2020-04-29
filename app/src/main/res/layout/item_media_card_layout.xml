@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="media"
+            type="com.reconciliationhouse.android.loverekindle.models.MediaItem" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="160dp"
+        android:layout_height="200dp"
+        android:layout_margin="4dp"
+        android:background="@android:color/white"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:shapeAppearance="@style/ShapeAppearance.LoveRekindle.Card">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/media_item_image"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:contentDescription="@string/desc_book_cover_image"
+                android:scaleType="centerCrop"
+                android:src="@drawable/opened_book"
+                app:image="@{media}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:orientation="vertical"
+                android:padding="4dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="8dp"
+                android:weightSum="60"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/media_item_image">
+
+                <TextView
+                    android:id="@+id/media_item_name"
+                    style="@style/itemBookCardTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="18"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@{media.title}"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    tools:text="Book Title" />
+
+                <TextView
+                    android:id="@+id/media_item_author"
+                    style="@style/itemBookCardTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="18"
+                    android:gravity="center_vertical"
+                    android:text="@{media.author}"
+                    android:textColor="@color/grey"
+                    tools:text="Joshua Odeyemi" />
+
+                <TextView
+                    android:id="@+id/media_item_price"
+                    style="@style/itemBookCardTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="18"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey"
+                    app:price="@{media}"
+                    tools:text="00.00" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/media_item_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/gradient_bg"
+                android:elevation="4dp"
+                android:padding="4dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:mediaType="@{media}"
+                tools:text="Audio" />
+
+            <View
+                android:id="@+id/cached_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#88AAAAAA"
+                android:elevation="6dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

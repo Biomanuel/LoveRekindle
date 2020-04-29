@@ -18,9 +18,9 @@ public class MediaItem {
     private String image_url;
     private String title;
     private String category;
-    private String author;
+    private String author = "Joshua Odeyemi";
     private String released;
-    private String price;
+    private float price;
     private String length;
     private int download_count;
     private String description;
@@ -46,7 +46,7 @@ public class MediaItem {
     }
 
     public MediaItem(String id, String image_url, String title, String category, String author,
-                     String released, String price, String length, int download_count, String description,
+                     String released, float price, String length, int download_count, String description,
                      MediaType type, String media_url, java.util.Date timestamp, String mediaPath) {
         this.id = id;
         this.image_url = image_url;
@@ -65,8 +65,8 @@ public class MediaItem {
     }
 
     public MediaItem(String image_url, String title, String category, String author, String released,
-                     String price, String length, int download_count, String description, MediaType type,
-                     String media_url,java.util.Date timestamp) {
+                     float price, String length, int download_count, String description, MediaType type,
+                     String media_url, java.util.Date timestamp) {
         this.id = String.valueOf((new Date()).getTime());
         this.image_url = image_url;
         this.title = title;
@@ -131,11 +131,11 @@ public class MediaItem {
         this.released = released;
     }
 
-    public String getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -203,14 +203,6 @@ public class MediaItem {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public MediaType getmType() {
-        return mType;
-    }
-
-    public void setmType(MediaType mType) {
-        this.mType = mType;
     }
 
     @BindingAdapter("android:setImage")
