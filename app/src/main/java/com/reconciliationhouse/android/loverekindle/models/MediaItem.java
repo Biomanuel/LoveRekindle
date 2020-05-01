@@ -9,6 +9,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
+import java.util.Objects;
 
 @IgnoreExtraProperties
 public class MediaItem {
@@ -210,4 +211,30 @@ public class MediaItem {
         Picasso.get().load(image_url).into(view);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MediaItem)) return false;
+        MediaItem mediaItem = (MediaItem) o;
+        return Float.compare(mediaItem.getPrice(), getPrice()) == 0 &&
+                getDownload_count() == mediaItem.getDownload_count() &&
+                Objects.equals(getTimestamp(), mediaItem.getTimestamp()) &&
+                getId().equals(mediaItem.getId()) &&
+                Objects.equals(getImage_url(), mediaItem.getImage_url()) &&
+                getTitle().equals(mediaItem.getTitle()) &&
+                Objects.equals(getCategory(), mediaItem.getCategory()) &&
+                Objects.equals(getAuthor(), mediaItem.getAuthor()) &&
+                Objects.equals(getReleased(), mediaItem.getReleased()) &&
+                Objects.equals(getLength(), mediaItem.getLength()) &&
+                Objects.equals(getDescription(), mediaItem.getDescription()) &&
+                getType() == mediaItem.getType() &&
+                Objects.equals(getMedia_url(), mediaItem.getMedia_url()) &&
+                Objects.equals(getMediaPath(), mediaItem.getMediaPath()) &&
+                getState() == mediaItem.getState();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTimestamp(), getId(), getImage_url(), getTitle(), getCategory(), getAuthor(), getReleased(), getPrice(), getLength(), getDownload_count(), getDescription(), getType(), getMedia_url(), getMediaPath(), getState());
+    }
 }

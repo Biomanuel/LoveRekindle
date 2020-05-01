@@ -2,17 +2,12 @@ package com.reconciliationhouse.android.loverekindle.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 
 import com.reconciliationhouse.android.loverekindle.ui.explore.AllMediaFragment;
 import com.reconciliationhouse.android.loverekindle.ui.explore.AudiosFragment;
 import com.reconciliationhouse.android.loverekindle.ui.explore.EbooksFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExplorePagerAdapter extends FragmentStateAdapter {
     private final static String[] mFragmentTitleList = new String[]{

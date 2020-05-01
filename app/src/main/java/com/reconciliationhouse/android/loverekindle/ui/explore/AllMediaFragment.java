@@ -8,33 +8,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.reconciliationhouse.android.loverekindle.R;
+import com.reconciliationhouse.android.loverekindle.adapters.MediaAdapter;
+import com.reconciliationhouse.android.loverekindle.databinding.FragmentAllMediaBinding;
+import com.reconciliationhouse.android.loverekindle.models.MediaItem;
+import com.reconciliationhouse.android.loverekindle.utils.Listeners;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 import java.util.Objects;
 
-public class AllMediaFragment extends Fragment {
+public class AllMediaFragment extends Fragment implements Listeners.MediaItemClickListener {
 
-    private View view;
+    private ExploreViewModel mExploreViewModel;
+    private MediaAdapter mAdapter;
 
     public AllMediaFragment() {
         // Required empty public constructor
     }
 
-    public static AllMediaFragment newInstance() {
-        return new AllMediaFragment();
-    }
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mExploreViewModel = new ViewModelProvider(getParentFragment()).get(ExploreViewModel.class);
+
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_all_media, container, false);
+        final FragmentAllMediaBinding binding = FragmentAllMediaBinding.inflate(inflater, container, false);
+        mAdapter = new MediaAdapter(this);
 
+        mExploreViewModel.getAllMedia().observe(getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
+            @Override
+            public void onChanged(List<MediaItem> mediaItems) {
+                mAdapter.setMediaItems(mediaItems);
+                binding.setListNotEmpty(mAdapter.getItemCount() > 0);
+            }
+        });
+        binding.rvAllMedia.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.rvAllMedia.setAdapter(mAdapter);
 
-        return view;
+        return binding.getRoot();
     }
 
     private Boolean isNetworkAvailable() {
@@ -46,4 +67,8 @@ public class AllMediaFragment extends Fragment {
         return false;
     }
 
+    @Override
+    public void onMediaItemClick(String mediaId, MediaItem.MediaType mediaType) {
+
+    }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LoveRekindle</string>
+    <string name="app_name">Love Rekindle</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_explore">Explore</string>
     <string name="title_chat">Chat</string>
@@ -39,12 +39,13 @@
     <string name="hint_password">Password</string>
     <string name="hint_email">user@usermail.com</string>
     <string name="text_btn_update">Update</string>
-    <string name="price_with_sign">\u20A6 %1$d</string>
+    <string name="price_with_sign">\u20A6 %1$.2f</string>
     <string name="txt_free">FREE</string>
     <string name="filter_by_category">Filter by Category</string>
     <string name="more">More</string>
     <string name="category_title">Category Title</string>
     <string name="desc_book_cover_image">Book Cover Image</string>
+    <string name="title_action_unfilter">Remove Filter</string>
 
     <array name="categories">
         <item>Godly Parenting</item>

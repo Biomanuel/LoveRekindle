@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="listNotEmpty"
+            type="boolean" />
+
+        <variable
+            name="isFiltered"
+            type="boolean" />
+    </data>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/grow_audio_root"
         android:layout_width="match_parent"
@@ -11,36 +22,55 @@
         tools:context=".ui.explore.EbooksFragment"
         tools:showIn="@layout/fragment_explore">
 
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/no_filter_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:padding="4dp"
-            android:visibility="visible">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_ebooks"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                tools:itemCount="10"
-                tools:listitem="@layout/item_media_card_layout" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
         <LinearLayout
-            android:id="@+id/categories_filter_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/no_filter_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                app:isVisible="@{!isFiltered}">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_ebooks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:spanCount="2"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/item_media_card_layout" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:gravity="center"
+                    android:text="There's nothing to show"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    app:isVisible="@{!listNotEmpty}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/categories_filter_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:isVisible="@{isFiltered}">
+
+            </LinearLayout>
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 </layout>

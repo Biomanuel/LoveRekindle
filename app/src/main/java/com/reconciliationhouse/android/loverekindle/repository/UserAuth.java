@@ -1,4 +1,4 @@
-package com.reconciliationhouse.android.loverekindle.repo;
+package com.reconciliationhouse.android.loverekindle.repository;
 // This is a class for handling Login and Sigining up
 
 import android.content.Context;
@@ -27,17 +27,17 @@ import com.reconciliationhouse.android.loverekindle.models.UserModel;
 import static android.content.ContentValues.TAG;
 
 public class UserAuth {
-    public FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public DocumentReference userRef = db.collection("User").document("details").collection("regular").document();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference userRef = db.collection("User").document("details").collection("regular").document();
     private StorageReference mStorage;
     private StorageReference ref;
     public String path = "images//user_profile" + userRef.getId();
     private static final int REQUEST_CODE = 45;
     private boolean mStoragePermissions;
     private StorageReference mStorageReference;
-    
-    FirebaseAuth mAuth;
-    UserModel mUserModel;
+
+    private FirebaseAuth mAuth;
+    private UserModel mUserModel;
     //call this function after checking the below fields is not null
     public void signUpUserWithEmail(final Context context, final String firstName, final String lastName, final String email, final String passWord, final String imageUri ){
 
@@ -98,14 +98,6 @@ public class UserAuth {
        
         
     }
-
-
-
-    /**
-     * Generalized method for asking permission. Can Pass any array of permissions   ffff
-     */
-
-
 }
 
     private void uploadImagesToFirebase(String imageUrl) {

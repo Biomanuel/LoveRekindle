@@ -6,4 +6,11 @@
         android:icon="@drawable/ic_filter_list"
         android:title="@string/filter_by_category"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_unfilter"
+        android:icon="@drawable/ic_apps"
+        android:title="@string/title_action_unfilter"
+        android:visible="true"
+        app:showAsAction="ifRoom" />
 </menu>

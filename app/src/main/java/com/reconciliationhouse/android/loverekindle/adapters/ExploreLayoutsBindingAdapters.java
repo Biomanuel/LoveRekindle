@@ -26,4 +26,10 @@ public abstract class ExploreLayoutsBindingAdapters {
                 ((TextView) view).setTextColor(vContext.getResources().getColor(R.color.passiveGrey));
         }
     }
+
+    @BindingAdapter("app:isVisible")
+    public static void setVisibility(View view, boolean isVisible) {
+        if (isVisible) view.setVisibility(View.VISIBLE);
+        else view.setVisibility(View.INVISIBLE);
+    }
 }

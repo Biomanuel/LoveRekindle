@@ -14,73 +14,92 @@
             style="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:fitsSystemWindows="true">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/explore_toolbar"
-                style="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="@color/colorPrimary"
-                app:menu="@menu/menu_explore_fragment"
-                app:title="Love Rekindle"
-                app:titleTextColor="@color/secondaryColor" />
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/search_bar_layout"
+                style="@style/TextAppearance.Design.CollapsingToolbar.Expanded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|snap"
-                app:toolbarId="@id/explore_search_bar">
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@id/explore_toolbar">
 
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/explore_search_bar"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_alignParentTop="true"
-                    android:background="@color/colorPrimary"
-                    android:padding="8dp"
-                    app:popupTheme="@style/Widget.MaterialComponents.Toolbar.Primary">
+                    android:layout_height="wrap_content"
+                    android:paddingTop="?actionBarSize">
 
-                    <FrameLayout
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/explore_search_bar"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"
+                        android:background="@color/white"
+                        android:searchIcon="@drawable/ic_search_icon" />
+                </FrameLayout>
 
-                        <androidx.appcompat.widget.SearchView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_margin="20dp"
-                            android:background="@color/white"
-                            android:searchIcon="@drawable/ic_search_icon"
-                            app:queryHint="Search for Media" />
-                    </FrameLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/explore_toolbar"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:animateLayoutChanges="true"
+                    app:layout_collapseMode="pin"
+                    app:menu="@menu/menu_explore_fragment"
+                    app:title=" ">
 
-                </com.google.android.material.appbar.MaterialToolbar>
+                    <TextView
+                        style="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                        android:textColor="@color/secondaryColor"
+                        android:textSize="24sp" />
+
+                </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/explore_fragment_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_anchor="@id/app_bar_layout"
+            app:layout_anchorGravity="bottom"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+            >
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/explore_tabs"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
                 android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tabGravity="center"
                 app:tabIndicator="@drawable/tab_indicator"
                 app:tabIndicatorColor="@color/colorPrimary"
                 app:tabSelectedTextColor="@color/colorAccent" />
 
-        </com.google.android.material.appbar.AppBarLayout>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/explore_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/explore_tabs" />
 
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/explore_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -32,7 +32,7 @@
                 android:contentDescription="@string/desc_book_cover_image"
                 android:scaleType="centerCrop"
                 android:src="@drawable/opened_book"
-                app:image="@{media}"
+                android:image="@{media}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +86,7 @@
                     android:layout_weight="18"
                     android:gravity="center_vertical"
                     android:textColor="@color/grey"
-                    app:price="@{media}"
+                    android:price="@{media}"
                     tools:text="00.00" />
 
 
@@ -105,7 +105,7 @@
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:mediaType="@{media}"
+                android:mediaType="@{media}"
                 tools:text="Audio" />
 
             <View

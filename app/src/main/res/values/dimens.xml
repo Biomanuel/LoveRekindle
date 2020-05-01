@@ -3,5 +3,5 @@
     <dimen name="card_side_margin">12dp</dimen>
     <dimen name="card_bottom_margin">26dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
-    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
 </resources>

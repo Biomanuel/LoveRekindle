@@ -52,10 +52,12 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         else return 0;
     }
 
-    public void setMediaItems(List<MediaItem> mediaItems) {
-        if (mMediaItems != null) mMediaItems.clear();
-        mMediaItems = mediaItems;
-        notifyDataSetChanged();
+    public void setMediaItems(@NonNull List<MediaItem> mediaItems) {
+        if (mediaItems.size() > 0) {
+            if (mMediaItems != null) mMediaItems.clear();
+            mMediaItems = mediaItems;
+            notifyDataSetChanged();
+        }
     }
 
     public class MediaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

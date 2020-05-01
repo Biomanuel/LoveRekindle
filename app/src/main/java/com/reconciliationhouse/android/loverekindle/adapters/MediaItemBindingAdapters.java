@@ -12,18 +12,18 @@ import com.squareup.picasso.Picasso;
 
 public abstract class MediaItemBindingAdapters {
 
-    @BindingAdapter("app:image")
+    @BindingAdapter("android:image")
     public static void loadImage(ImageView imageView, MediaItem media) {
         if (media.getImage_url() != null) Picasso.get().load(media.getImage_url()).into(imageView);
         else imageView.setImageResource(R.drawable.opened_book);
     }
 
-    @BindingAdapter("app:mediaType")
+    @BindingAdapter("android:mediaType")
     public static void setMediaType(TextView tv, MediaItem media) {
         if (media.getType() != null) tv.setText(media.getType().toString());
     }
 
-    @BindingAdapter("app:price")
+    @BindingAdapter("android:price")
     public static void setPrice(TextView tv, MediaItem media) {
         Context tvContext = tv.getContext();
         if (media.getPrice() != 0 && media.getPrice() > 1)
