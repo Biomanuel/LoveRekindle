@@ -1,4 +1,4 @@
-package com.reconciliationhouse.android.loverekindle.ui.explore;
+package com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,18 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.databinding.DataBindingUtil;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.adapters.MediaAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentAllMediaBinding;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
+import com.reconciliationhouse.android.loverekindle.ui.explore.ExploreFragment;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,8 +30,9 @@ import java.util.Objects;
 
 public class AllMediaFragment extends Fragment implements Listeners.MediaItemClickListener {
 
-    private ExploreViewModel mExploreViewModel;
+    private MediaGalleryViewModel mMediaGalleryViewModel;
     private MediaAdapter mAdapter;
+    private FragmentAllMediaBinding mBinding;
 
     public AllMediaFragment() {
         // Required empty public constructor
@@ -39,23 +41,28 @@ public class AllMediaFragment extends Fragment implements Listeners.MediaItemCli
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mExploreViewModel = new ViewModelProvider(getParentFragment()).get(ExploreViewModel.class);
 
         // Inflate the layout for this fragment
-        final FragmentAllMediaBinding binding = FragmentAllMediaBinding.inflate(inflater, container, false);
+        mBinding = FragmentAllMediaBinding.inflate(inflater, container, false);
         mAdapter = new MediaAdapter(this);
 
-        mExploreViewModel.getAllMedia().observe(getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
+        mBinding.rvAllMedia.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mBinding.rvAllMedia.setAdapter(mAdapter);
+
+        return mBinding.getRoot();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mMediaGalleryViewModel = new ViewModelProvider(getParentFragment()).get(MediaGalleryViewModel.class);
+        mMediaGalleryViewModel.getAllMedia().observe(getParentFragment().getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
             @Override
             public void onChanged(List<MediaItem> mediaItems) {
                 mAdapter.setMediaItems(mediaItems);
-                binding.setListNotEmpty(mAdapter.getItemCount() > 0);
+                mBinding.setListNotEmpty(mAdapter.getItemCount() > 0);
             }
         });
-        binding.rvAllMedia.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        binding.rvAllMedia.setAdapter(mAdapter);
-
-        return binding.getRoot();
     }
 
     private Boolean isNetworkAvailable() {
@@ -69,6 +76,8 @@ public class AllMediaFragment extends Fragment implements Listeners.MediaItemCli
 
     @Override
     public void onMediaItemClick(String mediaId, MediaItem.MediaType mediaType) {
-
+        if (getParentFragment() != null)
+            NavHostFragment.findNavController(getParentFragment())
+                    .navigate(MediaGalleryFragmentDirections.actionNavigationMediaGalleryToNavigationMediaPreview(mediaId));
     }
 }

@@ -1,4 +1,4 @@
-package com.reconciliationhouse.android.loverekindle.ui.explore;
+package com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery;
 
 import android.app.Application;
 
@@ -13,16 +13,16 @@ import com.reconciliationhouse.android.loverekindle.repository.MediaRepo;
 
 import java.util.List;
 
-public class ExploreViewModel extends AndroidViewModel {
+public class MediaGalleryViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<MediaItem>> mAllMedia;
-    private MediaItemListLiveData audios;
-    private MediaItemListLiveData ebooks;
+    private MutableLiveData<List<MediaItem>> audios;
+    private MutableLiveData<List<MediaItem>> ebooks;
     private MutableLiveData<Boolean> isFiltered;
 
-    public ExploreViewModel(Application application, SavedStateHandle savedStateHandle) {
+    public MediaGalleryViewModel(Application application, SavedStateHandle savedStateHandle) {
         super(application);
-        mAllMedia = MediaRepo.getInstance().getAllMedia(application);
+        mAllMedia = MediaRepo.getInstance().getFireStoreAllMediaLiveData();
         audios = MediaRepo.getInstance().getFireStoreAudiosLiveData();
         ebooks = MediaRepo.getInstance().getFireStoreEbooksLiveData();
 

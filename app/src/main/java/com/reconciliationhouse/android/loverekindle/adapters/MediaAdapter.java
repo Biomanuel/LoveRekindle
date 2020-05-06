@@ -14,6 +14,7 @@ import com.reconciliationhouse.android.loverekindle.databinding.ItemMediaCardLay
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners.MediaItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHolder> {
@@ -53,11 +54,15 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     }
 
     public void setMediaItems(@NonNull List<MediaItem> mediaItems) {
-        if (mediaItems.size() > 0) {
-            if (mMediaItems != null) mMediaItems.clear();
-            mMediaItems = mediaItems;
+        if (this.mMediaItems != null) {
+            this.mMediaItems.clear();
+            this.mMediaItems.addAll(mediaItems);
             notifyDataSetChanged();
+            return;
         }
+        this.mMediaItems = new ArrayList<>();
+        this.mMediaItems.addAll(mediaItems);
+        notifyDataSetChanged();
     }
 
     public class MediaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

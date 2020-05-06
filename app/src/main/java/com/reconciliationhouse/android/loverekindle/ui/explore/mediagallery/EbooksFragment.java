@@ -1,4 +1,4 @@
-package com.reconciliationhouse.android.loverekindle.ui.explore;
+package com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import java.util.Objects;
 
 public class EbooksFragment extends Fragment implements Listeners.MediaItemClickListener {
 
-    private ExploreViewModel mExploreViewModel;
+    private MediaGalleryViewModel mMediaGalleryViewModel;
     private MediaAdapter mAdapter;
 
     public EbooksFragment() {
@@ -43,13 +44,13 @@ public class EbooksFragment extends Fragment implements Listeners.MediaItemClick
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mExploreViewModel = new ViewModelProvider(getParentFragment()).get(ExploreViewModel.class);
+        mMediaGalleryViewModel = new ViewModelProvider(getParentFragment()).get(MediaGalleryViewModel.class);
 
         // Inflate the layout for this fragment
         final FragmentEbooksBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ebooks, container, false);
         mAdapter = new MediaAdapter(this);
 
-        mExploreViewModel.getEbooks().observe(getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
+        mMediaGalleryViewModel.getEbooks().observe(getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
             @Override
             public void onChanged(List<MediaItem> mediaItems) {
                 mAdapter.setMediaItems(mediaItems);
@@ -75,6 +76,8 @@ public class EbooksFragment extends Fragment implements Listeners.MediaItemClick
 
     @Override
     public void onMediaItemClick(String mediaId, MediaItem.MediaType mediaType) {
-
+        if (getParentFragment() != null)
+            NavHostFragment.findNavController(getParentFragment())
+                    .navigate(MediaGalleryFragmentDirections.actionNavigationMediaGalleryToNavigationMediaPreview(mediaId));
     }
 }

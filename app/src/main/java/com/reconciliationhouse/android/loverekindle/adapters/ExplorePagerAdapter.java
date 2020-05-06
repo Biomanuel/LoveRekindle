@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 
-import com.reconciliationhouse.android.loverekindle.ui.explore.AllMediaFragment;
-import com.reconciliationhouse.android.loverekindle.ui.explore.AudiosFragment;
-import com.reconciliationhouse.android.loverekindle.ui.explore.EbooksFragment;
+import com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery.AllMediaFragment;
+import com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery.AudiosFragment;
+import com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery.EbooksFragment;
 
 public class ExplorePagerAdapter extends FragmentStateAdapter {
     private final static String[] mFragmentTitleList = new String[]{
