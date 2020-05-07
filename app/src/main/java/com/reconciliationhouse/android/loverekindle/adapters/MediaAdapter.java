@@ -41,7 +41,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         if (mMediaItems != null) {
             MediaItem mediaItem = mMediaItems.get(position);
             holder.mediaId = mediaItem.getId();
-            holder.mMediaType = mediaItem.getType();
+            holder.category = mediaItem.getCategory();
 
             holder.mBinding.setMedia(mediaItem);
         }
@@ -68,7 +68,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     public class MediaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemMediaCardLayoutBinding mBinding;
         private String mediaId;
-        private MediaItem.MediaType mMediaType;
+        private String category;
 
         MediaViewHolder(@NonNull ItemMediaCardLayoutBinding binding) {
             super(binding.getRoot());
@@ -78,7 +78,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
 
         @Override
         public void onClick(View view) {
-            mMediaItemClickListener.onMediaItemClick(mediaId, mMediaType);
+            mMediaItemClickListener.onMediaItemClick(mediaId, category);
         }
     }
 }

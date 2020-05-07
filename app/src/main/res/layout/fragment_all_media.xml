@@ -11,7 +11,7 @@
 
         <variable
             name="isFiltered"
-            type="boolean" />
+            type="androidx.lifecycle.LiveData&lt;Boolean>" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -35,7 +35,7 @@
                 app:isVisible="@{!isFiltered}">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_all_media"
+                    android:id="@+id/rv_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -52,7 +52,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:gravity="center"
-                    android:text="There's nothing to show"
+                    android:text="@string/empty_list_text"
                     android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     app:isVisible="@{!listNotEmpty}"
                     app:layout_constraintBottom_toBottomOf="parent"

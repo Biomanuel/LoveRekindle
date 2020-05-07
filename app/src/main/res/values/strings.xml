@@ -58,4 +58,10 @@
         <item>Spiritual Growth</item>
         <item>Marriage and Relationship</item>
     </array>
+
+    <!--    Do not change this @applicationID because it will affect a lot of constants.
+            Use it when you want to create unique keys that are related to the application.
+    -->
+    <string name="applicationIDBase">com.reconciliationhouse.android.loverekindle.%s</string>
+    <string name="empty_list_text">There\'s nothing to show</string>
 </resources>

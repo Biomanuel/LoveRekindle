@@ -19,7 +19,6 @@ public class MediaRepo {
     private CollectionReference mCollectionRef;
 
     private MediaRepo() {
-
         this.db = FirebaseFirestore.getInstance();
         mCollectionRef = db.collection(collectionPath);
     }
@@ -68,10 +67,25 @@ public class MediaRepo {
      * @param mediaType the media group to query from
      * @return LiveData of the list
      */
-    public MediaItemListLiveData getMediaListOfCategory(String category, MediaItem.MediaType mediaType) {
+    public MediaItemListLiveData getLiveListOfMediaInCategory(String category, MediaItem.MediaType mediaType) {
         //make sure there is internet connection
         Query query = mCollectionRef
                 .whereEqualTo("type", mediaType.toString())
+                .whereEqualTo("category", category)
+                .orderBy("timestamp", Query.Direction.ASCENDING);
+
+        return new MediaItemListLiveData(query);
+    }
+
+    /**
+     * Gets all media of the supplied category.
+     *
+     * @param category the category to queryfrom
+     * @return LiveData of the list
+     */
+    public MediaItemListLiveData getLiveListOfMediaInCategory(String category) {
+        //make sure there is internet connection
+        Query query = mCollectionRef
                 .whereEqualTo("category", category)
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 

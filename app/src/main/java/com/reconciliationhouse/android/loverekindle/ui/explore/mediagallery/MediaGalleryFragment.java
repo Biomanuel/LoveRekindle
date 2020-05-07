@@ -1,6 +1,8 @@
 package com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -24,17 +28,22 @@ import com.reconciliationhouse.android.loverekindle.databinding.FragmentMediaGal
 
 import org.jetbrains.annotations.NotNull;
 
+import static com.foresightridge.childbirth.utility.ViewUtilsKt.reduceDragSensitivity;
+
 public class MediaGalleryFragment extends Fragment {
 
     private MediaGalleryViewModel mMediaGalleryViewModel;
     private FragmentMediaGalleryBinding mBinding;
+    private SavedStateViewModelFactory mFactory;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mMediaGalleryViewModel = new ViewModelProvider(this).get(MediaGalleryViewModel.class);
+        mMediaGalleryViewModel = new ViewModelProvider(this, mFactory).get(MediaGalleryViewModel.class);
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_media_gallery, container, false);
         ViewPager2 viewPager = mBinding.exploreViewpager;
         TabLayout tabLayout = mBinding.exploreTabs;
+
+        reduceDragSensitivity(viewPager);
 
         viewPager.setAdapter(new ExplorePagerAdapter(this));
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.OnConfigureTabCallback() {
@@ -84,5 +93,11 @@ public class MediaGalleryFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mFactory = new SavedStateViewModelFactory(requireActivity().getApplication(), requireActivity());
     }
 }

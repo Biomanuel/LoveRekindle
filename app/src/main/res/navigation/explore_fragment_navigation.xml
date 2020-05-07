@@ -27,6 +27,12 @@
         <argument
             android:name="mediaId"
             app:argType="string" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_navigation_media_preview_self"
+            app:destination="@id/navigation_media_preview" />
     </fragment>
 
 </navigation>

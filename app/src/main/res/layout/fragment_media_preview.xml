@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.reconciliationhouse.android.loverekindle.ui.explore.mediapreview.MediaPreviewViewModel" />
+
+        <variable
+            name="thereIsMoreRelatedMedia"
+            type="boolean" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -599,14 +603,17 @@
                             android:drawableTint="@color/dark_red"
                             android:gravity="center_vertical"
                             android:text="More"
+                            app:isActive="@{thereIsMoreRelatedMedia}"
                             android:textColor="@android:color/holo_red_dark"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/related_media_title" />
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/related_media_rv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="-4dp"
+                            android:layout_marginTop="8dp"
                             android:orientation="horizontal"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
