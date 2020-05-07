@@ -1,22 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#f1f1f1"
+    android:id="@+id/messages_root"
     tools:context=".ui.chat.ChatFragment">
 
     <TextView
-        android:id="@+id/text_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Messages"
+
+        android:textSize="23sp"
+
+        android:visibility="gone"
+        android:id="@+id/messages_no_message"
+        android:gravity="center"/>
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:visibility="gone"
+        android:id="@+id/messages_recycler_view"/>
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:id="@+id/shimmer_container">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <include layout="@layout/messages_placeholder"/>
+            <include layout="@layout/messages_placeholder"/>
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/white"
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            app:srcCompat="@drawable/line"
+            />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="20">
+            <ImageButton
+                android:layout_gravity="center"
+                android:backgroundTint="@color/white"
+
+                android:id="@+id/add"
+                android:src="@drawable/ic_person_add_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <EditText
+                android:layout_width="0dp"
+                android:layout_weight="19"
+                android:layout_marginLeft="20dp"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/grey"
+                android:hint="Message A Counsellor..."
+                android:minHeight="40dp"
+
+                android:textSize="18sp"
+
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:id="@+id/messages_text"
+                android:gravity="center|left"
+                android:textColor="@color/black"
+                android:background="@drawable/message_edittext_design"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:src="@drawable/new_send_icon"
+                android:layout_gravity="center"
+                app:fabCustomSize="50dp"
+                android:id="@+id/send_message"
+                android:layout_marginLeft="10dp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</RelativeLayout>
+

@@ -104,4 +104,20 @@ public class MediaRepo {
 
         return new MediaItemListLiveData(query);
     }
+    public MutableLiveData<List<MediaItem>> getDummyMedia(final Context context) {
+
+        //make sure there is internet connection
+        final MutableLiveData<List<MediaItem>> mediaListLiveData = new MutableLiveData<>((List<MediaItem>) new ArrayList<MediaItem>());
+        List<MediaItem>mediaItemList=new ArrayList<>();
+        mediaItemList.add(new MediaItem(MediaItem.MediaType.AUDIO));
+        mediaItemList.add(new MediaItem(MediaItem.MediaType.AUDIO));
+        mediaItemList.add(new MediaItem(MediaItem.MediaType.AUDIO));
+        mediaItemList.add(new MediaItem(MediaItem.MediaType.AUDIO));
+        mediaItemList.add(new MediaItem(MediaItem.MediaType.AUDIO));
+
+
+        mediaListLiveData.setValue(mediaItemList);
+
+        return mediaListLiveData;
+    }
 }
