@@ -31,13 +31,16 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="?actionBarSize">
 
-                    <androidx.appcompat.widget.SearchView
+                    <SearchView
                         android:id="@+id/explore_search_bar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:layout_margin="20dp"
                         android:background="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="4dp"
                         android:searchIcon="@drawable/ic_search_icon" />
                 </FrameLayout>
 

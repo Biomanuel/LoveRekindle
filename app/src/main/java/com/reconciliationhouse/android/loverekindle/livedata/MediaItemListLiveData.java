@@ -33,7 +33,6 @@ public class MediaItemListLiveData extends MutableLiveData<List<MediaItem>> impl
 
     public MediaItemListLiveData(CollectionReference collectionReference) {
         mCollectionRef = collectionReference;
-        tempMediaList = new ArrayList<>();
     }
 
     /**
