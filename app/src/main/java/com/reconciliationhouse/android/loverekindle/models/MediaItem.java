@@ -4,11 +4,13 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Objects;
 
 @IgnoreExtraProperties
@@ -25,21 +27,16 @@ public class MediaItem {
     private String length;
     private int download_count;
     private String description;
-    private MediaType mType = MediaType.AUDIO;
+    private MediaType type;
     private String media_url;
-    private String mediaPath;
-    private MediaState state = MediaState.PERMANENT;
-
-    public enum MediaState {
-        CACHED, PERMANENT
-    }
+    private HashMap<String, String> reviews;
 
     public enum MediaType {
         AUDIO, EBOOK, SERMON
     }
 
     public MediaItem(MediaType mediaType){
-        this.mType = mediaType;
+        this.type = mediaType;
         this.id = String.valueOf((new Date()).getTime());
     }
     public MediaItem(){
@@ -48,7 +45,7 @@ public class MediaItem {
 
     public MediaItem(String id, String image_url, String title, String category, String author,
                      String released, float price, String length, int download_count, String description,
-                     MediaType type, String media_url, java.util.Date timestamp, String mediaPath) {
+                     MediaType type, String media_url, java.util.Date timestamp) {
         this.id = id;
         this.image_url = image_url;
         this.title = title;
@@ -59,10 +56,9 @@ public class MediaItem {
         this.length = length;
         this.download_count = download_count;
         this.description = description;
-        mType = type;
+        this.type = type;
         this.media_url = media_url;
         this.timestamp=timestamp;
-        this.mediaPath=mediaPath;
     }
 
     public MediaItem(String image_url, String title, String category, String author, String released,
@@ -78,10 +74,11 @@ public class MediaItem {
         this.length = length;
         this.download_count = download_count;
         this.description = description;
-        mType = type;
+        this.type = type;
         this.media_url = media_url;
         this.timestamp=timestamp;
     }
+
 
     //    region Getters and Setters
     public String getId() {
@@ -165,11 +162,11 @@ public class MediaItem {
     }
 
     public MediaType getType() {
-        return mType;
+        return type;
     }
 
     public void setType(MediaType type) {
-        mType = type;
+        this.type = type;
     }
 
     public String getMedia_url() {
@@ -180,24 +177,6 @@ public class MediaItem {
         this.media_url = media_url;
     }
 
-    public String getMediaPath() {
-        return mediaPath;
-    }
-
-    public void setMediaPath(String mediaPath) {
-        this.mediaPath = mediaPath;
-    }
-
-    public MediaState getState() {
-        return state;
-    }
-
-    public void setState(MediaState state) {
-        this.state = state;
-    }
-
-    //    endregion Getters and Setters
-
     public Date getTimestamp() {
         return timestamp;
     }
@@ -205,6 +184,21 @@ public class MediaItem {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
+
+    public HashMap<String, String> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(HashMap<String, String> reviews) {
+        this.reviews = reviews;
+    }
+
+    @Exclude
+    public void newReview(String userName, String review) {
+        this.reviews.put(userName, review);
+    }
+
+    //    endregion Getters and Setters
 
     @BindingAdapter("android:setImage")
     public static void setImage (ImageView view ,String image_url){
@@ -228,13 +222,11 @@ public class MediaItem {
                 Objects.equals(getLength(), mediaItem.getLength()) &&
                 Objects.equals(getDescription(), mediaItem.getDescription()) &&
                 getType() == mediaItem.getType() &&
-                Objects.equals(getMedia_url(), mediaItem.getMedia_url()) &&
-                Objects.equals(getMediaPath(), mediaItem.getMediaPath()) &&
-                getState() == mediaItem.getState();
+                Objects.equals(getMedia_url(), mediaItem.getMedia_url());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTimestamp(), getId(), getImage_url(), getTitle(), getCategory(), getAuthor(), getReleased(), getPrice(), getLength(), getDownload_count(), getDescription(), getType(), getMedia_url(), getMediaPath(), getState());
+        return Objects.hash(getTimestamp(), getId(), getImage_url(), getTitle(), getCategory(), getAuthor(), getReleased(), getPrice(), getLength(), getDownload_count(), getDescription(), getType(), getMedia_url());
     }
 }

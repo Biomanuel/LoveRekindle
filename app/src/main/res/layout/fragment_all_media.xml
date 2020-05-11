@@ -11,16 +11,15 @@
 
         <variable
             name="isFiltered"
-            type="boolean" />
+            type="androidx.lifecycle.LiveData&lt;Boolean>" />
     </data>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/all_media_root"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.explore.AllMediaFragment"
+        tools:context=".ui.explore.mediagallery.AllMediaFragment"
         tools:showIn="@layout/fragment_explore">
 
         <LinearLayout
@@ -36,8 +35,7 @@
                 app:isVisible="@{!isFiltered}">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_all_media"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:id="@+id/rv_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -54,7 +52,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:gravity="center"
-                    android:text="There's nothing to show"
+                    android:text="@string/empty_list_text"
                     android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     app:isVisible="@{!listNotEmpty}"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
 android {
@@ -23,8 +24,6 @@ android {
 
     buildTypes {
         release {
-
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -46,8 +45,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    //circular image view
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
 
     //Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
