@@ -23,6 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
+
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:toolbarId="@id/explore_toolbar">
 
@@ -79,6 +80,7 @@
                 android:id="@+id/explore_tabs"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+
                 android:layout_gravity="center_horizontal"
                 android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -93,6 +95,7 @@
                 android:id="@+id/explore_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+
                 android:layout_marginTop="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

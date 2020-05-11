@@ -27,7 +27,7 @@ public class ExploreViewModel extends AndroidViewModel {
         ebooks = MediaRepo.getInstance().getFireStoreEbooksLiveData();
 
         //TODO: use ViewModel SavedInstant
-        isFiltered = savedStateHandle.getLiveData("isFiltered", false);
+                     isFiltered = savedStateHandle.getLiveData("isFiltered", false);
     }
 
     public LiveData<List<MediaItem>> getAllMedia() {
