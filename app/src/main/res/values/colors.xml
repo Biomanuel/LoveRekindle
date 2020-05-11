@@ -16,7 +16,7 @@
     <color name="mtrl_textinput_default_box_stroke_color" tools:ignore="PrivateResource">#ffffff</color>
     <color name="passiveGrey">#C4C4C4</color>
     <color name="deeper_grey">#555555</color>
-    <color name="error_toast_bg_tint">#AACC0000</color>
+    <color name="dark_red">#AACC0000</color>
     <color name="mild_error_toast_bg_tint">#AACCCC00</color>
     <color name="oldColorAccent">#03DAC5</color>
 </resources>

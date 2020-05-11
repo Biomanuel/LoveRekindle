@@ -14,6 +14,7 @@ import com.reconciliationhouse.android.loverekindle.databinding.ItemMediaCardLay
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners.MediaItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHolder> {
@@ -40,7 +41,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         if (mMediaItems != null) {
             MediaItem mediaItem = mMediaItems.get(position);
             holder.mediaId = mediaItem.getId();
-            holder.mMediaType = mediaItem.getType();
+            holder.category = mediaItem.getCategory();
 
             holder.mBinding.setMedia(mediaItem);
         }
@@ -53,17 +54,21 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     }
 
     public void setMediaItems(@NonNull List<MediaItem> mediaItems) {
-        if (mediaItems.size() > 0) {
-            if (mMediaItems != null) mMediaItems.clear();
-            mMediaItems = mediaItems;
+        if (this.mMediaItems != null) {
+            this.mMediaItems.clear();
+            this.mMediaItems.addAll(mediaItems);
             notifyDataSetChanged();
+            return;
         }
+        this.mMediaItems = new ArrayList<>();
+        this.mMediaItems.addAll(mediaItems);
+        notifyDataSetChanged();
     }
 
     public class MediaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemMediaCardLayoutBinding mBinding;
         private String mediaId;
-        private MediaItem.MediaType mMediaType;
+        private String category;
 
         MediaViewHolder(@NonNull ItemMediaCardLayoutBinding binding) {
             super(binding.getRoot());
@@ -73,7 +78,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
 
         @Override
         public void onClick(View view) {
-            mMediaItemClickListener.onMediaItemClick(mediaId, mMediaType);
+            mMediaItemClickListener.onMediaItemClick(mediaId, category);
         }
     }
 }

@@ -5,7 +5,7 @@ import com.reconciliationhouse.android.loverekindle.models.MediaItem;
 public abstract class Listeners {
 
     public interface MediaItemClickListener {
-        void onMediaItemClick(String mediaId, MediaItem.MediaType mediaType);
+        void onMediaItemClick(String mediaId, String category);
     }
 
 }

@@ -30,6 +30,6 @@ public abstract class ExploreLayoutsBindingAdapters {
     @BindingAdapter("app:isVisible")
     public static void setVisibility(View view, boolean isVisible) {
         if (isVisible) view.setVisibility(View.VISIBLE);
-        else view.setVisibility(View.INVISIBLE);
+        else view.setVisibility(View.GONE);
     }
 }
