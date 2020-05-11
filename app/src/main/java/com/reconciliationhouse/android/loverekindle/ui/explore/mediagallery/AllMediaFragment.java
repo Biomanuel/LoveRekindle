@@ -77,13 +77,6 @@ public class AllMediaFragment extends Fragment implements Listeners.MediaItemCli
         });
 
         mBinding.setIsFiltered(mMediaGalleryViewModel.getIsFiltered());
-
-        mMediaGalleryViewModel.getIsFiltered().observe(getParentFragment().getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-
-            }
-        });
     }
 
     private void updateCategoryUI() {

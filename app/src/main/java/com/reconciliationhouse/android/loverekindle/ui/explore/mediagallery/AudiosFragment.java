@@ -78,13 +78,6 @@ public class AudiosFragment extends Fragment implements Listeners.MediaItemClick
         });
 
         mBinding.setIsFiltered(mMediaGalleryViewModel.getIsFiltered());
-
-        mMediaGalleryViewModel.getIsFiltered().observe(getParentFragment().getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-
-            }
-        });
     }
 
     private void updateCategoryUI() {
