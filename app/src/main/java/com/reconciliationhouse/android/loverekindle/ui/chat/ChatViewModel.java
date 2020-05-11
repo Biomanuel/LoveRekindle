@@ -9,8 +9,11 @@ public class ChatViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
     public ChatViewModel() {
-
+        mText = new MutableLiveData<>();
+        mText.setValue("This is dashboard fragment");
     }
 
-
+    LiveData<String> getText() {
+        return mText;
+    }
 }
