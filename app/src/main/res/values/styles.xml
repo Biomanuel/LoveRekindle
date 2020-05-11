@@ -21,7 +21,7 @@
         <item name="textInputStyle">@style/AuthTextInputStyle</item>
     </style>
 
-    <style name="NewMediaActivityTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="NewMediaActivityTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

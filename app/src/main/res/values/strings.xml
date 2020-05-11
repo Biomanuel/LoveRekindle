@@ -48,6 +48,8 @@
     <string name="title_action_unfilter">Remove Filter</string>
     <string name="about_app">About App</string>
     <string name="request_a_counsellor">Request A Counsellor</string>
+    <string name="message_a_counsellor">Message A Counsellor...</string>
+    <string name="names">Names</string>
 
     <array name="categories">
         <item>Godly Parenting</item>

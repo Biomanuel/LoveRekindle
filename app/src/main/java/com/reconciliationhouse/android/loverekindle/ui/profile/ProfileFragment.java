@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -30,7 +34,8 @@ import com.reconciliationhouse.android.loverekindle.R;
 
 import com.reconciliationhouse.android.loverekindle.SharedViewModel;
 import com.reconciliationhouse.android.loverekindle.adapters.LibraryPagerAdapter;
-
+import com.reconciliationhouse.android.loverekindle.databinding.FragmentAllMediaBinding;
+import com.reconciliationhouse.android.loverekindle.databinding.FragmentProfileBinding;
 
 
 public class ProfileFragment extends Fragment{
@@ -42,30 +47,24 @@ public class ProfileFragment extends Fragment{
     private CoordinatorLayout bottomSheetLayout1;
     BottomSheetBehavior bottomSheetBehavior1;
 
-    //private FragmentProfileBinding mBinding;
+    private FragmentProfileBinding mBinding;
     public ProfileFragment(){
 
     }
     public View onCreateView( LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-      // mProfileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
-        ViewGroup group=(ViewGroup) inflater.inflate(R.layout.fragment_profile, container, false);
-        ViewPager2 viewPager = group.findViewById(R.id.library_pager);
-        TabLayout tabLayout = group.findViewById(R.id.library_tabs);
-        toolbar=group.findViewById(R.id.toolbar);
+        mBinding = FragmentProfileBinding.inflate(inflater, container, false);
 
-
-
-        viewPager.setAdapter(new LibraryPagerAdapter(this));
-        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.OnConfigureTabCallback() {
+        mBinding.libraryPager.setAdapter(new LibraryPagerAdapter(this));
+        new TabLayoutMediator(mBinding.libraryTabs, mBinding.libraryPager, new TabLayoutMediator.OnConfigureTabCallback() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(LibraryPagerAdapter.getPageTitle(position));
             }
         }).attach();
 
-        return group;
+        return mBinding.getRoot();
     }
 
     @Override
@@ -73,33 +72,21 @@ public class ProfileFragment extends Fragment{
 
 
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity) requireActivity()).setSupportActionBar(mBinding.toolbar);
+        setHasOptionsMenu(true);
+
         sharedViewModel = ViewModelProviders.of(this).get(SharedViewModel.class);
+
         bottomSheetLayout1=view.findViewById(R.id.bottom_sheet_layout);
 
 
-        ((MainActivity) requireActivity()).setSupportActionBar(toolbar);
-        setHasOptionsMenu(true);
-        setUpBottomSheet();
-        sharedViewModel.getType().observe(getViewLifecycleOwner(), new Observer<String>() {
+
+
+        mBinding.recharge.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(String s) {
-                if (s.equals("purchase")){
-                    bottomSheetLayout1.setVisibility(View.VISIBLE);
-
-
-                    if (bottomSheetBehavior1.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-                        bottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
-
-
-
-                    } else {
-                        bottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-                    }
-
-                }
-
-
+            public void onClick(View view) {
+                NavController navController= Navigation.findNavController(view);
+                navController.navigate(R.id.action_navigation_profile_to_rechargeFragment);
             }
         });
 
@@ -116,6 +103,12 @@ public class ProfileFragment extends Fragment{
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.settings:
+                Toast.makeText(getContext(), "I was Clicked", Toast.LENGTH_SHORT).show();
+                 NavController navController=  NavHostFragment.findNavController(ProfileFragment.this);
+                navController.navigate(R.id.action_navigation_profile_to_settingsFragment);
+                return true;
+
 
         }
         return super.onOptionsItemSelected(item);
@@ -151,12 +144,10 @@ public class ProfileFragment extends Fragment{
 
         });
 
-        //Log.d(TAG, "onStateChanged: " + newState);
+
     }
 
-//    @Override
-//    public void onButtonClick(String type) {
-//        if (type.equals("purchase")){
 
-   // }
+
+
 }
