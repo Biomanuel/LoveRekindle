@@ -4,10 +4,15 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
+import androidx.lifecycle.SavedStateViewModelFactory;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.savedstate.SavedStateRegistryOwner;
 
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.livedata.MediaItemListLiveData;
@@ -78,5 +83,15 @@ public class MediaGalleryViewModel extends AndroidViewModel {
     public void unfilter() {
         isFiltered.setValue(false);
         state.set(IS_FILTERED, false);
+    }
+
+    public static class MediaGallerySharedStateViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+
+        private static SavedStateViewModelFactory mFactory = null;
+
+        public static SavedStateViewModelFactory getFactory(@NonNull Application application, @NonNull SavedStateRegistryOwner owner) {
+            if (mFactory == null) mFactory = new SavedStateViewModelFactory(application, owner);
+            return mFactory;
+        }
     }
 }

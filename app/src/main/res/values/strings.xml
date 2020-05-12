@@ -2,7 +2,7 @@
     <string name="app_name">Love Rekindle</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_explore">Explore</string>
-    <string name="title_chat">Chat</string>
+    <string name="title_chat">Counselling</string>
     <string name="title_profile">Profile</string>
 
     <string name="action_settings">Settings</string>
@@ -46,12 +46,17 @@
     <string name="category_title">Category Title</string>
     <string name="desc_book_cover_image">Book Cover Image</string>
     <string name="title_action_unfilter">Remove Filter</string>
+    <string name="about_app">About App</string>
+    <string name="request_a_counsellor">Request A Counsellor</string>
+    <string name="message_a_counsellor">Message A Counsellor...</string>
+    <string name="names">Names</string>
     <string name="title_media_preview">Media Preview</string>
     <string name="title_media_gallery">Media Gallery</string>
     <string name="action_title_share">Share</string>
     <string name="single_review_comment">Very empowering book recommended for everyone who is struggling which finances finished the book and past to my wife to you as well.</string>
     <string name="listen_now">Listen Now</string>
     <string name="read_now">Read Now</string>
+
 
     <array name="categories">
         <item>Godly Parenting</item>

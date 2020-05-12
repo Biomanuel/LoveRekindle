@@ -66,7 +66,7 @@ public class AudiosFragment extends Fragment implements Listeners.MediaItemClick
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mMediaGalleryViewModel = new ViewModelProvider(getParentFragment()).get(MediaGalleryViewModel.class);
+        mMediaGalleryViewModel = new ViewModelProvider(requireActivity()).get(MediaGalleryViewModel.class);
         mMediaGalleryViewModel.getAudios().observe(getParentFragment().getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
             @Override
             public void onChanged(List<MediaItem> mediaItems) {

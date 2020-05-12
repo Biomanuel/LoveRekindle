@@ -3,16 +3,14 @@
 <shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-   <corners
-       android:radius="50dp">
+    <corners android:radius="50dp">
 
-   </corners>
+    </corners>
     <gradient
-        android:startColor="#FF05AAAD"
+        android:endColor="@color/colorPrimaryDark"
 
 
-
-        android:endColor="#FF0AEEF1"
+        android:startColor="@color/colorPrimary"
 
 
         android:angle="360"

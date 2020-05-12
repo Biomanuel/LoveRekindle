@@ -34,11 +34,10 @@ public class MediaGalleryFragment extends Fragment {
 
     private MediaGalleryViewModel mMediaGalleryViewModel;
     private FragmentMediaGalleryBinding mBinding;
-    private SavedStateViewModelFactory mFactory;
+    private MediaGallerySavedStateViewModelFactory mFactory;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mMediaGalleryViewModel = new ViewModelProvider(this, mFactory).get(MediaGalleryViewModel.class);
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_media_gallery, container, false);
         ViewPager2 viewPager = mBinding.exploreViewpager;
         TabLayout tabLayout = mBinding.exploreTabs;
@@ -61,6 +60,12 @@ public class MediaGalleryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity) requireActivity()).setSupportActionBar(mBinding.exploreToolbar);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+//        mFactory = MediaGalleryViewModel.MediaGallerySharedStateViewModelFactory.getFactory(requireActivity().getApplication(), requireActivity());
     }
 
     @Override
@@ -98,6 +103,7 @@ public class MediaGalleryFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mFactory = new SavedStateViewModelFactory(requireActivity().getApplication(), requireActivity());
+        mFactory = new MediaGallerySavedStateViewModelFactory(requireActivity().getApplication(), requireActivity(), null);
+        mMediaGalleryViewModel = new ViewModelProvider(requireActivity(), mFactory).get(MediaGalleryViewModel.class);
     }
 }
