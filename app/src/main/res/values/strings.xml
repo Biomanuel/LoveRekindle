@@ -69,4 +69,10 @@
     -->
     <string name="applicationIDBase">com.reconciliationhouse.android.loverekindle.%s</string>
     <string name="empty_list_text">There\'s nothing to show</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="sign_up_with">Sign up with</string>
+    <string name="re_enter_password">Re Enter Password</string>
+    <string name="sign_up">Sign up</string>
+    <string name="apply_as_a_counsellor">Apply as a Counsellor</string>
+    <string name="no_counsellor">No Counsellor is assigned yet</string>
 </resources>

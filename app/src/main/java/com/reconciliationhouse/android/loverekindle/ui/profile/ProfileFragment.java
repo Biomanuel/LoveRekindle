@@ -29,6 +29,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.reconciliationhouse.android.loverekindle.MainActivity;
 import com.reconciliationhouse.android.loverekindle.R;
 
@@ -36,6 +38,9 @@ import com.reconciliationhouse.android.loverekindle.SharedViewModel;
 import com.reconciliationhouse.android.loverekindle.adapters.LibraryPagerAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentAllMediaBinding;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentProfileBinding;
+import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 
 public class ProfileFragment extends Fragment {
@@ -47,16 +52,27 @@ public class ProfileFragment extends Fragment {
     private Menu mMenu;
     private CoordinatorLayout bottomSheetLayout1;
     private FragmentProfileBinding mBinding;
+    private FirebaseAuth mAuth;
 
     public ProfileFragment() {
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser.getEmail()==null) {
+            NavController navController = Navigation.findNavController(getView());
+            navController.navigate(R.id.action_navigation_profile_to_loginFragment);
+        }
     }
 
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         mBinding = FragmentProfileBinding.inflate(inflater, container, false);
-
+ mAuth=FirebaseAuth.getInstance();
         mBinding.libraryPager.setAdapter(new LibraryPagerAdapter(this));
         new TabLayoutMediator(mBinding.libraryTabs, mBinding.libraryPager, new TabLayoutMediator.OnConfigureTabCallback() {
             @Override
@@ -88,6 +104,13 @@ public class ProfileFragment extends Fragment {
                 navController.navigate(R.id.action_navigation_profile_to_rechargeFragment);
             }
         });
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (Objects.requireNonNull(currentUser).getPhotoUrl()!=null) {
+            mBinding.username.setText(currentUser.getDisplayName());
+            mBinding.email.setText(currentUser.getEmail());
+            Picasso.get().load(currentUser.getPhotoUrl()).into(mBinding.userProfileImage);
+
+        }
 
     }
 

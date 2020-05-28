@@ -46,13 +46,16 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.2.2'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
-    //circular image view
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
-
     //Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // Circular Image View
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+
+
+    // imageCropper;
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
     //LifeCycle Extensions and ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -68,6 +71,7 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     //adding Firebase Repo
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
     implementation platform('com.google.firebase:firebase-bom:25.1.1')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'

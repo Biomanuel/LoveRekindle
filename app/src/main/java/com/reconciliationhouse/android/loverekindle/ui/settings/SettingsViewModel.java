@@ -1,4 +1,4 @@
-package com.reconciliationhouse.android.loverekindle;
+package com.reconciliationhouse.android.loverekindle.ui.settings;
 
 import androidx.lifecycle.ViewModel;
 

@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".SettingsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.settings.SettingsFragment">
 
-    <data>
-
-        <variable
-            name="user"
-            type="com.reconciliationhouse.android.loverekindle.models.UserModel" />
-    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        >
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:id="@+id/app_bar_layout"
+            android:focusableInTouchMode="true"
             android:fitsSystemWindows="true"
-            android:focusableInTouchMode="true">
-
+            android:layout_height="150dp">
             <androidx.constraintlayout.widget.ConstraintLayout
+                app:layout_scrollFlags="scroll|enterAlways"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|enterAlways">
+                android:layout_height="match_parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_profile_image"
@@ -37,7 +30,7 @@
 
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:src="@drawable/frank3"
+                    android:src="@drawable/profile"
                     app:civ_circle_background_color="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -54,6 +47,7 @@
                     app:backgroundTint="@color/white"
                     app:elevation="4dp"
                     app:fabSize="mini"
+
                     app:layout_anchorGravity="end|top"
 
 
@@ -66,20 +60,17 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
-
         <FrameLayout
             android:id="@+id/frame_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_anchor="@id/app_bar_layout"
-
             app:layout_anchorGravity="bottom"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -100,17 +91,17 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/text_input_title"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:focusableInTouchMode="true"
-                        android:hint="@string/names"
+                        android:hint="Names"
+                        android:layout_marginStart="8dp"
+                        android:layout_margin="8dp"
                         android:textColorHint="@color/black"
-                        app:hintEnabled="true"
                         app:hintTextColor="@color/black"
+                        app:hintEnabled="true"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:focusableInTouchMode="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/materialTextView2">
@@ -122,10 +113,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:editable="false"
-                            android:focusableInTouchMode="true"
+                           android:focusableInTouchMode="false"
 
                             android:inputType="text"
-                            android:text="Ensonberg Muogho"
+
                             android:textColor="@android:color/darker_gray"
 
                             />
@@ -137,11 +128,11 @@
                         android:layout_width="match_parent"
 
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="4dp"
                         android:focusableInTouchMode="true"
                         android:hint="Email"
+                        android:layout_marginStart="8dp"
+                        android:layout_margin="8dp"
+                        android:layout_marginTop="4dp"
                         android:textColorHint="@color/black"
                         app:hintEnabled="true"
                         app:hintTextColor="@color/black"
@@ -156,47 +147,54 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:editable="false"
-                            android:focusableInTouchMode="true"
+                            android:focusableInTouchMode="false"
 
                             android:inputType="textEmailAddress"
-                            android:text="edirin@gmail.com"
+
                             android:textColor="@android:color/darker_gray"
 
                             />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/text_input_phone"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_margin="8dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:focusableInTouchMode="true"
-                        android:hint="Phone Number"
-                        android:textColorHint="@color/black"
-                        app:hintEnabled="true"
-                        app:hintTextColor="@color/black"
+                       android:orientation="horizontal"
+                        android:gravity="center"
+
+
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/text_input_email">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/phone_number"
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/counsellor_status"
 
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.7"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:editable="false"
                             android:focusableInTouchMode="true"
 
                             android:inputType="phone"
-                            android:text="09027446675"
-                            android:textColor="@android:color/darker_gray"
+                            android:text="Not a Counsellor"
+                            android:textColor="@android:color/background_dark"
 
                             />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="0dp"
+                            android:id="@+id/apply_as_counsellor"
+                            android:text="@string/apply_as_a_counsellor"
+                            android:textAllCaps="false"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
                     <com.google.android.material.textview.MaterialTextView
@@ -240,7 +238,6 @@
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
-
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/currency_text"
                         android:layout_width="wrap_content"
@@ -342,27 +339,49 @@
             </androidx.core.widget.NestedScrollView>
 
 
+
         </FrameLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/edit_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_marginBottom="16dp"
-
-            android:src="@drawable/ic_edit"
-            app:backgroundTint="@color/colorPrimary"
-            app:elevation="4dp"
             app:layout_anchor="@id/frame_layout"
             app:layout_anchorGravity="end|bottom"
-            app:layout_constraintBottom_toBottomOf="@+id/circleImageView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.737"
-            app:layout_constraintStart_toStartOf="@+id/circleImageView2"
+
             app:layout_scrollFlags="scroll|enterAlways"
-            app:tint="@color/white" />
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/edit_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+
+                android:src="@drawable/ic_edit"
+
+                app:backgroundTint="@color/colorPrimary"
+                app:elevation="4dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/save_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+
+                android:src="@drawable/ic_save_black_24dp"
+                app:backgroundTint="@color/colorPrimary"
+                      android:visibility="gone"
+                app:elevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/edit_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

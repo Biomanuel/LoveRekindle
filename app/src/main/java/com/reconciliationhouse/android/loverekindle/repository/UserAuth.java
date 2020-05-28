@@ -59,10 +59,10 @@ public class UserAuth {
                         //Toast.makeText(context, "Your registration is successful", Toast.LENGTH_LONG).show();
                         mUserModel=new UserModel();
                         uploadImagesToFirebase(imageUri);
-                        mUserModel.setProfileImageUrl("");
-                        mUserModel.setFirstName(firstName);
-                        mUserModel.setLastName(lastName);
-                        mUserModel.setEmail(email);
+//                        mUserModel.setProfileImageUrl("");
+//                        mUserModel.setFirstName(firstName);
+//                        mUserModel.setLastName(lastName);
+                        //mUserModel.setEmail(email);
                         mUserModel.setRole("regular");
                         mUserModel.setBalance("0");
                         mUserModel.setUserId(userRef.getId());

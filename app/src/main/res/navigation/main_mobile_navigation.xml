@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_explore">
+    app:startDestination="@+id/loginFragment">
 
     <fragment
         android:id="@+id/navigation_explore"
@@ -13,27 +13,32 @@
 
     <fragment
         android:id="@+id/navigation_chat"
-        android:name="com.reconciliationhouse.android.loverekindle.ui.chat.ChatFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.chat.ChatCategoriesFragment"
         android:label="@string/title_chat"
-        tools:layout="@layout/fragment_chat">
+        tools:layout="@layout/chat_categories_fragment" >
         <action
             android:id="@+id/action_navigation_chat_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_navigation_chat_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.reconciliationhouse.android.loverekindle.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile">
+        tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_navigation_profile_to_rechargeFragment"
             app:destination="@id/rechargeFragment" />
         <action
             android:id="@+id/action_navigation_profile_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/rechargeFragment"
         android:name="com.reconciliationhouse.android.loverekindle.ui.recharge.RechargeFragment"
@@ -43,11 +48,68 @@
         android:id="@+id/chatFragment"
         android:name="com.reconciliationhouse.android.loverekindle.ui.chat.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/chat_fragment" >
+        <argument
+            android:name="counsellorData"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.reconciliationhouse.android.loverekindle.SettingsFragment"
-        android:label="settings_fragment"
-        tools:layout="@layout/settings_fragment" />
-
+        android:name="com.reconciliationhouse.android.loverekindle.ui.settings.SettingsFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/settings_fragment" >
+        <action
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_settingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.auth.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" >
+        <action
+            app:popUpToInclusive="true"
+            android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
+            app:destination="@id/forgetPasswordFragment" />
+        <action
+            app:popUpToInclusive="true"
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_navigation_explore"
+            app:destination="@id/navigation_explore" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.auth.SignUpFragment"
+        android:label="sign_up_fragment"
+        tools:layout="@layout/sign_up_fragment" >
+        <action
+            app:popUpToInclusive="true"
+            android:id="@+id/action_signUpFragment_to_navigation_explore"
+            app:destination="@id/navigation_explore" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgetPasswordFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.auth.ForgetPasswordFragment"
+        android:label="forget_password_fragment"
+        tools:layout="@layout/forget_password_fragment" >
+        <action
+            app:popUpToInclusive="true"
+          app:popUpTo="@id/loginFragment"
+            android:id="@+id/action_forgetPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatHomeFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.chat.ChatHomeFragment"
+        android:label="chat_home_fragment"
+        tools:layout="@layout/chat_home_fragment" >
+        <action
+            android:id="@+id/action_chatHomeFragment_to_navigation_chat"
+            app:destination="@id/navigation_chat" />
+    </fragment>
 </navigation>
