@@ -118,7 +118,7 @@
                     android:drawablePadding="8dp"
                     android:drawableTint="@color/colorPrimary"
                     android:text="email"
-                    app:drawableStartCompat="@drawable/ic_email_black_24dp"
+                    app:drawableStartCompat="@drawable/ic_email_black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/username" />
@@ -308,7 +308,7 @@
         app:layout_anchor="@id/frame_layout"
         app:layout_anchorGravity="end"
         android:layout_marginEnd="40dp"
-        android:src="@drawable/profile"
+        android:src="@drawable/profile_picture_placeholder"
          />
 
 
