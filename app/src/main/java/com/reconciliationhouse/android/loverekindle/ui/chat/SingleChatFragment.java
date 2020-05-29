@@ -29,11 +29,13 @@ import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.adapters.SingleChatAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.SigngleChatFragmentBinding;
 import com.reconciliationhouse.android.loverekindle.models.ChatModel;
+import com.reconciliationhouse.android.loverekindle.models.UserDetails;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 
 import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SingleChatFragment extends Fragment {
 
@@ -63,27 +65,56 @@ public class SingleChatFragment extends Fragment {
         FirebaseFirestore db=FirebaseFirestore.getInstance();
         assert firebaseUser != null;
         mList=new ArrayList<>();
-        CollectionReference  reference=db.collection("User").document("regular").collection("users").document(firebaseUser.getDisplayName()).collection("single");
-          reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-              @Override
-              public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                  if (task.isSuccessful()){
-                      for (QueryDocumentSnapshot document : task.getResult()) {
+//        if(UserDetails.getCategory().equals("counsellor")){
+            CollectionReference collectionReference = db.collection("User").document("counsellor").collection("spiritual").document(Objects.requireNonNull(firebaseUser.getDisplayName())).collection("single");
+            collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){
+                        for (QueryDocumentSnapshot document : task.getResult()) {
 
-                          ChatModel model = document.toObject(ChatModel.class);
-                          mList.add(model);
+                            ChatModel model = document.toObject(ChatModel.class);
+                            mList.add(model);
 
 
-                      }
-                      Toast.makeText(getContext(),String.valueOf(mList.size()),Toast.LENGTH_SHORT).show();
-                      SingleChatAdapter adapter=new SingleChatAdapter();
-                      adapter.setCounsellors(mList);
-                      binding.allSingleChat.setLayoutManager(new LinearLayoutManager(getContext()));
-                      binding.allSingleChat.setAdapter(adapter);
-                  }
+                        }
 
-              }
-          });
+                        SingleChatAdapter adapter=new SingleChatAdapter();
+                        adapter.setCounsellors(mList);
+                        binding.allSingleChat.setLayoutManager(new LinearLayoutManager(getContext()));
+                        binding.allSingleChat.setAdapter(adapter);
+                    }
+
+                }
+            });
+
+       // }
+
+
+//            CollectionReference  reference=db.collection("User").document("regular").collection("users").document(firebaseUser.getDisplayName()).collection("single");
+//            reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()){
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//                            ChatModel model = document.toObject(ChatModel.class);
+//                            mList.add(model);
+//
+//
+//                        }
+//
+//                        SingleChatAdapter adapter=new SingleChatAdapter();
+//                        adapter.setCounsellors(mList);
+//                        binding.allSingleChat.setLayoutManager(new LinearLayoutManager(getContext()));
+//                        binding.allSingleChat.setAdapter(adapter);
+//                    }
+//
+//                }
+//            });
+
+
+
 
 
         binding.addChat.setOnClickListener(new View.OnClickListener() {

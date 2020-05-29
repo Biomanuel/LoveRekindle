@@ -6,15 +6,21 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
+import com.google.gson.Gson;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.ChatTypeItemBinding;
 import com.reconciliationhouse.android.loverekindle.databinding.CousellorRequestItemBinding;
 import com.reconciliationhouse.android.loverekindle.models.ChatModel;
+import com.reconciliationhouse.android.loverekindle.models.CounsellorModel;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 import com.reconciliationhouse.android.loverekindle.models.UserSender;
+import com.reconciliationhouse.android.loverekindle.ui.chat.ChatCategoriesFragmentDirections;
+import com.reconciliationhouse.android.loverekindle.ui.chat.ChatHomeFragmentDirections;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -60,6 +66,14 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.It
                 @Override
                 public void onClick(View v) {
 
+                    NavController controller= Navigation.findNavController(v);
+
+                    Gson gson=new Gson();
+                    UserModel model=new UserModel(item.getId(),item.getName(),item.getImageUrl());
+                    String jsonString=gson.toJson(model);
+                    ChatHomeFragmentDirections.ActionChatHomeFragmentToChatFragment chat=ChatHomeFragmentDirections.actionChatHomeFragmentToChatFragment().setCounsellorData(jsonString);
+
+                    controller.navigate(chat);
 
 
 
