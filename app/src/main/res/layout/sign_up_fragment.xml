@@ -28,7 +28,7 @@
                 android:layout_margin="10dp"
 
 
-                android:src="@drawable/profile"
+                android:src="@drawable/profile_picture_placeholder"
                 app:civ_circle_background_color="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_person_black_24dp"
+                    android:drawableStart="@drawable/ic_person_black"
                     android:drawablePadding="16dp"
                     android:hint="First And Last Name"
                     android:inputType="text"
@@ -106,7 +106,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_email_black_24dp"
+                    android:drawableStart="@drawable/ic_email_black"
                     android:drawablePadding="16dp"
                     android:hint="Email"
                     android:inputType="text"
@@ -135,7 +135,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_lock_outline_black_24dp"
+                    android:drawableStart="@drawable/ic_lock_outline_black"
                     android:drawablePadding="16dp"
                     android:hint="@string/hint_password"
                     android:inputType="textPassword"
@@ -164,7 +164,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_lock_outline_black_24dp"
+                    android:drawableStart="@drawable/ic_lock_outline_black"
                     android:drawablePadding="16dp"
                     android:hint="@string/re_enter_password"
                     android:inputType="textPassword"

@@ -50,7 +50,7 @@
             android:inputType="textMultiLine"
             android:lineSpacingExtra="4dp"
             android:lineSpacingMultiplier="1.2"
-            android:text="I am Excellent, Good , Handsome, Amazing And Great, This project is a successs"
+            android:text="I am Excellent, Good , Handsome, Amazing And Great, This project is a success"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/profile"
+        android:src="@drawable/profile_picture_placeholder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
