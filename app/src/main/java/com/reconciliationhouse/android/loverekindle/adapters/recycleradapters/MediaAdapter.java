@@ -1,4 +1,4 @@
-package com.reconciliationhouse.android.loverekindle.adapters;
+package com.reconciliationhouse.android.loverekindle.adapters.recycleradapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +32,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
     public MediaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        return new MediaViewHolder((ItemMediaCardLayoutBinding) DataBindingUtil.inflate(inflater,
-                R.layout.item_media_card_layout, parent, false));
+        return new MediaViewHolder(ItemMediaCardLayoutBinding.inflate(inflater,
+                parent, false));
     }
 
     @Override

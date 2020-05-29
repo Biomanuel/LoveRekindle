@@ -1,4 +1,4 @@
-package com.reconciliationhouse.android.loverekindle.adapters;
+package com.reconciliationhouse.android.loverekindle.adapters.recycleradapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.ItemMediaCardLayoutBinding;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
-import com.reconciliationhouse.android.loverekindle.ui.download.DownloadFragment;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners;
 
 import java.util.List;

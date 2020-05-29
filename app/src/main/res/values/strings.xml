@@ -56,6 +56,7 @@
     <string name="single_review_comment">Very empowering book recommended for everyone who is struggling which finances finished the book and past to my wife to you as well.</string>
     <string name="listen_now">Listen Now</string>
     <string name="read_now">Read Now</string>
+    <string name="votes_text">%1$d supports</string>
 
 
     <array name="categories">
@@ -75,4 +76,9 @@
     <string name="sign_up">Sign up</string>
     <string name="apply_as_a_counsellor">Apply as a Counsellor</string>
     <string name="no_counsellor">No Counsellor is assigned yet</string>
+    <string name="review_thumbs_up_desc">Support Review</string>
+    <string name="write_you_review">Write you Review</string>
+    <string name="txt_reviews_title">Reviews (%d)</string>
+    <string name="txt_related_media_title">Related Media (%d)</string>
+    <string name="txt_edit_review_title">Edit Review</string>
 </resources>

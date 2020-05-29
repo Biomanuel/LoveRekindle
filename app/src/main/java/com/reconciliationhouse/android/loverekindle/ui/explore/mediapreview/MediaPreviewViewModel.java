@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
+import com.reconciliationhouse.android.loverekindle.models.MediaReview;
 import com.reconciliationhouse.android.loverekindle.repository.MediaRepo;
+import com.reconciliationhouse.android.loverekindle.repository.MediaReviewRepo;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,10 +18,16 @@ public class MediaPreviewViewModel extends ViewModel {
     public String mediaId;
     private MutableLiveData<MediaItem> mediaItem;
     private MutableLiveData<List<MediaItem>> relatedMedia;
+    private MutableLiveData<List<MediaReview>> reviews;
+    private MutableLiveData<MediaReview> userReview;
+    private LiveData<MediaReview> latestReview;
 
     private MediaPreviewViewModel(String mediaId, String category) {
         mediaItem = MediaRepo.getInstance().getMediaLiveData(mediaId);
         relatedMedia = MediaRepo.getInstance().getLiveListOfMediaInCategory(category);
+        reviews = MediaReviewRepo.getInstance().getMediaReviews(mediaId);
+        userReview = MediaReviewRepo.getInstance().getUserReview(mediaId);
+        latestReview = MediaReviewRepo.getInstance().getLatestReview(mediaId);
         this.mediaId = mediaId;
     }
 
@@ -27,12 +35,20 @@ public class MediaPreviewViewModel extends ViewModel {
         return mediaItem;
     }
 
-    public void setMediaItem(MutableLiveData<MediaItem> mediaItem) {
-        this.mediaItem = mediaItem;
-    }
-
     public LiveData<List<MediaItem>> getRelatedMedia() {
         return relatedMedia;
+    }
+
+    public MutableLiveData<List<MediaReview>> getReviews() {
+        return reviews;
+    }
+
+    public MutableLiveData<MediaReview> getUserReview() {
+        return userReview;
+    }
+
+    public LiveData<MediaReview> getLatestReview() {
+        return latestReview;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

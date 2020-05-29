@@ -1,4 +1,4 @@
-package com.reconciliationhouse.android.loverekindle.adapters;
+package com.reconciliationhouse.android.loverekindle.adapters.bindingadapters;
 
 import android.content.Context;
 import android.widget.Button;
@@ -6,9 +6,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
+import androidx.lifecycle.LiveData;
 
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
+import com.reconciliationhouse.android.loverekindle.models.MediaReview;
 import com.squareup.picasso.Picasso;
 
 public abstract class MediaItemBindingAdapters {
@@ -36,12 +38,15 @@ public abstract class MediaItemBindingAdapters {
         }
     }
 
-    @BindingAdapter("android:userReview")
-    public static void setUserReview(TextView view, String comment) {
+    @BindingAdapter("android:userReviewLink")
+    public static void setUserReviewLink(TextView view, MediaReview review) {
         Context vContext = view.getContext();
-        // TODO: Write procedures here to get user review and set it in the textView
-        view.setText(R.string.single_review_comment);
-        view.setTextColor(vContext.getResources().getColor(R.color.deeper_grey));
+        if (review == null || review.getReview().isEmpty()) {
+            view.setText("Write your review for this book");
+        } else {
+            // TODO: Write procedures here to get user review and set it in the textView
+            view.setText("Edit your review");
+        }
     }
 
     @BindingAdapter("android:bookButton")

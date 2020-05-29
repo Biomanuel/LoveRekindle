@@ -33,6 +33,9 @@ public class ExploreFragment extends Fragment {
 
     private FragmentExploreBinding mBinding;
 
+    public ExploreFragment() {
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

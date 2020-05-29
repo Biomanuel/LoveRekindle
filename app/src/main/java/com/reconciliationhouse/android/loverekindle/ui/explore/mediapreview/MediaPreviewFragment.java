@@ -1,6 +1,6 @@
 package com.reconciliationhouse.android.loverekindle.ui.explore.mediapreview;
 
-import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,25 +19,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.reconciliationhouse.android.loverekindle.MainActivity;
 import com.reconciliationhouse.android.loverekindle.R;
-import com.reconciliationhouse.android.loverekindle.adapters.MediaAdapter;
+import com.reconciliationhouse.android.loverekindle.adapters.recycleradapters.MediaAdapter;
+import com.reconciliationhouse.android.loverekindle.adapters.recycleradapters.TagsAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentMediaPreviewBinding;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
-import com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery.MediaGalleryFragmentDirections;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class MediaPreviewFragment extends Fragment implements Listeners.MediaItemClickListener {
+public class MediaPreviewFragment extends Fragment implements Listeners.MediaItemClickListener,
+        Listeners.MediaTagClickListener, DialogMediaPreview.CallbackResult, View.OnClickListener {
 
     private MediaPreviewViewModel mViewModel;
     private FragmentMediaPreviewBinding mBinding;
     private MediaAdapter mAdapter;
+    private TagsAdapter mTagsAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -75,13 +76,28 @@ public class MediaPreviewFragment extends Fragment implements Listeners.MediaIte
             mViewModel = new ViewModelProvider(this, viewModelFactory).get(MediaPreviewViewModel.class);
             mBinding.setViewModel(mViewModel);
             mBinding.setLifecycleOwner(this);
+            mBinding.setGeneralClickListener(this);
         }
 
         mViewModel.getRelatedMedia().observe(getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
             @Override
             public void onChanged(List<MediaItem> mediaItemList) {
                 mAdapter.setMediaItems(mediaItemList);
-                mBinding.setThereIsMoreRelatedMedia(mediaItemList.size() > 3);
+                mBinding.moreRelatedMediaFlag.setOnClickListener(MediaPreviewFragment.this);
+            }
+        });
+
+        mBinding.moreReviewFlag.setOnClickListener(this);
+
+        mTagsAdapter = new TagsAdapter(MediaPreviewFragment.this);
+        mBinding.tagsRv.setAdapter(mTagsAdapter);
+        mBinding.tagsRv.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+
+        mViewModel.getMediaItem().observe(getViewLifecycleOwner(), new Observer<MediaItem>() {
+            @Override
+            public void onChanged(MediaItem mediaItem) {
+                if (mediaItem.getTags() != null && mediaItem.getTags().size() > 0)
+                    mTagsAdapter.setTags(mediaItem.getTags());
             }
         });
 
@@ -97,6 +113,7 @@ public class MediaPreviewFragment extends Fragment implements Listeners.MediaIte
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share:
+                shareAction();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -106,5 +123,48 @@ public class MediaPreviewFragment extends Fragment implements Listeners.MediaIte
     public void onMediaItemClick(String mediaId, String category) {
         NavHostFragment.findNavController(this)
                 .navigate(MediaPreviewFragmentDirections.actionNavigationMediaPreviewSelf(mediaId, category));
+    }
+
+    private void showDialogFullscreen(DialogMediaPreview.Assignment purpose) {
+        DialogMediaPreview newFragment = new DialogMediaPreview(this, purpose);
+
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.setCustomAnimations(R.anim.slide_in_right, android.R.anim.slide_out_right);
+        transaction.add(mBinding.mediaPreviewRoot.getId(), newFragment).addToBackStack(null).commit();
+    }
+
+    private void shareAction() {
+        // TODO: Write procedures to share the current mediaItem
+    }
+
+    @Override
+    public void onTagClick(String tag) {
+
+    }
+
+    @Override
+    public void onDialogResults(int requestCode, int resultCode) {
+        if (resultCode == DialogMediaPreview.RESULT_CODE_SHARE) {
+            shareAction();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.more_related_media_flag:
+                showDialogFullscreen(DialogMediaPreview.Assignment.RELATED_MEDIA);
+                break;
+            case R.id.more_review_flag:
+                showDialogFullscreen(DialogMediaPreview.Assignment.MORE_REVIEWS);
+                break;
+            case R.id.read_more_flag:
+                showDialogFullscreen(DialogMediaPreview.Assignment.MORE_ABOUT);
+                break;
+            case R.id.write_your_review_txt:
+                showDialogFullscreen(DialogMediaPreview.Assignment.EDIT_REVIEW);
+                break;
+        }
     }
 }

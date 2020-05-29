@@ -11,20 +11,18 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.reconciliationhouse.android.loverekindle.R;
-import com.reconciliationhouse.android.loverekindle.adapters.MediaAdapter;
-import com.reconciliationhouse.android.loverekindle.databinding.CatergoryRowLayoutBinding;
+import com.reconciliationhouse.android.loverekindle.adapters.recycleradapters.MediaAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentAllMediaBinding;
+import com.reconciliationhouse.android.loverekindle.databinding.MediaCatergoryRowLayoutBinding;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
-import com.reconciliationhouse.android.loverekindle.ui.explore.ExploreFragment;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,16 +33,34 @@ import java.util.Objects;
 
 public class AllMediaFragment extends Fragment implements Listeners.MediaItemClickListener {
 
+    public static final String MEDIA_TYPE_KEY = "MEDIA_TYPE";
     private MediaGalleryViewModel mMediaGalleryViewModel;
     private MediaAdapter mAdapter;
     private FragmentAllMediaBinding mBinding;
     private HashMap<String, List<MediaItem>> categoryMap;
+    private MediaItem.MediaType mMediaType;
 
     private HashMap<String, MediaAdapter> categoryAdapters;
     private boolean sorted = false; // sorted is Flag to know if the category views have been inflated b4.
 
     public AllMediaFragment() {
         // Required empty public constructor
+    }
+
+    public static AllMediaFragment newTypedInstance(MediaItem.MediaType type) {
+        AllMediaFragment fragment = new AllMediaFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(MEDIA_TYPE_KEY, type);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mMediaType = (MediaItem.MediaType) getArguments().getSerializable(MEDIA_TYPE_KEY);
+        }
     }
 
     @Override
@@ -66,7 +82,13 @@ public class AllMediaFragment extends Fragment implements Listeners.MediaItemCli
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mMediaGalleryViewModel = new ViewModelProvider(requireActivity()).get(MediaGalleryViewModel.class);
-        mMediaGalleryViewModel.getAllMedia().observe(getParentFragment().getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
+        LiveData<List<MediaItem>> media;
+        if (mMediaType == MediaItem.MediaType.EBOOK) media = mMediaGalleryViewModel.getEbooks();
+        else if (mMediaType == MediaItem.MediaType.AUDIO)
+            media = mMediaGalleryViewModel.getAudios();
+        else media = mMediaGalleryViewModel.getAllMedia();
+
+        media.observe(getParentFragment().getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
             @Override
             public void onChanged(List<MediaItem> mediaItems) {
                 mAdapter.setMediaItems(mediaItems);
@@ -86,7 +108,7 @@ public class AllMediaFragment extends Fragment implements Listeners.MediaItemCli
             LayoutInflater inflater = LayoutInflater.from(this.requireActivity());
 
             for (String category : categoryMap.keySet()) {
-                CatergoryRowLayoutBinding rowBinding = CatergoryRowLayoutBinding.inflate(inflater, categoryList, false);
+                MediaCatergoryRowLayoutBinding rowBinding = MediaCatergoryRowLayoutBinding.inflate(inflater, categoryList, false);
                 MediaAdapter rowRvAdapter = new MediaAdapter(this);
 
                 rowBinding.setTitle(category);
@@ -119,5 +141,4 @@ public class AllMediaFragment extends Fragment implements Listeners.MediaItemCli
             NavHostFragment.findNavController(getParentFragment())
                     .navigate(MediaGalleryFragmentDirections.actionNavigationMediaGalleryToNavigationMediaPreview(mediaId, category));
     }
-
 }

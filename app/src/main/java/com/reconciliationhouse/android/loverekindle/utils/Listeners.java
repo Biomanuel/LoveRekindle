@@ -8,4 +8,8 @@ public abstract class Listeners {
         void onMediaItemClick(String mediaId, String category);
     }
 
+    public interface MediaTagClickListener {
+        void onTagClick(String tag);
+    }
+
 }
