@@ -59,12 +59,15 @@
             android:id="@+id/messages_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="visible"
+
+            app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialToolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
+            tools:listitem="@layout/chat_sender_layout" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/linearLayoutCompat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
