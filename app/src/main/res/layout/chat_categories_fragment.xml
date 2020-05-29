@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     tools:context=".ui.chat.ChatCategoriesFragment">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello">
+        >
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -259,5 +263,11 @@
         </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>
+
+    <include
+
+        layout="@layout/cousellor_request_bottom_sheet"
+        android:visibility="gone"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

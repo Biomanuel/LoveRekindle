@@ -36,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if (destination.getId() == R.id.settingsFragment) {
                     navView.setVisibility(View.GONE);
+
+                } else if (destination.getId() == R.id.loginFragment) {
+                    navView.setVisibility(View.GONE);
+                } else if (destination.getId() == R.id.signUpFragment) {
+                    navView.setVisibility(View.GONE);
+                } else if (destination.getId() == R.id.forgetPasswordFragment) {
+                    navView.setVisibility(View.GONE);
                 } else {
                     navView.setVisibility(View.VISIBLE);
                 }

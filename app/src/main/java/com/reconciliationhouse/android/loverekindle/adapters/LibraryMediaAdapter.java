@@ -68,7 +68,7 @@ public class LibraryMediaAdapter extends RecyclerView.Adapter<LibraryMediaAdapte
     }
 
     public class MediaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ItemMediaCardLayoutBinding mBinding;
+         ItemMediaCardLayoutBinding mBinding;
 
         MediaViewHolder(@NonNull ItemMediaCardLayoutBinding binding) {
             super(binding.getRoot());
