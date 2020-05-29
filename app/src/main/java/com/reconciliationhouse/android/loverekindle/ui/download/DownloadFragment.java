@@ -15,13 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.reconciliationhouse.android.loverekindle.R;
-import com.reconciliationhouse.android.loverekindle.adapters.LibraryMediaAdapter;
+import com.reconciliationhouse.android.loverekindle.adapters.recycleradapters.LibraryMediaAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.DownloadFragmentBinding;
-import com.reconciliationhouse.android.loverekindle.databinding.PurchaseFragmentBinding;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
 import com.reconciliationhouse.android.loverekindle.ui.purchase.PurchaseViewModel;
-import com.reconciliationhouse.android.loverekindle.ui.purchase.Purchased_Fragment;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners;
 
 import java.util.List;

@@ -4,13 +4,12 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
-import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 @IgnoreExtraProperties
@@ -29,7 +28,9 @@ public class MediaItem {
     private String description;
     private MediaType type;
     private String media_url;
-    private HashMap<String, String> reviews;
+    private List<String> tags;
+    private String publisher;
+    private String contributors;
 
     public enum MediaType {
         AUDIO, EBOOK, SERMON
@@ -45,7 +46,7 @@ public class MediaItem {
 
     public MediaItem(String id, String image_url, String title, String category, String author,
                      String released, float price, String length, int download_count, String description,
-                     MediaType type, String media_url, java.util.Date timestamp) {
+                     MediaType type, String media_url, java.util.Date timestamp, List<String> tags, String publisher, String contributors) {
         this.id = id;
         this.image_url = image_url;
         this.title = title;
@@ -59,11 +60,14 @@ public class MediaItem {
         this.type = type;
         this.media_url = media_url;
         this.timestamp=timestamp;
+        this.tags = tags;
+        this.publisher = publisher;
+        this.contributors = contributors;
     }
 
     public MediaItem(String image_url, String title, String category, String author, String released,
                      float price, String length, int download_count, String description, MediaType type,
-                     String media_url, java.util.Date timestamp) {
+                     String media_url, java.util.Date timestamp, List<String> tags, String publisher, String contributors) {
         this.id = String.valueOf((new Date()).getTime());
         this.image_url = image_url;
         this.title = title;
@@ -77,8 +81,10 @@ public class MediaItem {
         this.type = type;
         this.media_url = media_url;
         this.timestamp=timestamp;
+        this.tags = tags;
+        this.publisher = publisher;
+        this.contributors = contributors;
     }
-
 
     //    region Getters and Setters
     public String getId() {
@@ -185,18 +191,30 @@ public class MediaItem {
         this.timestamp = timestamp;
     }
 
-    public HashMap<String, String> getReviews() {
-        return reviews;
+    public List<String> getTags() {
+        return tags;
     }
 
-    public void setReviews(HashMap<String, String> reviews) {
-        this.reviews = reviews;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
-    @Exclude
-    public void newReview(String userName, String review) {
-        this.reviews.put(userName, review);
+    public String getPublisher() {
+        return publisher;
     }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(String contributors) {
+        this.contributors = contributors;
+    }
+
 
     //    endregion Getters and Setters
 
@@ -212,21 +230,24 @@ public class MediaItem {
         MediaItem mediaItem = (MediaItem) o;
         return Float.compare(mediaItem.getPrice(), getPrice()) == 0 &&
                 getDownload_count() == mediaItem.getDownload_count() &&
-                Objects.equals(getTimestamp(), mediaItem.getTimestamp()) &&
+                getTimestamp().equals(mediaItem.getTimestamp()) &&
                 getId().equals(mediaItem.getId()) &&
-                Objects.equals(getImage_url(), mediaItem.getImage_url()) &&
+                getImage_url().equals(mediaItem.getImage_url()) &&
                 getTitle().equals(mediaItem.getTitle()) &&
-                Objects.equals(getCategory(), mediaItem.getCategory()) &&
-                Objects.equals(getAuthor(), mediaItem.getAuthor()) &&
-                Objects.equals(getReleased(), mediaItem.getReleased()) &&
-                Objects.equals(getLength(), mediaItem.getLength()) &&
-                Objects.equals(getDescription(), mediaItem.getDescription()) &&
+                getCategory().equals(mediaItem.getCategory()) &&
+                getAuthor().equals(mediaItem.getAuthor()) &&
+                getReleased().equals(mediaItem.getReleased()) &&
+                getLength().equals(mediaItem.getLength()) &&
+                getDescription().equals(mediaItem.getDescription()) &&
                 getType() == mediaItem.getType() &&
-                Objects.equals(getMedia_url(), mediaItem.getMedia_url());
+                getMedia_url().equals(mediaItem.getMedia_url()) &&
+                Objects.equals(getTags(), mediaItem.getTags()) &&
+                Objects.equals(getPublisher(), mediaItem.getPublisher()) &&
+                Objects.equals(getContributors(), mediaItem.getContributors());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTimestamp(), getId(), getImage_url(), getTitle(), getCategory(), getAuthor(), getReleased(), getPrice(), getLength(), getDownload_count(), getDescription(), getType(), getMedia_url());
+        return Objects.hash(getTimestamp(), getId(), getImage_url(), getTitle(), getCategory(), getAuthor(), getReleased(), getPrice(), getLength(), getDownload_count(), getDescription(), getType(), getMedia_url(), getTags(), getPublisher(), getContributors());
     }
 }

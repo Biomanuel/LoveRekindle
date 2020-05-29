@@ -5,9 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 
+import com.reconciliationhouse.android.loverekindle.models.MediaItem;
 import com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery.AllMediaFragment;
-import com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery.AudiosFragment;
-import com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery.EbooksFragment;
 
 public class ExplorePagerAdapter extends FragmentStateAdapter {
     private final static String[] mFragmentTitleList = new String[]{
@@ -38,9 +37,9 @@ public class ExplorePagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new AllMediaFragment();
             case 1:
-                return new EbooksFragment();
+                return AllMediaFragment.newTypedInstance(MediaItem.MediaType.EBOOK);
             case 2:
-                return new AudiosFragment();
+                return AllMediaFragment.newTypedInstance(MediaItem.MediaType.AUDIO);
         }
         return null;
     }

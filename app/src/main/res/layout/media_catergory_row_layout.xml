@@ -22,7 +22,7 @@
         android:minHeight="250dp"
         android:orientation="vertical"
         android:paddingBottom="4dp"
-        tools:showIn="@layout/fragment_audios">
+        tools:showIn="@layout/fragment_all_media">
 
 
         <RelativeLayout

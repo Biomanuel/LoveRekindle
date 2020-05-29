@@ -12,7 +12,7 @@
         <activity
 
             android:name=".MainActivity"
-            android:label=" "
+            android:label="Love Rekindle"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -2,6 +2,7 @@ package com.reconciliationhouse.android.loverekindle;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,8 +42,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private long exitTime = 0;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        doExitApp();
+    }
+
+    public void doExitApp() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this, "Press again to exit app", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
     }
 
 }

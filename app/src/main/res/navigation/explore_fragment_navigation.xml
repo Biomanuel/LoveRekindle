@@ -13,7 +13,7 @@
         <action
             android:id="@+id/action_navigation_media_gallery_to_navigation_media_preview"
             app:destination="@id/navigation_media_preview"
-            app:enterAnim="@anim/fade_in"
+            app:enterAnim="@anim/slide_in_up"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
