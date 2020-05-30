@@ -118,7 +118,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 class ReceiverItemHolder extends RecyclerView.ViewHolder {
     CircleImageView receiverImage;
     TextView senderMessage,receiverMessage;
-    TextView date, time;
+    TextView date, time,uuu;
 
     public ReceiverItemHolder(@NonNull View itemView) {
         super(itemView);
