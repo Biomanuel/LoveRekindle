@@ -2,292 +2,324 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.profile.ProfileFragment"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:background="#F1ECEC"
+
         android:layout_width="match_parent"
+
+        android:layout_height="match_parent">
+
+
+
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:background="@color/colorPrimary"
+        android:focusableInTouchMode="true"
+        android:fitsSystemWindows="true"
+     >
+
+     <FrameLayout
+
+         app:layout_scrollFlags="scroll|enterAlways"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+         <androidx.appcompat.widget.Toolbar
+             android:id="@+id/toolbar"
+
+             android:layout_width="match_parent"
+             android:layout_height="?attr/actionBarSize"
+             android:layout_margin="8dp"
+             app:layout_scrollFlags="scroll|enterAlways"
+
+             android:theme="@style/AppTheme.AppBarOverlay"
+             app:popupTheme="@style/AppTheme.PopupOverlay"
+             app:menu="@menu/profile_menu"
+             >
+
+
+         </androidx.appcompat.widget.Toolbar>
+     </FrameLayout>
+
+
+
+
+
+
+
+
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:elevation="8dp"
+                android:layout_marginTop="-70dp"
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        app:layout_anchor="@id/appbar"
+
         android:layout_height="match_parent"
-        android:background="#F1ECEC">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+      >
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:background="@color/colorPrimary"
-            android:fitsSystemWindows="true"
-            android:focusableInTouchMode="true">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_margin="8dp"
-                    android:theme="@style/AppTheme.AppBarOverlay"
-
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:menu="@menu/profile_menu"
-                    app:popupTheme="@style/AppTheme.PopupOverlay">
-
-
-                </androidx.appcompat.widget.Toolbar>
-            </FrameLayout>
-
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <FrameLayout
-            android:id="@+id/frame_layout"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="-70dp"
-            android:elevation="8dp"
-            android:paddingBottom="30dp"
-            app:layout_anchor="@id/appbar"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView2"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.google.android.material.textview.MaterialTextView
+
+
+                    android:id="@+id/username"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Franklin Edwards "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/colorPrimary"
+                    android:text="email"
+                    app:drawableStartCompat="@drawable/ic_email_black_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/username" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                  android:layout_marginTop="8dp"
+                    android:background="#F8F4F4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/email" />
+
+                <LinearLayout
+                    android:id="@+id/lay1"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+
+                    android:layout_marginEnd="8dp"
+
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line1">
+
+                    <RelativeLayout
                         android:layout_gravity="center"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Franklin Edwards "
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/id_location"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:drawablePadding="8dp"
-                        android:drawableTint="@color/colorPrimary"
-                        android:text="Lagos Nigeria"
-                        app:drawableStartCompat="@drawable/ic_location_on_black_24dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/username" />
+                        android:layout_weight="1"
+                        android:gravity="center">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/line1"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
-                        android:background="#F8F4F4"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/id_location" />
-
-                    <LinearLayout
-                        android:id="@+id/lay1"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/line1">
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/size"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:text="10"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/size"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="10"
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/size"
-                                android:gravity="center"
-                                android:text="Downloads"
-                                android:textSize="15sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/message_check"
-                            android:layout_width="0dp"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:gravity="center">
+                            android:layout_below="@id/size"
+                            android:gravity="center"
+                            android:text="Downloads"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
 
-                            <TextView
-                                android:id="@+id/no_of_messages"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="100"
-
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/messages"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/no_of_messages"
-                                android:gravity="center"
-                                android:inputType="textMultiLine"
-                                android:text="Messages"
-                                android:textSize="15sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/recharge"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:gravity="center">
-
-                            <TextView
-
-                                android:id="@+id/amount"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="₦100"
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/amount"
-                                android:gravity="center"
-                                android:text="Credit"
-                                android:textSize="15sp" />
-                        </RelativeLayout>
-                    </LinearLayout>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/line2"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
-                        android:background="#F8F4F4"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lay1" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/my_library_text"
-                        android:layout_width="match_parent"
+                    <RelativeLayout
+                        android:layout_gravity="center"
+                        android:id="@+id/message_check"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="My Library"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/line2" />
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:gravity="center">
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/library_tabs"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@color/white"
+                        <TextView
+                            android:id="@+id/no_of_messages"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="100"
 
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/my_library_text"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/messages"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/no_of_messages"
+                            android:gravity="center"
+                            android:inputType="textMultiLine"
+                            android:text="Messages"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_gravity="center"
+                        android:id="@+id/recharge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:gravity="center">
+
+                        <TextView
+
+                            android:id="@+id/amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="₦100"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/amount"
+                            android:gravity="center"
+                            android:text="Credit"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <androidx.appcompat.widget.LinearLayoutCompat
+
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#F8F4F4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lay1" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/my_library_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="My Library"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/library_tabs"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/white"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/my_library_text"
 
 
-                        app:tabIndicatorColor="@color/colorPrimary"
 
-                        app:tabSelectedTextColor="@color/colorAccent" />
+                    app:tabIndicatorColor="@color/colorPrimary"
 
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/library_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:paddingBottom="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/library_tabs" />
+                    app:tabSelectedTextColor="@color/colorAccent" />
 
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/library_pager"
+                    android:layout_width="match_parent"
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/library_tabs" />
 
 
-            </androidx.cardview.widget.CardView>
-
-        </FrameLayout>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_profile_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginEnd="40dp"
-            android:elevation="16dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/frank3"
-            app:layout_anchor="@id/frame_layout"
-            app:layout_anchorGravity="end"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <include
-            layout="@layout/library_bottom_sheet"
-            android:visibility="gone" />
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:elevation="16dp"
+       app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:scaleType="centerCrop"
+        app:layout_anchor="@id/frame_layout"
+        app:layout_anchorGravity="end"
+        android:layout_marginEnd="40dp"
+        android:src="@drawable/profile"
+         />
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+
+<include layout="@layout/library_bottom_sheet"
+    android:visibility="gone"/>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
