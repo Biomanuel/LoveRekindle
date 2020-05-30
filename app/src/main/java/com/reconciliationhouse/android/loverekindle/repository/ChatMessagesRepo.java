@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.reconciliationhouse.android.loverekindle.models.Message;
@@ -32,11 +33,16 @@ public class ChatMessagesRepo {
         return chatMessagesRepo;
     }
 
-    public MutableLiveData<List<Message>> getAllSingleChatMessages(String name){
+    public MutableLiveData<List<Message>> getAllSingleChatMessages(String counsellorName, String username){
        final List<Message>messageList=new ArrayList<>();
         final MutableLiveData<List<Message>> listMutableLiveData = new MutableLiveData<>((List<Message>) new ArrayList<Message>());
-        messagesReference=db.collection("Chat").document("single") .collection("Chat with "+name);
-        messagesReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+
+
+       // messagesReference=db.collection("Chat").document("single") .collection(counsellorName+" and "+username);
+        messagesReference=db.collection("Chat").document("single") .collection(username+" and "+counsellorName);
+        Query query= messagesReference.orderBy("dateCreated", Query.Direction.ASCENDING);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -45,13 +51,22 @@ public class ChatMessagesRepo {
                         messageList.add(message);
                     }
                     listMutableLiveData.setValue(messageList);
-
                 }
-
             }
         });
+//        messagesReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()){
+//
+//
+//                }
+//
+//            }
+//        });
 
         return listMutableLiveData;
 
     }
+
 }

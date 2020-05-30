@@ -25,8 +25,8 @@ public class ChatViewModel extends AndroidViewModel {
         super(application);
         chatMessagesRepo=new ChatMessagesRepo();
     }
-    public LiveData<List<Message>> getAllSingleChat(String name) {
-        getSingleChat =chatMessagesRepo.getAllSingleChatMessages(name);
+    public LiveData<List<Message>> getAllSingleChat(String counsellorName,String username) {
+        getSingleChat =chatMessagesRepo.getAllSingleChatMessages(counsellorName,username);
         return getSingleChat;
     }
 

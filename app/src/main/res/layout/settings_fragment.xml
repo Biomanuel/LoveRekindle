@@ -30,7 +30,7 @@
 
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:src="@drawable/profile_picture_placeholder"
+                    android:src="@drawable/profile"
                     app:civ_circle_background_color="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

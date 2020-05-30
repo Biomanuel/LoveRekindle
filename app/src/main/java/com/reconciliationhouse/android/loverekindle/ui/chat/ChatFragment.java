@@ -65,23 +65,23 @@ public class ChatFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        firebaseUser = mAuth.getCurrentUser();
+        assert firebaseUser != null;
 
         mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
         if (getArguments() != null) {
 
 
             ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
-            Gson gson = new Gson();
-            try {
-                gson.fromJson(args.getCounsellorData(), UserModel.class);
-                //...
-            } catch (IllegalStateException | JsonSyntaxException exception) {
-                UserModel model = gson.fromJson(args.toString(), UserModel.class);
-                String category = model.getCategory();
-                name = model.getName();
-                String id = model.getUserId();
-                userModel = new UserModel(id, name, category);
-                binding.counsellorUsername.setText(model.getName());
+            Gson gson=new Gson();
+            UserModel model = gson.fromJson(args.getCounsellorData(), UserModel.class);
+            String category = model.getCategory();
+            name = model.getName();
+            String id = model.getUserId();
+            userModel = new UserModel(id, name, category);
+            binding.counsellorUsername.setText(model.getName());
+
 
 
 
@@ -90,7 +90,7 @@ public class ChatFragment extends Fragment {
 
               adapter = new ChatAdapter();
 
-            mViewModel.getAllSingleChat(name).observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
+            mViewModel.getAllSingleChat(name,firebaseUser.getDisplayName()).observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
                 @Override
                 public void onChanged(List<Message> messages) {
 
@@ -111,20 +111,33 @@ public class ChatFragment extends Fragment {
 
                     String text = Objects.requireNonNull(binding.messagesText.getText()).toString();
                     if (!(TextUtils.isEmpty(text))) {
-                        mAuth = FirebaseAuth.getInstance();
-                        firebaseUser = mAuth.getCurrentUser();
-                        assert firebaseUser != null;
+
                         Message message = new Message(text, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())));
                         db = FirebaseFirestore.getInstance();
 
-                        CollectionReference reference = db.collection("Chat").document("single").collection("Chat with " + name);
+                      //  CollectionReference reference = db.collection("Chat").document("single").collection(name+" and "+firebaseUser.getDisplayName());
+
+                        CollectionReference reference = db.collection("Chat").document("single").collection(firebaseUser.getDisplayName()+" and "+name);
 
                         reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentReference> task) {
                                 if (task.isSuccessful()) {
                                     binding.messagesText.setText("");
-                                    adapter.notifyDataSetChanged();
+                                    mViewModel.getAllSingleChat(name,firebaseUser.getDisplayName()).observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
+                                        @Override
+                                        public void onChanged(List<Message> messages) {
+
+
+                                            adapter.setMessages(messages);
+                                            Toast.makeText(getContext(),String.valueOf(messages.size()),Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    });
+
+
+                                    binding.messagesRecyclerView.setAdapter(adapter);
+
                                 }
                             }
                         });
@@ -136,4 +149,4 @@ public class ChatFragment extends Fragment {
             });
 
         }}
-}
+

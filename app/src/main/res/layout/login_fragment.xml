@@ -73,7 +73,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_email_black"
+                        android:drawableStart="@drawable/ic_email_black_24dp"
                         android:drawablePadding="16dp"
                         android:hint="Email"
                         android:inputType="textEmailAddress"
@@ -98,7 +98,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_lock_outline_black"
+                        android:drawableStart="@drawable/ic_lock_outline_black_24dp"
                         android:drawablePadding="16dp"
                         android:hint="@string/hint_password"
                         android:inputType="textPassword"

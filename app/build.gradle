@@ -49,6 +49,12 @@ dependencies {
     //Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // Circular Image View
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+
+
+    // imageCropper;
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
     // Circular Image View
     implementation 'de.hdodenhof:circleimageview:3.0.1'

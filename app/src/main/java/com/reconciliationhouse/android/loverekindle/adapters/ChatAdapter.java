@@ -18,6 +18,7 @@ import com.reconciliationhouse.android.loverekindle.models.Message;
 import com.reconciliationhouse.android.loverekindle.models.UserDetails;
 
 import com.reconciliationhouse.android.loverekindle.models.UserSender;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     String message = mList.get(position).getMessage();
                     ReceiverItemHolder receiverItemHolder = (ReceiverItemHolder) holder;
                     receiverItemHolder.receiverMessage.setText(message);
-                    receiverItemHolder.receiverImage.setImageURI(Uri.parse(senderItem.getProfileImageUrl()));
+                   if (senderItem.getProfileImageUrl()!=null){
+                       Picasso.get().load(senderItem.getProfileImageUrl()).into(receiverItemHolder.receiverImage);
+                   }
+                   else {
+                       receiverItemHolder.receiverImage.setImageResource(R.drawable.profile);
+                   }
                 }
                 break;
                 case 1:{
@@ -112,7 +118,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 class ReceiverItemHolder extends RecyclerView.ViewHolder {
     CircleImageView receiverImage;
     TextView senderMessage,receiverMessage;
-    TextView date, time;
+    TextView date, time,uuu;
 
     public ReceiverItemHolder(@NonNull View itemView) {
         super(itemView);
