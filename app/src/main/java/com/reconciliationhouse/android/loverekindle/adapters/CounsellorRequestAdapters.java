@@ -54,7 +54,7 @@ public class CounsellorRequestAdapters extends RecyclerView.Adapter<CounsellorRe
             holder.itemBinding.counsellorEmail.setText(item.getEmail());
             holder.itemBinding.counsellorUsername.setText(item.getName());
             if (item.getProfileImageUrl()==null){
-                holder.itemBinding.counsellorProfileImage.setImageResource(R.drawable.profile);
+                holder.itemBinding.counsellorProfileImage.setImageResource(R.drawable.profile_picture_placeholder);
             }
             Picasso.get().load(item.getProfileImageUrl()).into(holder.itemBinding.counsellorProfileImage);
 

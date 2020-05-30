@@ -4,7 +4,6 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class UserModel {
-    String category
     private String category;
     private String userId;
     private String name;
@@ -52,6 +51,14 @@ public class UserModel {
         this.role = role;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getName() {
         return name;
     }
@@ -66,22 +73,6 @@ public class UserModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getEmail() {

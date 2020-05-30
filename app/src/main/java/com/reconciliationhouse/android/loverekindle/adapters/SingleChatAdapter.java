@@ -58,7 +58,7 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.It
 
             holder.itemBinding.dateCreated.setText(String.valueOf(item.getDateCreated()));
             if (item.getImageUrl()==null){
-                holder.itemBinding.counsellorProfileImage.setImageResource(R.drawable.profile);
+                holder.itemBinding.counsellorProfileImage.setImageResource(R.drawable.profile_picture_placeholder);
             }
             Picasso.get().load(item.getImageUrl()).into(holder.itemBinding.counsellorProfileImage);
 
