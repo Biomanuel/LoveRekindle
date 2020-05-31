@@ -39,6 +39,7 @@ import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.LoginFragmentBinding;
 import com.reconciliationhouse.android.loverekindle.models.UserDetails;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
+import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
 
 import java.util.Objects;
 
@@ -79,13 +80,7 @@ public class LoginFragment extends Fragment {
                 .requestEmail()
                 .build();
         mGoogleSignInClient= GoogleSignIn.getClient(getContext(), gso);
-       binding.tvNeedNewAccount.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               NavController controller= Navigation.findNavController(view);
-               controller.navigate(R.id.action_loginFragment_to_signUpFragment);
-           }
-       });
+
         binding.tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,18 +138,23 @@ public class LoginFragment extends Fragment {
                                 Log.d(TAG, "signInWithEmail:success");
                                 final FirebaseUser user = mAuth.getCurrentUser();
                                 FirebaseFirestore db=FirebaseFirestore.getInstance();
-                                DocumentReference collectionReference = db.collection("User").document("counsellor").collection("spiritual").document(Objects.requireNonNull(user.getDisplayName()));
-                               // DocumentReference collectionReference = db.collection("User").document("regular").collection("users").document(user.getDisplayName());
+                               // DocumentReference collectionReference = db.collection("User").document("counsellor").collection("spiritual").document(Objects.requireNonNull(user.getDisplayName()));
+                               DocumentReference collectionReference = db.collection("User").document("regular").collection("users").document(user.getDisplayName());
                                 collectionReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                                         if (task.isSuccessful()){
                                             UserModel model=task.getResult().toObject(UserModel.class);
-                                            UserDetails.setName(user.getDisplayName());
-                                            UserDetails.setEmail(user.getEmail());
-                                            UserDetails.setImageUrl(String.valueOf(user.getPhotoUrl()));
-                                            UserDetails.setCategory("counsellor");
+
+
+                                            assert model != null;
+                                            UserPreferences.saveCategory(model.getCategory(),getContext());
+                                           UserPreferences.saveId(user.getUid(),getContext());
+                                            UserPreferences.saveUserName(user.getDisplayName(),getContext());
+                                            UserPreferences.saveEmail(user.getEmail(),getContext());
+                                            UserPreferences.saveRole(model.getRole(),getContext());
+                                           UserPreferences.saveBalance(model.getBalance(),getContext());
                                             NavController controller=Navigation.findNavController(getView());
                                             controller.navigate(R.id.action_loginFragment_to_navigation_explore);
                                         }

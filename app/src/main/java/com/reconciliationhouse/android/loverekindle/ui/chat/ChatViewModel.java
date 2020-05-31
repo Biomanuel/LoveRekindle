@@ -23,7 +23,7 @@ public class ChatViewModel extends AndroidViewModel {
     private MutableLiveData<List<Message>> getSingleChat;
     public ChatViewModel(@NonNull Application application) {
         super(application);
-        chatMessagesRepo=new ChatMessagesRepo();
+        chatMessagesRepo=new ChatMessagesRepo(application);
     }
     public LiveData<List<Message>> getAllSingleChat(String counsellorName,String username) {
         getSingleChat =chatMessagesRepo.getAllSingleChatMessages(counsellorName,username);

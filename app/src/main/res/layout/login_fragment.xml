@@ -133,17 +133,6 @@
                 android:paddingEnd="48dp"
                 android:text="@string/log_in" />
 
-            <TextView
-
-                android:id="@+id/tv_need_new_account"
-                style="@style/forgot_pass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-
-                android:text="@string/create_new_account"
-
-                android:textSize="18sp" />
 
             <TextView
 

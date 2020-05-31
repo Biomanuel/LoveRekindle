@@ -31,6 +31,7 @@ import com.reconciliationhouse.android.loverekindle.databinding.SigngleChatFragm
 import com.reconciliationhouse.android.loverekindle.models.ChatModel;
 import com.reconciliationhouse.android.loverekindle.models.UserDetails;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
+import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
 
 import java.lang.ref.Reference;
 import java.util.ArrayList;
@@ -59,43 +60,56 @@ public class SingleChatFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SingleChatViewModel.class);
+
+        if (UserPreferences.getRole(getContext())!=null){
+
+            if (UserPreferences.getRole(getContext()).equals("counsellor")) {
+                binding.addChat.setVisibility(View.GONE);
+
+            }
+        }
+        else  {
+            binding.addChat.setVisibility(View.VISIBLE);
+        }
         FirebaseAuth auth=FirebaseAuth.getInstance();
         FirebaseUser firebaseUser=auth.getCurrentUser();
 
         FirebaseFirestore db=FirebaseFirestore.getInstance();
         assert firebaseUser != null;
         mList=new ArrayList<>();
-//        if(UserDetails.getCategory().equals("counsellor")){
-//            CollectionReference collectionReference = db.collection("User").document("counsellor").collection("spiritual").document(Objects.requireNonNull(firebaseUser.getDisplayName())).collection("single");
-//            collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                    if (task.isSuccessful()){
-//                        for (QueryDocumentSnapshot document : task.getResult()) {
-//
-//                            ChatModel model = document.toObject(ChatModel.class);
-//                            mList.add(model);
-//
-//
-//                        }
-//
-//                        SingleChatAdapter adapter=new SingleChatAdapter();
-//                        adapter.setCounsellors(mList);
-//                        binding.allSingleChat.setLayoutManager(new LinearLayoutManager(getContext()));
-//                        binding.allSingleChat.setAdapter(adapter);
-//                    }
-//
-//                }
-//            });
 
-       // }
+            if (UserPreferences.getRole(getContext()).equals("counsellor")) {
+                CollectionReference collectionReference = db.collection("User").document("counsellor").collection(UserPreferences.getCategory(getContext())).document(Objects.requireNonNull(firebaseUser.getDisplayName())).collection("single");
+                collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                ChatModel model = document.toObject(ChatModel.class);
+                                mList.add(model);
 
 
-            CollectionReference  reference=db.collection("User").document("regular").collection("users").document(firebaseUser.getDisplayName()).collection("single");
+                            }
+
+                            SingleChatAdapter adapter = new SingleChatAdapter();
+                            adapter.setCounsellors(mList);
+                            binding.allSingleChat.setLayoutManager(new LinearLayoutManager(getContext()));
+                            binding.allSingleChat.setAdapter(adapter);
+                        }
+
+                    }
+                });
+            }
+
+
+
+        else if (UserPreferences.getRole(getContext()).equals("regular")){
+            CollectionReference reference = db.collection("User").document("regular").collection("users").document(firebaseUser.getDisplayName()).collection("single");
             reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
                             ChatModel model = document.toObject(ChatModel.class);
@@ -104,7 +118,7 @@ public class SingleChatFragment extends Fragment {
 
                         }
 
-                        SingleChatAdapter adapter=new SingleChatAdapter();
+                        SingleChatAdapter adapter = new SingleChatAdapter();
                         adapter.setCounsellors(mList);
                         binding.allSingleChat.setLayoutManager(new LinearLayoutManager(getContext()));
                         binding.allSingleChat.setAdapter(adapter);
@@ -112,6 +126,7 @@ public class SingleChatFragment extends Fragment {
 
                 }
             });
+        }
 
 
 

@@ -1,5 +1,6 @@
 package com.reconciliationhouse.android.loverekindle.ui.auth;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -36,8 +37,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.SignUpFragmentBinding;
+import com.reconciliationhouse.android.loverekindle.dialog.AuthDialog;
+import com.reconciliationhouse.android.loverekindle.dialog.ChatTypeDialog;
 import com.reconciliationhouse.android.loverekindle.models.UserDetails;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
+import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -82,13 +86,24 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = SignUpFragmentBinding.inflate(inflater, container, false);
+        mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser== null) {
+            FragmentManager fm = this.requireActivity().getSupportFragmentManager();
+            AuthDialog custom = new AuthDialog(this,binding.lay);
+            custom.show(fm,"");
+
+        }
+
         return binding.getRoot();
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+
         mViewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
         binding.changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,19 +242,24 @@ public class SignUpFragment extends Fragment {
                                             if (task.isSuccessful()) {
                                                 Log.d(TAG, "User profile updated.");
                                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                               // DocumentReference collectionReference = db.collection("User").document("regular").collection("users").document(user.getDisplayName());
-                                                DocumentReference collectionReference = db.collection("User").document("counsellor").collection("spiritual").document(Objects.requireNonNull(user.getDisplayName()));
-                                               //UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "counsellor","spiritual");
-                                                UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "regular");
-                                                UserDetails.setName(user.getDisplayName());
-                                                UserDetails.setEmail(user.getEmail());
-                                                UserDetails.setImageUrl(String.valueOf(user.getPhotoUrl()));
-                                                UserDetails.setCategory("regular");
+                                                DocumentReference collectionReference = db.collection("User").document("regular").collection("users").document(user.getDisplayName());
+                                                // for counsellor
+                                                //DocumentReference collectionReference = db.collection("User").document("counsellor").collection("Spiritual Growth").document(Objects.requireNonNull(user.getDisplayName()));
+                                               //final UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "counsellor","Spiritual Growth");
+                                               final UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "regular");
+
+
+
                                                 collectionReference.set(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
                                                             binding.progressBar.setVisibility(View.GONE);
+                                                            UserPreferences.saveRole(model.getRole(),getContext());
+                                                            UserPreferences.saveId(user.getUid(),getContext());
+                                                            UserPreferences.saveUserName(user.getDisplayName(),getContext());
+                                                            UserPreferences.saveEmail(user.getEmail(),getContext());
+                                                            UserPreferences.saveBalance(model.getBalance(),getContext());
                                                             NavController controller = Navigation.findNavController(getView());
                                                             controller.navigate(R.id.action_signUpFragment_to_navigation_explore);
                                                         } else {

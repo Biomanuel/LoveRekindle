@@ -1,7 +1,7 @@
 package com.reconciliationhouse.android.loverekindle.models;
 
 public class UserDetails {
-    public static String name, email ,imageUrl,category,balance;
+    public static String name, email ,imageUrl,category,balance,uId,role;
 
     public static String getName() {
         return name;
@@ -41,5 +41,21 @@ public class UserDetails {
 
     public static void setBalance(String balance) {
         UserDetails.balance = balance;
+    }
+
+    public static String getuId() {
+        return uId;
+    }
+
+    public static void setuId(String uId) {
+        UserDetails.uId = uId;
+    }
+
+    public static String getRole() {
+        return role;
+    }
+
+    public static void setRole(String role) {
+        UserDetails.role = role;
     }
 }

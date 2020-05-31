@@ -95,7 +95,7 @@ public class ChatTypeDialog extends DialogFragment {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                                if (task.isSuccessful()){
-                                   DocumentReference reference=db.collection("User").document("counsellor").collection("spiritual").document(counsellorName).collection("single").document(counsellorName+" and "+firebaseUser.getDisplayName());
+                                   DocumentReference reference=db.collection("User").document("counsellor").collection(category).document(counsellorName).collection("single").document(counsellorName+" and "+firebaseUser.getDisplayName());
                                    reference.set(new ChatModel(firebaseUser.getUid(),firebaseUser.getDisplayName(),String.valueOf(firebaseUser.getPhotoUrl()))).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

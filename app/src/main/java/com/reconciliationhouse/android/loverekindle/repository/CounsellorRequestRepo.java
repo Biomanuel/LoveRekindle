@@ -43,7 +43,7 @@ public class CounsellorRequestRepo {
         final List<UserModel> models=new ArrayList<>();
         final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
         // Prepare Query as you like.
-        collectionReference=db.collection("User").document("counsellor").collection("spiritual");
+        collectionReference=db.collection("User").document("counsellor").collection("Spiritual Growth");
          collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -80,7 +80,7 @@ public class CounsellorRequestRepo {
         final List<UserModel> models=new ArrayList<>();
         final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
         // Prepare Query as you like.
-        collectionReference=db.collection("User").document("counsellor").collection("marriage");
+        collectionReference=db.collection("User").document("counsellor").collection("Marriage and Relationship");
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -118,7 +118,7 @@ public class CounsellorRequestRepo {
         final List<UserModel> models=new ArrayList<>();
         final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
         // Prepare Query as you like.
-        collectionReference=db.collection("User").document("counsellor").collection("health");
+        collectionReference=db.collection("User").document("counsellor").collection("Health");
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -155,7 +155,7 @@ public class CounsellorRequestRepo {
         final List<UserModel> models=new ArrayList<>();
         final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
         // Prepare Query as you like.
-        collectionReference=db.collection("User").document("counsellor").collection("parenting");
+        collectionReference=db.collection("User").document("counsellor").collection("Godly Parenting");
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

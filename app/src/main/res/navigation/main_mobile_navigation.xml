@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/loginFragment">
+    app:startDestination="@+id/signUpFragment">
 
     <fragment
         android:id="@+id/navigation_explore"
@@ -91,6 +91,15 @@
             app:popUpToInclusive="true"
             android:id="@+id/action_signUpFragment_to_navigation_explore"
             app:destination="@id/navigation_explore" />
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_self"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_counsellorLoginFragment"
+            app:destination="@id/counsellorLoginFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"
@@ -114,6 +123,18 @@
         <action
             android:id="@+id/action_chatHomeFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/counsellorLoginFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.auth.CounsellorLoginFragment"
+        android:label="fragment_counsellor_login"
+        tools:layout="@layout/fragment_counsellor_login" >
+        <action
+            android:id="@+id/action_counsellorLoginFragment_to_navigation_explore"
+            app:destination="@id/navigation_explore" />
+        <action
+            android:id="@+id/action_counsellorLoginFragment_to_forgetPasswordFragment"
+            app:destination="@id/forgetPasswordFragment" />
     </fragment>
 
 </navigation>

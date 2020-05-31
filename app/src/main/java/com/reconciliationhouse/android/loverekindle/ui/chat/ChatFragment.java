@@ -31,6 +31,7 @@ import com.reconciliationhouse.android.loverekindle.models.Message;
 import com.reconciliationhouse.android.loverekindle.databinding.ChatFragmentBinding;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 import com.reconciliationhouse.android.loverekindle.models.UserSender;
+import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +47,7 @@ public class ChatFragment extends Fragment {
     String name;
     private ChatAdapter adapter;
    CollectionReference messagesReference;
+    CollectionReference reference;
 
 
 
@@ -90,7 +92,7 @@ public class ChatFragment extends Fragment {
 
               adapter = new ChatAdapter();
 
-            mViewModel.getAllSingleChat(name,firebaseUser.getDisplayName()).observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
+                mViewModel.getAllSingleChat(name,firebaseUser.getDisplayName()).observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
                 @Override
                 public void onChanged(List<Message> messages) {
 
@@ -114,10 +116,16 @@ public class ChatFragment extends Fragment {
 
                         Message message = new Message(text, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())));
                         db = FirebaseFirestore.getInstance();
+                        Toast.makeText(getContext(),UserPreferences.getRole(getContext()),Toast.LENGTH_SHORT).show();
 
-                      //  CollectionReference reference = db.collection("Chat").document("single").collection(name+" and "+firebaseUser.getDisplayName());
 
-                        CollectionReference reference = db.collection("Chat").document("single").collection(firebaseUser.getDisplayName()+" and "+name);
+                        if (UserPreferences.getRole(getContext()).equals("regular")){
+                            reference = db.collection("Chat").document("single").collection(name+" and "+firebaseUser.getDisplayName());
+                        }
+                        else {
+                             reference = db.collection("Chat").document("single").collection(firebaseUser.getDisplayName()+" and "+name);
+
+                        }
 
                         reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override

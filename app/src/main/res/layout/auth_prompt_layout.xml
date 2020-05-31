@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_marginTop="16dp"
+         android:textAllCaps="false"
+        android:id="@+id/sign_up"
+        app:fontFamily="@font/arima_madurai_bold"
+        android:layout_width="match_parent"
+        android:background="@drawable/gradient_button"
+        android:layout_marginStart="32dp"
+        android:text="@string/sign_up"
+        android:textColor="@color/white"
+        android:layout_marginEnd="32dp"
+        android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_marginTop="16dp"
+        android:id="@+id/login"
+        app:fontFamily="@font/arima_madurai_bold"
+        android:layout_width="match_parent"
+        android:background="@drawable/gradient_button"
+        android:layout_marginStart="32dp"
+        android:text="Login In"
+        android:textAllCaps="false"
+        android:layout_marginBottom="32dp"
+        android:textColor="@color/white"
+        android:layout_marginEnd="32dp"
+        android:layout_height="wrap_content"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

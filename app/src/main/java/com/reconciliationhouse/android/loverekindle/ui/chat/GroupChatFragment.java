@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.GruopChatFragmentBinding;
+import com.reconciliationhouse.android.loverekindle.models.UserDetails;
+import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
 
 public class GroupChatFragment extends Fragment {
 
@@ -36,6 +38,14 @@ public class GroupChatFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (UserPreferences.getRole(getContext())!=null){
+            if (UserPreferences.getRole(getContext()).equals("counsellor")) {
+                binding.addChat.setVisibility(View.GONE);
+            }
+        }
+        else  {
+            binding.addChat.setVisibility(View.VISIBLE);
+        }
         mViewModel = ViewModelProviders.of(this).get(GroupChatViewModel.class);
 
         binding.addChat.setOnClickListener(new View.OnClickListener() {
