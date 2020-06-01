@@ -2,69 +2,55 @@ package com.reconciliationhouse.android.loverekindle.models;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+import java.util.List;
+
 @IgnoreExtraProperties
 public class UserModel {
-    private String category;
+
     private String userId;
     private String name;
     private String email;
     private String profileImageUrl;
     private String balance;
-    private String role;
+    private List<String>saveMedia;
+    private List<String>likedMedia;
+    private Role role;
+    private Category category;
+
+
+
+    public enum Role{
+        Regular,Counsellor,Admin
+    }
+    public enum Category{
+        Spiritual_Growth, Godly_Parenting, Marriage_and_Relationship,Health
+    }
 
     public UserModel() {
+
     }
 
-    public UserModel(String userId) {
-        this.userId = userId;
-    }
-
-    public UserModel(String userId, String name, String category, String profileImageUrl) {
-        this.userId = userId;
-        this.name = name;
-        this.category = category;
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public UserModel(String userId, String name, String profileImageUrl) {
-        this.userId = userId;
-        this.name = name;
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public UserModel(String userId, String name, String profileImageUrl, String email, String balance, String role, String category) {
+    public UserModel(String userId, String name, String email, String profileImageUrl, String balance, List<String> saveMedia, List<String> likedMedia, Role role) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.balance = balance;
+        this.saveMedia = saveMedia;
+        this.likedMedia = likedMedia;
         this.role = role;
-        this.category = category;
     }
 
-    public UserModel(String userId, String name, String profileImageUrl, String email, String balance, String role) {
+    public UserModel(String userId, String name, String email, String profileImageUrl, String balance, List<String> saveMedia, List<String> likedMedia, Role role, Category category) {
         this.userId = userId;
         this.name = name;
-        this.profileImageUrl = profileImageUrl;
         this.email = email;
+        this.profileImageUrl = profileImageUrl;
         this.balance = balance;
+        this.saveMedia = saveMedia;
+        this.likedMedia = likedMedia;
         this.role = role;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
         this.category = category;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUserId() {
@@ -73,6 +59,14 @@ public class UserModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -99,11 +93,35 @@ public class UserModel {
         this.balance = balance;
     }
 
-    public String getRole() {
+    public List<String> getSaveMedia() {
+        return saveMedia;
+    }
+
+    public void setSaveMedia(List<String> saveMedia) {
+        this.saveMedia = saveMedia;
+    }
+
+    public List<String> getLikedMedia() {
+        return likedMedia;
+    }
+
+    public void setLikedMedia(List<String> likedMedia) {
+        this.likedMedia = likedMedia;
+    }
+
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
