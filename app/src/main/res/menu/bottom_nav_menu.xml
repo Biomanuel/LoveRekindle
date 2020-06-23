@@ -15,5 +15,10 @@
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_more_icon"
         android:title="@string/title_profile" />
+    <item android:id="@+id/listOfRequestFragment"
+        android:icon="@drawable/ic_group_black_24dp"
+                  android:title="@string/counsellors"
+        />
+
 
 </menu>

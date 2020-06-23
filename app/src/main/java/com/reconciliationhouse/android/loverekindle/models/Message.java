@@ -10,15 +10,33 @@ public class Message {
     private String message;
     private Date dateCreated;
     private UserSender userSender;
+    private MessageType messageType;
+    private String imageUrl;
+    private Boolean isSeen;
+
+
+    public   static enum MessageType{
+        TEXT,IMAGE,DOC
+    }
 
 
     public Message() {
     }
 
-    public Message(String message, UserSender userSender) {
-        this.message = message;
 
+
+    public Message(MessageType type ,String message, UserSender userSender,Boolean isSeen) {
+        this.message = message;
+        this.messageType=type;
         this.userSender = userSender;
+        this.isSeen=isSeen;
+    }
+
+    public Message(MessageType messageType,UserSender userSender, String imageUrl,Boolean isSeen) {
+        this.userSender = userSender;
+        this.imageUrl = imageUrl;
+        this.messageType=messageType;
+        this.isSeen=isSeen;
     }
 
     // --- GETTERS ---
@@ -48,5 +66,27 @@ public class Message {
         this.dateCreated = dateCreated;
     }
 
+    public MessageType getMessageType() {
+        return messageType;
+    }
 
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Boolean getSeen() {
+        return isSeen;
+    }
+
+    public void setSeen(Boolean seen) {
+        isSeen = seen;
+    }
 }

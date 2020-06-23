@@ -81,4 +81,5 @@
     <string name="txt_reviews_title">Reviews (%d)</string>
     <string name="txt_related_media_title">Related Media (%d)</string>
     <string name="txt_edit_review_title">Edit Review</string>
+    <string name="counsellors">Counsellors</string>
 </resources>

@@ -13,13 +13,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import com.reconciliationhouse.android.loverekindle.R;
+import com.reconciliationhouse.android.loverekindle.models.MediaItem;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -43,8 +46,10 @@ public class CounsellorRequestRepo {
         final List<UserModel> models=new ArrayList<>();
         final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
         // Prepare Query as you like.
-        collectionReference=db.collection("User").document("counsellor").collection("Spiritual Growth");
-         collectionReference.get()
+        collectionReference=db.collection("User");
+        Query query = collectionReference
+                .whereEqualTo("category", UserModel.Category.Spiritual_Growth);
+         query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -80,8 +85,10 @@ public class CounsellorRequestRepo {
         final List<UserModel> models=new ArrayList<>();
         final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
         // Prepare Query as you like.
-        collectionReference=db.collection("User").document("counsellor").collection("Marriage and Relationship");
-        collectionReference.get()
+        collectionReference=db.collection("User");
+        Query query = collectionReference
+                .whereEqualTo("category", UserModel.Category.Marriage_and_Relationship);
+        query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -118,8 +125,10 @@ public class CounsellorRequestRepo {
         final List<UserModel> models=new ArrayList<>();
         final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
         // Prepare Query as you like.
-        collectionReference=db.collection("User").document("counsellor").collection("Health");
-        collectionReference.get()
+        collectionReference=db.collection("User");
+        Query query = collectionReference
+                .whereEqualTo("category", UserModel.Category.Health);
+        query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -155,8 +164,10 @@ public class CounsellorRequestRepo {
         final List<UserModel> models=new ArrayList<>();
         final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
         // Prepare Query as you like.
-        collectionReference=db.collection("User").document("counsellor").collection("Godly Parenting");
-        collectionReference.get()
+        collectionReference=db.collection("User");
+        Query query = collectionReference
+                .whereEqualTo("category", UserModel.Category.Godly_Parenting);
+        query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -185,6 +196,43 @@ public class CounsellorRequestRepo {
 
 
 
+
         return  listMutableLiveData;
     }
+
+    public MutableLiveData<List<UserModel>> getAllCounsellors(final ProgressBar progressBar) {
+        progressBar.setVisibility(View.VISIBLE);
+        final List<UserModel> models=new ArrayList<>();
+        final MutableLiveData<List<UserModel>> listMutableLiveData = new MutableLiveData<>((List<UserModel>) new ArrayList<UserModel>());
+        // Prepare Query as you like.
+        collectionReference=db.collection("User");
+        Query query = collectionReference
+                .whereEqualTo("role", UserModel.Role.Counsellor);
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                UserModel model = document.toObject(UserModel.class);
+                                models.add(model);
+
+
+                            }
+                            listMutableLiveData.setValue(models);
+                            progressBar.setVisibility(View.GONE);
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
+
+        return  listMutableLiveData;
+    }
+
 }

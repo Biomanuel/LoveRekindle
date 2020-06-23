@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/signUpFragment">
+    app:startDestination="@+id/navigation_explore">
 
     <fragment
         android:id="@+id/navigation_explore"
         android:name="com.reconciliationhouse.android.loverekindle.ui.explore.ExploreFragment"
         android:label="@string/title_explore"
-        tools:layout="@layout/fragment_explore" />
+        tools:layout="@layout/fragment_explore" >
+        <action
+            android:id="@+id/action_navigation_explore_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_chat"
@@ -61,7 +65,7 @@
         tools:layout="@layout/settings_fragment" >
         <action
             app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"
+            app:popUpToInclusive="false"
             android:id="@+id/action_settingsFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
@@ -71,11 +75,12 @@
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action
-            app:popUpToInclusive="true"
+            app:popUpTo="@id/navigation_explore"
+            app:popUpToInclusive="false"
             android:id="@+id/action_loginFragment_to_forgetPasswordFragment"
             app:destination="@id/forgetPasswordFragment" />
         <action
-            app:popUpToInclusive="true"
+            app:popUpToInclusive="false"
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
         <action
@@ -88,18 +93,14 @@
         android:label="sign_up_fragment"
         tools:layout="@layout/sign_up_fragment" >
         <action
-            app:popUpToInclusive="true"
+            app:popUpTo="@id/navigation_explore"
+            app:popUpToInclusive="false"
             android:id="@+id/action_signUpFragment_to_navigation_explore"
             app:destination="@id/navigation_explore" />
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_signUpFragment_self"
-            app:destination="@id/signUpFragment" />
-        <action
-            android:id="@+id/action_signUpFragment_to_counsellorLoginFragment"
-            app:destination="@id/counsellorLoginFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"
@@ -125,16 +126,41 @@
             app:destination="@id/chatFragment" />
     </fragment>
     <fragment
-        android:id="@+id/counsellorLoginFragment"
-        android:name="com.reconciliationhouse.android.loverekindle.ui.auth.CounsellorLoginFragment"
-        android:label="fragment_counsellor_login"
-        tools:layout="@layout/fragment_counsellor_login" >
+        android:id="@+id/counsellorFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.counsellor.AllCounsellorsFragment"
+        android:label="fragment_counsellor"
+        tools:layout="@layout/all_counsellors_fragment" />
+    <fragment
+        android:id="@+id/listOfRequestFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.counsellor.ListOfRequestFragment"
+        android:label="list_of_request_fragment"
+        tools:layout="@layout/list_of_request_fragment" >
         <action
-            android:id="@+id/action_counsellorLoginFragment_to_navigation_explore"
-            app:destination="@id/navigation_explore" />
+            android:id="@+id/action_listOfRequestFragment_to_allCounsellorsFragment"
+            app:destination="@id/allCounsellorsFragment" />
         <action
-            android:id="@+id/action_counsellorLoginFragment_to_forgetPasswordFragment"
-            app:destination="@id/forgetPasswordFragment" />
+            android:id="@+id/action_listOfRequestFragment_to_requestDetailsFragment"
+            app:destination="@id/requestDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/allCounsellorsFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.counsellor.AllCounsellorsFragment"
+        android:label="all_counsellors_fragment"
+        tools:layout="@layout/all_counsellors_fragment" />
+    <fragment
+        android:id="@+id/requestDetailsFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.counsellor.RequestDetailsFragment"
+        android:label="fragment_request_details"
+        tools:layout="@layout/fragment_request_details" >
+        <argument
+            android:name="request_details"
+            app:argType="string" />
+        <action
+            app:popUpTo="@id/listOfRequestFragment"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_requestDetailsFragment_to_listOfRequestFragment"
+            app:destination="@id/listOfRequestFragment" />
+    </fragment>
+
 
 </navigation>
