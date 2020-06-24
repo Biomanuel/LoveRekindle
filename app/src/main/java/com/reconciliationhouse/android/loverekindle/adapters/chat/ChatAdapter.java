@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,14 +36,19 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         List<Message>mList;
         ChatItem.ChatType chatType;
      CoordinatorLayout bottomSheetLayout;
-    private BottomSheetBehavior bottomSheetBehavior;
-    private ImageView imageView;
+    boolean isPlaying = false;
 
-        public ChatAdapter(ChatItem.ChatType chatType, CoordinatorLayout coordinatorLayout,ImageView imageView){
+
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+    }
+
+        public ChatAdapter(ChatItem.ChatType chatType, OnItemClickListener onItemClickListener){
             this.chatType=chatType;
-            this.bottomSheetLayout=coordinatorLayout;
-            this.imageView=imageView;
-
+            this.mOnItemClickListener=onItemClickListener;
 
         }
 
@@ -66,6 +73,16 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (viewType==0){
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view=inflater.inflate(R.layout.chat_receiver_layout,parent,false);
+//            final RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(view) {
+//            };
+//
+//            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    mOnItemClickListener.onItemClick(v, viewHolder.getAdapterPosition());
+//                }
+//            });
             return new ReceiverItemHolder(view);
         }
         else {
@@ -86,15 +103,25 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
                     String message = mList.get(position).getMessage();
 
-                    ReceiverItemHolder receiverItemHolder = (ReceiverItemHolder) holder;
+                    final ReceiverItemHolder receiverItemHolder = (ReceiverItemHolder) holder;
                     if (mList.get(position).getMessageType().equals(Message.MessageType.TEXT)){
                         receiverItemHolder.receiverMessage.setText(message);
                         receiverItemHolder.imageView.setVisibility(View.GONE);
+                        receiverItemHolder.mediaLayout.setVisibility(View.GONE);
 
+
+                    }
+
+                   else if (mList.get(position).getMessageType().equals(Message.MessageType.Audio)){
+                       receiverItemHolder.mediaLayout.setVisibility(View.VISIBLE);
+                      // receiverItemHolder.seenImg.setVisibility(View.GONE);
+                       receiverItemHolder.imageView.setVisibility(View.GONE);
+                       receiverItemHolder.receiverMessage.setVisibility(View.GONE);
 
                     }
                     else {
                         if (mList.get(position).getImageUrl()!=null){
+                            receiverItemHolder.mediaLayout.setVisibility(View.GONE);
                             Picasso.get().load(mList.get(position).getImageUrl()).into(receiverItemHolder.imageView);
                             receiverItemHolder.receiverMessage.setVisibility(View.GONE);
 
@@ -110,6 +137,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
                          if (chatType.equals(ChatItem.ChatType.Group_Chat)){
+
                              receiverItemHolder.receiverImage.setVisibility(View.VISIBLE);
                              if (senderItem.getProfileImageUrl()!=null){
                        Picasso.get().load(senderItem.getProfileImageUrl()).into(receiverItemHolder.receiverImage);
@@ -134,25 +162,37 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                           else {
                               receiverItemHolder.seenImg.setVisibility(View.GONE);
                           }
+
                     receiverItemHolder.imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-                            DisplayMetrics metrics = v.getContext().getResources().getDisplayMetrics();
-                            int width = metrics.widthPixels;
-                            int height = metrics.heightPixels;
-                            int totalScreenHeight=(60*100)*height;
-                            //imageView.Picasso.get().load(mList.get(position).getImageUrl()).into(imageView);
-
-
-
-
-                            setUpBottomSheet();
-                            bottomSheetLayout.setVisibility(View.VISIBLE);
-
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                            mOnItemClickListener.onItemClick(v, receiverItemHolder.getAdapterPosition());
                         }
                     });
+                    receiverItemHolder.play.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (isPlaying){
+                                isPlaying=false;
+                                //pausePlaying;
+                                receiverItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.pause));
+
+
+
+                            }
+                            else {
+                                receiverItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.play));
+                                isPlaying=true;
+
+                                //startPlaying()
+
+                            }
+
+                        }
+                    });
+
+
+
 
 
 //
@@ -163,41 +203,67 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     String message = mList.get(position).getMessage();
                     final SenderItemHolder  senderItemHolder = (SenderItemHolder) holder;
                     senderItemHolder.senderMessage.setText(message);
+
                     if (mList.get(position).getDateCreated()!=null) {
                         String date = new SimpleDateFormat("hh:mm:aa").format(mList.get(position).getDateCreated());
                         senderItemHolder.time.setText(date);
                     }
                     if (mList.get(position).getMessageType().equals(Message.MessageType.TEXT)){
-
+                       senderItemHolder.senderMessage.setVisibility(View.VISIBLE);
                         senderItemHolder.senderMessage.setText(message);
                         senderItemHolder.imageView.setVisibility(View.GONE);
+                        senderItemHolder.mediaLayout.setVisibility(View.GONE);
 
 
                     }
-                    else {
+                    else if (mList.get(position).getMessageType().equals(Message.MessageType.Audio)){
+                        senderItemHolder.mediaLayout.setVisibility(View.VISIBLE);
+                        // receiverItemHolder.seenImg.setVisibility(View.GONE);
+                        senderItemHolder.imageView.setVisibility(View.GONE);
+                        senderItemHolder.senderMessage.setVisibility(View.GONE);
+
+
+                    }
+                    else if (mList.get(position).getMessageType().equals(Message.MessageType.IMAGE)) {
+                        senderItemHolder.senderMessage.setVisibility(View.GONE);
+                        senderItemHolder.mediaLayout.setVisibility(View.GONE);
+                        senderItemHolder.imageView.setVisibility(View.VISIBLE);
                         if (mList.get(position).getImageUrl()!=null){
                             Picasso.get().load(mList.get(position).getImageUrl()).into(senderItemHolder.imageView);
-                            senderItemHolder.senderMessage.setVisibility(View.GONE);
+
 
                         }
                     }
+
                     senderItemHolder.imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-
-                            DisplayMetrics metrics = v.getContext().getResources().getDisplayMetrics();
-                            int width = metrics.widthPixels;
-                            int height = metrics.heightPixels;
-                            int totalScreenHeight=(60*100)*height;
-//                            Picasso.get().load(mList.get(position).getImageUrl()).resize(width,totalScreenHeight).into(imageView);
-                            setUpBottomSheet();
-
-                            bottomSheetLayout.setVisibility(View.VISIBLE);
-
-                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                            mOnItemClickListener.onItemClick(v, senderItemHolder.getAdapterPosition());
                         }
                     });
+
+                    senderItemHolder.play.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (isPlaying){
+                                isPlaying=false;
+                                //pausePlaying;
+                                senderItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.pause));
+
+
+
+                            }
+                            else {
+                                senderItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.play));
+                                isPlaying=true;
+
+                                //startPlaying()
+
+                            }
+
+                        }
+                    });
+
 
                 }
                 break;
@@ -207,45 +273,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     }
-    private void setUpBottomSheet() {
 
-
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
-        // set callback for changes
-
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                switch (newState) {
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        bottomSheetLayout.setVisibility(View.GONE);
-
-                        break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        break;
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-
-                        bottomSheetLayout.setVisibility(View.GONE);
-                        break;
-                    case BottomSheetBehavior.STATE_DRAGGING:
-
-                        break;
-                    case BottomSheetBehavior.STATE_SETTLING:
-
-
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
-
-        });
-
-        //Log.d(TAG, "onStateChanged: " + newState);
-    }
 
     @Override
     public int getItemCount() {
@@ -272,6 +300,10 @@ class ReceiverItemHolder extends RecyclerView.ViewHolder {
     TextView date, time,uuu;
     ImageView imageView;
     ImageView seenImg;
+    CardView mediaLayout;
+    ImageView play;
+    SeekBar seekBar;
+
 
     public ReceiverItemHolder(@NonNull View itemView) {
         super(itemView);
@@ -281,6 +313,9 @@ class ReceiverItemHolder extends RecyclerView.ViewHolder {
         time=itemView.findViewById(R.id.time);
         imageView=itemView.findViewById(R.id.ImageView_image);
         seenImg=itemView.findViewById(R.id.seen_img);
+        mediaLayout=itemView.findViewById(R.id.media_layout);
+        seekBar=itemView.findViewById(R.id.seekbar);
+        play=itemView.findViewById(R.id.play);
 
 
 
@@ -292,6 +327,9 @@ class SenderItemHolder extends RecyclerView.ViewHolder {
     TextView senderMessage;
     ImageView imageView;
     TextView date, time;
+    CardView mediaLayout;
+    ImageView play;
+    SeekBar seekBar;
 
     public SenderItemHolder(@NonNull View itemView) {
         super(itemView);
@@ -301,6 +339,9 @@ class SenderItemHolder extends RecyclerView.ViewHolder {
         date=itemView.findViewById(R.id.date);
         time=itemView.findViewById(R.id.time);
         imageView=itemView.findViewById(R.id.ImageView_image);
+        mediaLayout=itemView.findViewById(R.id.media_layout);
+        seekBar=itemView.findViewById(R.id.seekbar);
+        play=itemView.findViewById(R.id.play);
 
 
 

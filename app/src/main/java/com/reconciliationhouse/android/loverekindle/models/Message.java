@@ -16,7 +16,7 @@ public class Message {
 
 
     public   static enum MessageType{
-        TEXT,IMAGE,DOC
+        TEXT,IMAGE,Audio
     }
 
 

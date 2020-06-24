@@ -69,106 +69,148 @@
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
         tools:listitem="@layout/chat_sender_layout" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linearLayoutCompat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-
-
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/linearLayoutCompat"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="8dp"
-            android:background="@drawable/message_edittext_design"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+
+
             android:orientation="horizontal"
-         >
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent">
 
 
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/add"
-
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:background="@color/white"
-                android:src="@drawable/ic_insert_emoticon_black_24dp"
-                app:tint="@color/colorPrimary" />
-
-
-            <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
-                android:id="@+id/messages_text"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="5"
-                android:gravity="center|left"
-               android:background="@null"
-                android:hint="@string/message_a_counsellor"
-                android:inputType="text"
-                android:minHeight="40dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-
-                android:paddingRight="10dp"
-                android:textColor="@color/colorPrimary"
-                android:textColorHint="@color/grey"
-                android:textSize="18sp" />
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/message_edittext_design"
+                android:gravity="center"
+                android:orientation="horizontal">
 
 
+                <Chronometer
+                    android:id="@+id/timer"
 
+                      android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/add"
+                    app:layout_constraintHorizontal_bias="0.6"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/add"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                     android:layout_marginStart="8dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_insert_emoticon_black_24dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/messages_text"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/timer"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.384"
+                    app:tint="@color/colorPrimary" />
+
+                <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+                    android:id="@+id/messages_text"
+                    android:layout_width="0dp"
+
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="@string/message_a_counsellor"
+                    android:inputType="text"
+                    android:minHeight="40dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="10dp"
+
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@color/grey"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@+id/add_photo"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/add"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/add_photo"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="50dp"
+
+
+                    android:layout_marginBottom="4dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/signup_camera"
+                    app:fabCustomSize="50dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/record_voice"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toEndOf="@+id/messages_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/colorPrimary" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/record_voice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_mic_none_black_24dp"
+
+
+                    app:fabCustomSize="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_weight="0.1"
+                    app:layout_constraintStart_toEndOf="@+id/add_photo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/colorPrimary" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/add_photo"
+                android:id="@+id/send_message"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
 
+
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
 
                 android:background="@android:color/transparent"
 
-                android:src="@drawable/signup_camera"
+                android:src="@drawable/new_send_icon"
                 app:fabCustomSize="50dp"
                 app:tint="@color/colorPrimary" />
 
+
         </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/send_message"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
 
-
-             android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-
-            android:background="@android:color/transparent"
-
-            android:src="@drawable/new_send_icon"
-            app:fabCustomSize="50dp"
-            app:tint="@color/colorPrimary" />
-
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <ProgressBar
+        <ProgressBar
         android:visibility="gone"
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"

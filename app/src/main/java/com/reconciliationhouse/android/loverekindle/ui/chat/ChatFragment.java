@@ -3,11 +3,18 @@ package com.reconciliationhouse.android.loverekindle.ui.chat;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,9 +24,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +37,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -63,17 +76,26 @@ import com.reconciliationhouse.android.loverekindle.models.UserSender;
 import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
 
 public class ChatFragment extends Fragment {
 
+    private static final int REQUEST_AUDIO_PERMISSION_CODE = 1;
     private ChatViewModel mViewModel;
 
     private FirebaseFirestore db;
@@ -88,7 +110,7 @@ public class ChatFragment extends Fragment {
     EmojIconActions emojIcon;
     CircleImageView circleImageView;
     TextView counsellorUsername;
-    ImageButton addPhoto;
+    ImageButton addPhoto,addVoiceRecording;
     EmojiconEditText messagesText;
     Toolbar materialToolbar;
     ImageButton sendMessage;
@@ -96,10 +118,21 @@ public class ChatFragment extends Fragment {
     RecyclerView  messagesRecyclerView;
     FirebaseStorage fileStorage;
     ProgressBar progressBar ;
-    CoordinatorLayout coordinatorLayout;
+    CoordinatorLayout bottomSheetLayout;
+    BottomSheetBehavior bottomSheetBehavior;
+    private String recordPermission= RECORD_AUDIO;
+     List<Message>mMessages;
+    private MediaRecorder mRecorder;
+    private boolean isRecording =false;
+
+    private static final String LOG_TAG = "AudioRecording";
+    private static String mFileName = null;
 
 
     private static final int GALLERY_PICK=123;
+    private Chronometer timer;
+
+    private String filePath;
 
 
     public static ChatFragment newInstance() {
@@ -119,49 +152,28 @@ public class ChatFragment extends Fragment {
        circleImageView=view.findViewById(R.id.circleImageView);
        materialToolbar=view.findViewById(R.id.materialToolbar);
        addEmoji=view.findViewById(R.id.add);
+       timer=view.findViewById(R.id.timer);
         messagesText.setEmojiconSize(100);
         progressBar=view.findViewById(R.id.progress_bar);
        sendMessage=view.findViewById(R.id.send_message);
        addPhoto=view.findViewById(R.id.add_photo);
-       coordinatorLayout=view.findViewById(R.id.bottom_sheet_layout);
+       addVoiceRecording=view.findViewById(R.id.record_voice);
+
        messagesRecyclerView=view.findViewById(R.id.messages_recycler_view);
        showImage=view.findViewById(R.id.show_image);
         emojIcon = new EmojIconActions(getContext(), messagesText.getRootView(), messagesText,addEmoji );
         emojIcon.setUseSystemEmoji(true);
+
 
         emojIcon.ShowEmojIcon();
 
 
         emojIcon.setUseSystemEmoji(true);
         messagesText.setUseSystemDefault(true);
-        showImage.setImageResource(R.drawable.ic_group_black_24dp);
-       // emojIcon.addEmojiconEditTextList(messagesText);
-        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
-            @Override
-            public void onKeyboardOpen() {
-                Log.e("Keyboard", "open");
-            }
-            @Override
-            public void onKeyboardClose() {
-                Log.e("Keyboard", "close");
-            }
-        });
-        messagesText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
         //seenMessages();
         return view;
 
@@ -191,6 +203,12 @@ public class ChatFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        bottomSheetLayout=view.findViewById(R.id.bottom_sheet_layout_1);
+        setUpBottomSheet();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -202,7 +220,7 @@ public class ChatFragment extends Fragment {
             String imageName=imageUri.getLastPathSegment();
             fileStorage=FirebaseStorage.getInstance();
             String path = null;
-            Toast.makeText(getContext(), imageName, Toast.LENGTH_SHORT).show();
+
 
             FirebaseFirestore db1=FirebaseFirestore.getInstance();
             CollectionReference reference1=null;
@@ -346,6 +364,7 @@ public class ChatFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         ((MainActivity) requireActivity()).setSupportActionBar(materialToolbar);
         setHasOptionsMenu(true);
         mAuth = FirebaseAuth.getInstance();
@@ -380,8 +399,31 @@ public class ChatFragment extends Fragment {
         }
 
 
+               mMessages=new ArrayList<>();
+              adapter = new ChatAdapter(model.getChatType(), new ChatAdapter.OnItemClickListener() {
+                  @Override
+                  public void onItemClick(View view, int position) {
+                      Message message=mMessages.get(position);
+                      if (message.getMessageType().equals(Message.MessageType.IMAGE)){
+                          Picasso.get().load(message.getImageUrl()).into(showImage);
+                          Toast.makeText(getContext(),mMessages.get(position).getDateCreated().toString(),Toast.LENGTH_SHORT).show();
+                          bottomSheetLayout.setVisibility(View.VISIBLE);
+                       bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                          DisplayMetrics metrics = view.getContext().getResources().getDisplayMetrics();
+//                            int width = metrics.widthPixels;
+//                            int height = metrics.heightPixels;
+//                            int totalScreenHeight=(60*100)*height;
 
-              adapter = new ChatAdapter(model.getChatType(),coordinatorLayout,showImage);
+
+
+                      }
+
+
+
+
+
+                  }
+              });
 
 
               if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)){
@@ -390,7 +432,7 @@ public class ChatFragment extends Fragment {
                 @Override
                 public void onChanged(List<Message> messages) {
 
-
+                    mMessages=messages;
                     adapter.setMessages(messages);
                     messagesRecyclerView.scrollToPosition(messages.size() - 1);
 
@@ -437,6 +479,57 @@ public class ChatFragment extends Fragment {
                   messagesRecyclerView.setAdapter(adapter);
 
               }
+
+
+
+              addVoiceRecording.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+
+                      if (isRecording){
+                          stopRecording();
+
+
+                          addVoiceRecording.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_voice_black_24dp));
+                          isRecording=false;
+                          addEmoji.setVisibility(View.VISIBLE);
+                          timer.setVisibility(View.GONE);
+                          showDialog(getActivity());
+                      }
+
+                      else {
+                          if (CheckPermissions()){
+                               startRecording();
+                               addEmoji.setVisibility(View.GONE);
+                               timer.setVisibility(View.VISIBLE);
+                          }
+
+                          isRecording=true;
+                          addVoiceRecording.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_none_black_24dp));
+                      }
+                     // Toast.makeText(getContext(), "Clicked", Toast.LENGTH_LONG).show();
+//                      if(CheckPermissions()) {
+//
+//                          Toast.makeText(getContext(), "Passed", Toast.LENGTH_LONG).show();
+//
+//                          mRecorder = new MediaRecorder();
+//                          mRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+//                              @Override
+//                              public void onInfo(MediaRecorder mr, int what, int extra) {
+//
+//                              }
+//                          });
+//                          ;
+
+//
+//                      }
+//                      else
+//                      {
+//                          RequestPermissions();
+//                      }
+
+                  }
+              });
 
 
 
@@ -501,6 +594,37 @@ public class ChatFragment extends Fragment {
             });
 
         }
+
+    private void stopRecording(){
+        timer.stop();
+        mRecorder.stop();
+        mRecorder.release();
+        mRecorder=null;
+
+    }
+    private void startRecording() {
+        timer.setBase(SystemClock.elapsedRealtime());
+        timer.start();
+        mRecorder=new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mFileName = getActivity().getExternalFilesDir("/").getAbsolutePath();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.US);
+        Date date=new Date();
+        String file1 = "AudioRecording "+format.format(date)+".mp3";
+        mRecorder.setOutputFile(mFileName+"/"+file1);
+        filePath=mFileName+"/"+file1;
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+        mRecorder.start();
+        Toast.makeText(getContext(), "Recording Started", Toast.LENGTH_LONG).show();
+    }
+
     public void seenMessages(){
         if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)){
             messagesReference=db.collection("Chat").document("single") .collection(counsellorUsername+" and "+name);
@@ -553,6 +677,175 @@ public class ChatFragment extends Fragment {
 
 
         }
+
+    }
+    private void setUpBottomSheet() {
+
+
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+        // set callback for changes
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        bottomSheetLayout.setVisibility(View.GONE);
+
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+
+                        bottomSheetLayout.setVisibility(View.GONE);
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+
+
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+
+        });
+
+        //Log.d(TAG, "onStateChanged: " + newState);
+    }
+
+
+    public boolean CheckPermissions() {
+        if (ActivityCompat.checkSelfPermission(getContext(),recordPermission)==PackageManager.PERMISSION_GRANTED){
+            return  true;
+        }
+        else {
+            ActivityCompat.requestPermissions(getActivity(),new  String[]{recordPermission},REQUEST_AUDIO_PERMISSION_CODE);
+            return false;
+        }
+
+
+    }
+    private void   showDialog(Activity activity){
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.record_audio_lay);
+
+
+        Button cancel = (Button) dialog.findViewById(R.id.cancel);
+        Button send = (Button) dialog.findViewById(R.id.send);
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),filePath,Toast.LENGTH_SHORT).show();
+                final File audio =new File(filePath);
+                dialog.dismiss();
+                progressBar.setVisibility(View.VISIBLE);
+                FirebaseFirestore db1=FirebaseFirestore.getInstance();
+                CollectionReference reference1=null;
+                String path=null;
+                fileStorage=FirebaseStorage.getInstance();
+
+
+
+                if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)) {
+                    if (UserPreferences.getRole(getContext()).equals(String.valueOf(UserModel.Role.Regular))) {
+
+                        reference1 = db1.collection("Chat").document("single").collection(name + " and " + firebaseUser.getDisplayName());
+                        path=name + " and " + firebaseUser.getDisplayName();
+                    } else {
+                        reference1 = db1.collection("Chat").document("single").collection(firebaseUser.getDisplayName() + " and " + name);
+                        path=firebaseUser.getDisplayName() + " and " + name;
+                    }
+                    String push_id=reference1.getId();
+
+                    final StorageReference filepath=fileStorage.getReference("audio/chat/"+path).child(audio.getName());
+
+                    Task<UploadTask.TaskSnapshot> uploadTask = filepath.putFile(Uri.fromFile(audio));
+
+                    final CollectionReference finalReference = reference1;
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+
+                            // Continue with the task to get the download URL
+                            return filepath.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()) {
+                                audio.delete();
+
+                                Uri downloadUri = task.getResult();
+
+
+
+                                final Message message = new Message(Message.MessageType.Audio, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())),String.valueOf(downloadUri),false);
+
+                                finalReference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        progressBar.setVisibility(View.GONE);
+                                        messagesText.setText("");
+
+
+
+                                    }
+                                });
+
+
+
+                            } else {
+                                // Handle failures
+                                // ...
+                                progressBar.setVisibility(View.GONE);
+                                Snackbar.make(getView(),"Error sending image ",Snackbar.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+
+//                reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentReference> task) {
+//                        if (task.isSuccessful()) {
+//                            messagesText.setText("");
+////
+//                        }
+//                    }
+//                });
+                }
+
+
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                File audio =new File(filePath);
+                audio.delete();
+                //Toast.makeText(getContext(),"",Toast.LENGTH_SHORT).show();
+
+
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
 
     }
 }
