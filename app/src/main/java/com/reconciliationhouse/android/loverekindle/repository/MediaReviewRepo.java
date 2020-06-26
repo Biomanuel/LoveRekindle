@@ -107,7 +107,7 @@ public class MediaReviewRepo {
     }
 
     public void updateReview(MediaReview review) {
-        mCollectionRef.document(review.getId()).set(review, SetOptions.merge());
+        mCollectionRef.document(review.getId()).update("review", review.getVotes());
     }
 
     public void updateReviewVote(MediaReview review) {

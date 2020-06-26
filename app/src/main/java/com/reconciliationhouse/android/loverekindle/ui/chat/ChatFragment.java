@@ -78,10 +78,10 @@ public class ChatFragment extends Fragment {
             ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
             Gson gson=new Gson();
             UserModel model = gson.fromJson(args.getCounsellorData(), UserModel.class);
-            String category = model.getCategory();
+            UserModel.Category category = model.getCategory();
             name = model.getName();
             String id = model.getUserId();
-            userModel = new UserModel(id, name, category);
+            userModel = new UserModel(id, name, model.getEmail(), model.getProfileImageUrl(), model.getBalance(), model.getSaveMedia(), model.getLikedMedia(), model.getRole());
             binding.counsellorUsername.setText(model.getName());
 
 

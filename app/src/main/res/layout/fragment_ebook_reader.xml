@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="pageControlsVisible"
+            type="boolean" />
+
+        <variable
+            name="controlsClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="pdfName"
+            type="String" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/passiveGrey"
+        tools:context=".ui.mediareader.EbookReaderFragment">
+
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/pdfView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/page_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="6dp"
+            android:gravity="fill_horizontal"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/previous_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:backgroundTint="@android:color/transparent"
+                android:contentDescription="@string/previous_page_desc"
+                android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                android:src="@drawable/ic_chevron_left"
+                app:isVisible="@{pageControlsVisible}" />
+
+            <ImageButton
+                android:id="@+id/next_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@android:color/transparent"
+                android:contentDescription="@string/next_page_desc"
+                android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                android:src="@drawable/ic_chevron_right"
+                app:isVisible="@{pageControlsVisible}" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lyt_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/spacing_medium"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:text="Getting your E-book ready"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/grey_80" />
+
+            <ProgressBar
+                android:id="@+id/progress_indeterminate"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:padding="4dp" />
+
+        </LinearLayout>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:layout_anchor="@id/pdfView"
+            app:layout_anchorGravity="top"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:title="@{pdfName}"
+                app:titleTextColor="@color/white" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </RelativeLayout>
+</layout>

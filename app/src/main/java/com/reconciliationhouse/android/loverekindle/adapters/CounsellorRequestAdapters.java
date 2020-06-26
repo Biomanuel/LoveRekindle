@@ -62,7 +62,7 @@ public class CounsellorRequestAdapters extends RecyclerView.Adapter<CounsellorRe
                 @Override
                 public void onClick(View v) {
 
-                    showDialog(item.getName(),item.getUserId(),item.getCategory(),item.getProfileImageUrl());
+                    showDialog(item.getName(), item.getUserId(), item.getCategory().toString(), item.getProfileImageUrl());
 
 
                 }

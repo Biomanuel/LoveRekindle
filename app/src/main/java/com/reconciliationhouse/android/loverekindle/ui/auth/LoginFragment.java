@@ -145,17 +145,17 @@ public class LoginFragment extends Fragment {
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                                         if (task.isSuccessful()){
-                                            UserModel model=task.getResult().toObject(UserModel.class);
+                                            UserModel model = task.getResult().toObject(UserModel.class);
 
 
                                             assert model != null;
-                                            UserPreferences.saveCategory(model.getCategory(),getContext());
-                                           UserPreferences.saveId(user.getUid(),getContext());
-                                            UserPreferences.saveUserName(user.getDisplayName(),getContext());
-                                            UserPreferences.saveEmail(user.getEmail(),getContext());
-                                            UserPreferences.saveRole(model.getRole(),getContext());
-                                           UserPreferences.saveBalance(model.getBalance(),getContext());
-                                            NavController controller=Navigation.findNavController(getView());
+                                            UserPreferences.saveCategory(model.getCategory(), getContext());
+                                            UserPreferences.saveId(user.getUid(), getContext());
+                                            UserPreferences.saveUserName(user.getDisplayName(), getContext());
+                                            UserPreferences.saveEmail(user.getEmail(), getContext());
+                                            UserPreferences.saveRole(model.getRole(), getContext());
+                                            UserPreferences.saveBalance(model.getBalance(), getContext());
+                                            NavController controller = Navigation.findNavController(getView());
                                             controller.navigate(R.id.action_loginFragment_to_navigation_explore);
                                         }
 

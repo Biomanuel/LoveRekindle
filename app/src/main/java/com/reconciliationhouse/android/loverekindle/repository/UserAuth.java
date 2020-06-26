@@ -63,7 +63,7 @@ public class UserAuth {
 //                        mUserModel.setFirstName(firstName);
 //                        mUserModel.setLastName(lastName);
                         //mUserModel.setEmail(email);
-                        mUserModel.setRole("regular");
+                        mUserModel.setRole(UserModel.Role.Regular);
                         mUserModel.setBalance("0");
                         mUserModel.setUserId(userRef.getId());
                         userRef.set(mUserModel).addOnCompleteListener(new OnCompleteListener<Void>() {

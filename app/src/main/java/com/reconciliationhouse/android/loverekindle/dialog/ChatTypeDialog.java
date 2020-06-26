@@ -77,9 +77,9 @@ public class ChatTypeDialog extends DialogFragment {
         public void onClick(View v) {
             Objects.requireNonNull(getDialog()).dismiss();
             final NavController navController = NavHostFragment.findNavController(fragment);
-            UserModel userModel=new UserModel(counsellorId,counsellorName,category,profileImageUrl);
+//            UserModel userModel=new UserModel(counsellorId,counsellorName,category,profileImageUrl);
             Gson gson=new Gson();
-            final String jsonString=gson.toJson(userModel);
+//            final String jsonString=gson.toJson(userModel);
             FirebaseAuth auth=FirebaseAuth.getInstance();
             String username=null;
           final FirebaseUser firebaseUser=auth.getCurrentUser();
@@ -99,9 +99,9 @@ public class ChatTypeDialog extends DialogFragment {
                                    reference.set(new ChatModel(firebaseUser.getUid(),firebaseUser.getDisplayName(),String.valueOf(firebaseUser.getPhotoUrl()))).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()){
-                                                ChatCategoriesFragmentDirections.ActionNavigationChatToChatFragment actions=ChatCategoriesFragmentDirections.actionNavigationChatToChatFragment().setCounsellorData(jsonString);
-                                                navController.navigate(actions);
+                                            if (task.isSuccessful()) {
+//                                                ChatCategoriesFragmentDirections.ActionNavigationChatToChatFragment actions=ChatCategoriesFragmentDirections.actionNavigationChatToChatFragment().setCounsellorData(jsonString);
+//                                                navController.navigate(actions);
                                             }
                                         }
                                     });

@@ -66,15 +66,14 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.It
                 @Override
                 public void onClick(View v) {
 
-                    NavController controller= Navigation.findNavController(v);
+                    NavController controller = Navigation.findNavController(v);
 
-                    Gson gson=new Gson();
-                    UserModel model=new UserModel(item.getId(),item.getName(),item.getImageUrl());
-                    String jsonString=gson.toJson(model);
-                    ChatHomeFragmentDirections.ActionChatHomeFragmentToChatFragment chat=ChatHomeFragmentDirections.actionChatHomeFragmentToChatFragment().setCounsellorData(jsonString);
+                    Gson gson = new Gson();
+//                    UserModel model=new UserModel(item.getId(),item.getName(),item.getImageUrl());
+//                    String jsonString=gson.toJson(model);
+//                    ChatHomeFragmentDirections.ActionChatHomeFragmentToChatFragment chat=ChatHomeFragmentDirections.actionChatHomeFragmentToChatFragment().setCounsellorData(jsonString);
 
-                    controller.navigate(chat);
-
+//                    controller.navigate(chat);
 
 
                 }

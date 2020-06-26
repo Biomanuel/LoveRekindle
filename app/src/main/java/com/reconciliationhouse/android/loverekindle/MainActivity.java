@@ -2,6 +2,7 @@ package com.reconciliationhouse.android.loverekindle;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.reconciliationhouse.android.loverekindle.repository.UserRepo;
+import com.reconciliationhouse.android.loverekindle.utils.ProgressBarHandler;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         doExitApp();
     }
 
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Press again to exit app", Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
         } else {
+//            super.onBackPressed();
             finish();
         }
     }
