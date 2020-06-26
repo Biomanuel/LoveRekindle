@@ -1,6 +1,8 @@
 package com.reconciliationhouse.android.loverekindle.ui.explore.mediagallery;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -8,21 +10,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.adapters.recycleradapters.MediaAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentAllMediaBinding;
 import com.reconciliationhouse.android.loverekindle.databinding.MediaCatergoryRowLayoutBinding;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
+import com.reconciliationhouse.android.loverekindle.repository.LocalMediaRepository;
+import com.reconciliationhouse.android.loverekindle.repository.MediaRepo;
+import com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewActivity;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +36,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import static com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewActivity.MEDIA_CATEGORY_KEY;
+import static com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewActivity.MEDIA_ID_KEY;
 
 public class AllMediaFragment extends Fragment implements Listeners.MediaItemClickListener {
 
@@ -86,7 +95,10 @@ public class AllMediaFragment extends Fragment implements Listeners.MediaItemCli
         if (mMediaType == MediaItem.MediaType.EBOOK) media = mMediaGalleryViewModel.getEbooks();
         else if (mMediaType == MediaItem.MediaType.AUDIO)
             media = mMediaGalleryViewModel.getAudios();
-        else media = mMediaGalleryViewModel.getAllMedia();
+        else {
+            media = mMediaGalleryViewModel.getAllMedia();
+            Toast.makeText(requireContext(), "All: " + mMediaType, Toast.LENGTH_LONG).show();
+        }
 
         media.observe(getParentFragment().getViewLifecycleOwner(), new Observer<List<MediaItem>>() {
             @Override
@@ -137,8 +149,13 @@ public class AllMediaFragment extends Fragment implements Listeners.MediaItemCli
 
     @Override
     public void onMediaItemClick(String mediaId, String category) {
-        if (getParentFragment() != null)
-            NavHostFragment.findNavController(getParentFragment())
-                    .navigate(MediaGalleryFragmentDirections.actionNavigationMediaGalleryToNavigationMediaPreview(mediaId, category));
+//        if (getParentFragment() != null)
+//            NavHostFragment.findNavController(getParentFragment())
+//                    .navigate(MediaGalleryFragmentDirections.actionNavigationMediaGalleryToMediaPreviewActivity(mediaId, category));
+        Intent toMediaPreview = new Intent(requireActivity(), MediaPreviewActivity.class);
+        toMediaPreview.putExtra(MEDIA_ID_KEY, mediaId);
+        toMediaPreview.putExtra(MEDIA_CATEGORY_KEY, category);
+        startActivity(toMediaPreview);
     }
+
 }

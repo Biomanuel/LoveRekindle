@@ -14,8 +14,8 @@
         android:layout_width="160dp"
         android:layout_height="200dp"
         android:layout_margin="4dp"
-        android:background="@android:color/white"
-        app:cardBackgroundColor="@android:color/white"
+        android:background="@color/grey_10"
+        app:cardBackgroundColor="@color/grey_10"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
         app:shapeAppearance="@style/ShapeAppearance.LoveRekindle.Card">

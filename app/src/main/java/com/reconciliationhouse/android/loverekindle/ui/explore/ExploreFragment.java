@@ -2,19 +2,14 @@ package com.reconciliationhouse.android.loverekindle.ui.explore;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -29,10 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.reconciliationhouse.android.loverekindle.MainActivity;
 import com.reconciliationhouse.android.loverekindle.R;
-import com.reconciliationhouse.android.loverekindle.adapters.ExplorePagerAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentExploreBinding;
+import com.reconciliationhouse.android.loverekindle.repository.UserRepo;
 
-import org.jetbrains.annotations.NotNull;
 
 public class ExploreFragment extends Fragment {
 
@@ -44,6 +38,7 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        UserRepo.initializeWithUser((MainActivity) requireActivity());
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

@@ -1,6 +1,8 @@
 package com.reconciliationhouse.android.loverekindle.adapters.bindingadapters;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.LiveData;
 
+import com.google.android.material.textview.MaterialTextView;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
 import com.reconciliationhouse.android.loverekindle.models.MediaReview;
@@ -54,5 +57,17 @@ public abstract class MediaItemBindingAdapters {
         if (mediaType != null && (mediaType == MediaItem.MediaType.AUDIO || mediaType == MediaItem.MediaType.SERMON))
             button.setText(R.string.listen_now);
         else button.setText(R.string.read_now);
+    }
+
+    @BindingAdapter("android:downloaded")
+    public static void isDownloaded(TextView view, boolean downloaded) {
+        Context vContext = view.getContext();
+        if (downloaded) {
+            final Drawable downloadedIcon = vContext.getResources().getDrawable(R.drawable.ic_done);
+            downloadedIcon.setBounds(0, 0, 96, 96);
+            view.setCompoundDrawables(null, downloadedIcon, null, null);
+            view.setCompoundDrawablePadding(4);
+            view.setText("Downloaded");
+        }
     }
 }

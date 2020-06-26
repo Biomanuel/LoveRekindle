@@ -11,6 +11,7 @@ import com.reconciliationhouse.android.loverekindle.databinding.MediaReviewCardL
 import com.reconciliationhouse.android.loverekindle.models.MediaReview;
 import com.reconciliationhouse.android.loverekindle.repository.MediaReviewRepo;
 import com.reconciliationhouse.android.loverekindle.repository.UserRepo;
+import com.reconciliationhouse.android.loverekindle.utils.ItemAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class MediaReviewAdapter extends RecyclerView.Adapter<MediaReviewAdapter.ReviewViewHolder> {
 
     private List<MediaReview> mReviews;
+    private int animation_type = 0;
 
     public MediaReviewAdapter() {
         setHasStableIds(true);
@@ -31,14 +33,7 @@ public class MediaReviewAdapter extends RecyclerView.Adapter<MediaReviewAdapter.
         return new ReviewViewHolder(MediaReviewCardLayoutBinding.inflate(inflater, parent, false));
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
-        if (mReviews != null) {
-            MediaReview review = mReviews.get(position);
-
-            holder.mBinding.setReview(review);
-        }
-    }
+    private int lastPosition = -1;
 
     @Override
     public int getItemCount() {
@@ -75,6 +70,26 @@ public class MediaReviewAdapter extends RecyclerView.Adapter<MediaReviewAdapter.
             } else if (view.getId() == mBinding.btnVoteDownReview.getId()) {
                 MediaReviewRepo.getInstance().voteReview(mBinding.getReview(), false);
             }
+        }
+    }
+
+    private boolean on_attach = true;
+
+    @Override
+    public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
+        if (mReviews != null) {
+            MediaReview review = mReviews.get(position);
+
+            holder.mBinding.setReview(review);
+        }
+
+        setAnimation(holder.itemView, position);
+    }
+
+    private void setAnimation(View view, int position) {
+        if (position > lastPosition) {
+            ItemAnimation.animate(view, on_attach ? position : -1, animation_type);
+            lastPosition = position;
         }
     }
 }

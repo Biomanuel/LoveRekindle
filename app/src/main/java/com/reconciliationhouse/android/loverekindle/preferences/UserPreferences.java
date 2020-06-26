@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.reconciliationhouse.android.loverekindle.models.UserModel;
+
 public class UserPreferences {
     public static boolean saveUserName(String name, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -45,10 +47,10 @@ public class UserPreferences {
 
 
     //   role such as counsellor , regular and super
-    public static boolean saveRole(String role, Context context) {
+    public static boolean saveRole(UserModel.Role role, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.putString(UserConstants.USER_ROLE, role);
+        prefsEditor.putString(UserConstants.USER_ROLE, role.toString());
         prefsEditor.apply();
         return true;
     }
@@ -59,10 +61,10 @@ public class UserPreferences {
     }
 
     // category is only apply to a counsellor with the four categories
-    public static boolean saveCategory(String category, Context context) {
+    public static boolean saveCategory(UserModel.Category category, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.putString(UserConstants.USER_CATEGORY, category);
+        prefsEditor.putString(UserConstants.USER_CATEGORY, category.toString());
         prefsEditor.apply();
         return true;
     }

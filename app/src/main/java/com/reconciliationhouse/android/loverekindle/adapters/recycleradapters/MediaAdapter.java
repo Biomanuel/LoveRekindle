@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.ItemMediaCardLayoutBinding;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
+import com.reconciliationhouse.android.loverekindle.utils.ItemAnimation;
 import com.reconciliationhouse.android.loverekindle.utils.Listeners.MediaItemClickListener;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
 
     private List<MediaItem> mMediaItems;
     private MediaItemClickListener mMediaItemClickListener;
+    private int animation_type = 0;
 
     public MediaAdapter(MediaItemClickListener mediaItemClickListener) {
         this.mMediaItemClickListener = mediaItemClickListener;
@@ -36,14 +38,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
                 parent, false));
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MediaViewHolder holder, int position) {
-        if (mMediaItems != null) {
-            MediaItem mediaItem = mMediaItems.get(position);
-
-            holder.mBinding.setMedia(mediaItem);
-        }
-    }
+    private int lastPosition = -1;
 
     @Override
     public int getItemCount() {
@@ -75,6 +70,25 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.MediaViewHol
         @Override
         public void onClick(View view) {
             mMediaItemClickListener.onMediaItemClick(mBinding.getMedia().getId(), mBinding.getMedia().getCategory());
+        }
+    }
+
+    private boolean on_attach = true;
+
+    @Override
+    public void onBindViewHolder(@NonNull MediaViewHolder holder, int position) {
+        if (mMediaItems != null) {
+            MediaItem mediaItem = mMediaItems.get(position);
+
+            holder.mBinding.setMedia(mediaItem);
+            setAnimation(holder.itemView, position);
+        }
+    }
+
+    private void setAnimation(View view, int position) {
+        if (position > lastPosition) {
+            ItemAnimation.animate(view, on_attach ? position : -1, animation_type);
+            lastPosition = position;
         }
     }
 }

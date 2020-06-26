@@ -145,7 +145,7 @@ public class LoginFragment extends Fragment {
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                                         if (task.isSuccessful()){
-                                            UserModel model=task.getResult().toObject(UserModel.class);
+                                            UserModel model = task.getResult().toObject(UserModel.class);
 
 
                                             assert model != null;

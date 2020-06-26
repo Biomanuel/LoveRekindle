@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewViewModel" />
+
+        <variable
+            name="controlsClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/parent_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/rekindle_bg" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/overlay_dark_50" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@drawable/bg_gradient_hard_purple" />
+
+                <LinearLayout
+                    android:id="@+id/player_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/black"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_large">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_large">
+
+                        <TextView
+                            android:id="@+id/tv_song_current_duration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1:20"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textColor="@color/grey_60" />
+
+                        <ImageButton
+                            android:id="@+id/bt_backward"
+                            android:layout_width="0dp"
+                            android:layout_height="?attr/actionBarSize"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                            android:src="@drawable/ic_fast_rewind"
+                            android:tint="@color/grey_40" />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/bt_play"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_medium"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                            android:src="@drawable/ic_play_arrow"
+                            android:tint="@android:color/white"
+                            app:backgroundTint="@color/red_500"
+                            app:elevation="2dp"
+                            app:fabSize="normal"
+                            app:rippleColor="@android:color/white" />
+
+                        <ImageButton
+                            android:id="@+id/bt_skip"
+                            android:layout_width="0dp"
+                            android:layout_height="?attr/actionBarSize"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                            android:src="@drawable/ic_fast_forward"
+                            android:tint="@color/grey_40" />
+
+                        <TextView
+                            android:id="@+id/tv_song_total_duration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="4:20"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textColor="@color/grey_60" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_large"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/bt_repeat"
+                            android:layout_width="?attr/actionBarSize"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                            android:src="@drawable/ic_repeat"
+                            android:tint="@color/grey_40" />
+
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                            android:id="@+id/seek_song_progressbar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:progress="0"
+                            android:progressDrawable="@drawable/seek_progress_red_small"
+                            android:thumb="@drawable/seek_thumb_red" />
+
+                        <ImageButton
+                            android:id="@+id/bt_timer"
+                            android:layout_width="?attr/actionBarSize"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                            android:src="@drawable/ic_timer"
+                            android:tint="@color/grey_40" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_large"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="20dp">
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:setImage="@{viewModel.mediaItem.image_url}"
+                        android:src="@drawable/opened_book" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/media_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_middle"
+                    android:text="@{viewModel.mediaItem.title}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@android:color/white" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        android:text="Author: "
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/grey_40"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/subtitle_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        android:text="@{viewModel.mediaItem.author}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/grey_40" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </LinearLayout>
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:orientation="horizontal">
+
+
+                    <ImageButton
+                        android:id="@+id/bt_close"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                        android:src="@drawable/ic_arrow_back"
+                        android:tint="@android:color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/media_reviews_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:text="NOW PLAYING"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintEnd_toStartOf="@+id/bt_share"
+                        app:layout_constraintStart_toEndOf="@id/bt_close"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/bt_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@android:color/transparent"
+                        android:gravity="center"
+                        android:onClick="@{(view) -> controlsClickListener.onClick(view)}"
+                        android:src="@drawable/ic_share"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

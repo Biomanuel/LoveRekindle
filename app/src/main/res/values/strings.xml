@@ -82,4 +82,18 @@
     <string name="txt_related_media_title">Related Media (%d)</string>
     <string name="txt_edit_review_title">Edit Review</string>
     <string name="counsellors">Counsellors</string>
+    <string name="post">POST</string>
+    <string name="version_unknown">Unknown</string>
+    <string name="app_version">Version</string>
+    <string name="local_data_prefs">LocalData_Prefs</string>
+    <string name="notification_channel">AUDIO_PLAYER_CHANNEL_ID</string>
+    <string name="notification_channel_description">Love Rekindle Audio Book Player Notification</string>
+    <string name="label_next">Next</string>
+    <string name="label_play">Play</string>
+    <string name="label_pause">Pause</string>
+    <string name="label_previous">Previous</string>
+    <string name="casting_to_device">Casting to %s</string>
+    <string name="stop_casting">Stop Casting</string>
+    <string name="previous_page_desc">Go to previous page</string>
+    <string name="next_page_desc">Go to next page</string>
 </resources>

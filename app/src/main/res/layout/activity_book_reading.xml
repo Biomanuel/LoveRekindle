@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".BookReading">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/reading_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/reading_page_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Reading Page"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</androidx.appcompat.widget.LinearLayoutCompat>
