@@ -31,9 +31,7 @@ public class UserModel {
     public UserModel(String counsellorId, String counsellorName, Category category, String profileImageUrl) {
         this.userId = counsellorId;
         this.name = counsellorName;
-
         this.profileImageUrl = profileImageUrl;
-
         this.category = category;
 
     }
