@@ -1,28 +1,22 @@
-package com.reconciliationhouse.android.loverekindle.adapters;
+package com.reconciliationhouse.android.loverekindle.adapters.counsellor;
 
-import android.content.Context;
-import android.content.DialogInterface;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
+
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.CousellorRequestItemBinding;
 import com.reconciliationhouse.android.loverekindle.dialog.ChatTypeDialog;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
-import com.reconciliationhouse.android.loverekindle.ui.chat.ChatCategoriesFragment;
-import com.reconciliationhouse.android.loverekindle.ui.chat.ChatCategoriesFragmentDirections;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,6 +26,7 @@ import java.util.List;
 public class CounsellorRequestAdapters extends RecyclerView.Adapter<CounsellorRequestAdapters.RequestHolder> {
     private List<UserModel> mList;
     private Fragment fragment;
+
 
     public CounsellorRequestAdapters(Fragment fragment) {
         this.fragment=fragment;
@@ -61,8 +56,7 @@ public class CounsellorRequestAdapters extends RecyclerView.Adapter<CounsellorRe
             holder.itemBinding.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    showDialog(item.getName(),item.getUserId(),item.getCategory(),item.getProfileImageUrl());
+                    showDialog(item.getName(),item.getEmail(),item.getUserId(),item.getCategory(),item.getProfileImageUrl());
 
 
                 }
@@ -102,10 +96,10 @@ public class CounsellorRequestAdapters extends RecyclerView.Adapter<CounsellorRe
 
     }
 
-    private void showDialog( final String counsellorName, String id,String category, String profileImageUrl) {
+         private void showDialog(String counsellorName, final String counsellorEmail, String id, UserModel.Category category, String profileImageUrl) {
 
         FragmentManager fm = fragment.getActivity().getSupportFragmentManager();
-        ChatTypeDialog custom = new ChatTypeDialog(fragment,counsellorName,id,category,profileImageUrl);
+        ChatTypeDialog custom = new ChatTypeDialog(fragment,counsellorName, counsellorEmail,id,category,profileImageUrl);
         custom.show(fm,"");
 
 

@@ -103,6 +103,17 @@
         <item name="counterTextColor">@color/auth_input_text_color_state</item>
         <item name="passwordToggleTint">@color/secondaryColor</item>
     </style>
+    <style name="GroupTextInputStyle" parent="MyTextInputStyle">
+        <item name="lineHeight">19sp</item>
+        <item name="android:background">@color/colorPrimaryLight</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="boxStrokeColor">@color/colorPrimaryLight</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="counterTextColor">@color/colorPrimary</item>
+        <item name="passwordToggleTint">@color/colorPrimary</item>
+    </style>
 
     <style name="forgot_pass">
         <item name="android:textSize">13sp</item>

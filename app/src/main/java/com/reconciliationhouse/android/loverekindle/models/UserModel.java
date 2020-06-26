@@ -26,7 +26,17 @@ public class UserModel {
         Spiritual_Growth, Godly_Parenting, Marriage_and_Relationship,Health
     }
 
-    public UserModel() {
+    public UserModel (){
+
+    }
+
+    public UserModel(String counsellorId, String counsellorName, Category category, String profileImageUrl) {
+        this.userId = counsellorId;
+        this.name = counsellorName;
+
+        this.profileImageUrl = profileImageUrl;
+
+        this.category = category;
 
     }
 

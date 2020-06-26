@@ -147,7 +147,7 @@ public class SignUpFragment extends Fragment {
 
     private void login() {
         final String name = Objects.requireNonNull(binding.textInputFirstName.getEditText()).getText().toString();
-        String email = Objects.requireNonNull(binding.textInputEmail.getEditText()).getText().toString();
+        final String email = Objects.requireNonNull(binding.textInputEmail.getEditText()).getText().toString();
         String password = Objects.requireNonNull(binding.textInputPassword.getEditText()).getText().toString();
         String password1 = Objects.requireNonNull(binding.textInputReTypePassword.getEditText()).getText().toString();
 
@@ -186,7 +186,7 @@ public class SignUpFragment extends Fragment {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "createUserWithEmail:success");
                                 user = mAuth.getCurrentUser();
-                                uploadUserImageToStorage("images/user_profile/", name);
+                                uploadUserImageToStorage("images/user_profile/", name,email);
 
 
                             } else {
@@ -213,14 +213,16 @@ public class SignUpFragment extends Fragment {
 
             Toast.makeText(getContext(), "You are welcome", Toast.LENGTH_SHORT).show();
             NavController controller = Navigation.findNavController(getView());
+
+            controller.popBackStack(R.id.navigation_explore,true);
             controller.navigate(R.id.action_signUpFragment_to_navigation_explore);
         }
     }
 
-    private void uploadUserImageToStorage(String path, final String name) {
+    private void uploadUserImageToStorage(String path, final String name ,String email) {
         final Uri uri = Uri.parse(imagePath);
         storageReference = FirebaseStorage.getInstance().getReference();
-        reference = storageReference.child(path + name);
+        reference = storageReference.child(path + email);
         UploadTask uploadTask = reference.putFile(uri);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -242,12 +244,12 @@ public class SignUpFragment extends Fragment {
                                             if (task.isSuccessful()) {
                                                 Log.d(TAG, "User profile updated.");
                                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                                DocumentReference collectionReference = db.collection("User").document("regular").collection("users").document(user.getDisplayName());
+                                                DocumentReference collectionReference = db.collection("User").document(user.getEmail());
                                                 // for counsellor
                                                 //DocumentReference collectionReference = db.collection("User").document("counsellor").collection("Spiritual Growth").document(Objects.requireNonNull(user.getDisplayName()));
                                                //final UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "counsellor","Spiritual Growth");
-                                               final UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "regular");
-
+                                              // final UserModel model = new UserModel(user.getUid(), user.getDisplayName(),user.getEmail(), String.valueOf(user.getPhotoUrl()), "0",null,null, UserModel.Role.Regular);
+                                                final UserModel model = new UserModel(user.getUid(),name,user.getEmail(), String.valueOf(user.getPhotoUrl()), "0",null,null, UserModel.Role.Regular, null);
 
 
                                                 collectionReference.set(model).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -255,7 +257,7 @@ public class SignUpFragment extends Fragment {
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
                                                             binding.progressBar.setVisibility(View.GONE);
-                                                            UserPreferences.saveRole(model.getRole(),getContext());
+                                                            UserPreferences.saveRole(String.valueOf(model.getRole()),getContext());
                                                             UserPreferences.saveId(user.getUid(),getContext());
                                                             UserPreferences.saveUserName(user.getDisplayName(),getContext());
                                                             UserPreferences.saveEmail(user.getEmail(),getContext());
