@@ -53,7 +53,8 @@ public class AuthDialog extends DialogFragment {
     private  View.OnClickListener loginBtn =new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          alertDialog();
+             NavController controller = NavHostFragment.findNavController(fragment);
+            controller.navigate(R.id.action_signUpFragment_to_loginFragment);
             Objects.requireNonNull(getDialog()).dismiss();
 
         }
@@ -67,30 +68,5 @@ public class AuthDialog extends DialogFragment {
 
         }
     };
-    private void alertDialog(){
-        MaterialAlertDialogBuilder alertDialogBuilder= new MaterialAlertDialogBuilder(fragment.getContext());
-        alertDialogBuilder.setTitle("Are You a Counsellor");
-        setCancelable(false);
-        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(R.id.action_signUpFragment_to_counsellorLoginFragment);
-                dialog.dismiss();
 
-            }
-        });
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final NavController navController = NavHostFragment.findNavController(fragment);
-                navController.navigate(R.id.action_signUpFragment_to_loginFragment);
-                dialog.dismiss();
-
-
-            }
-        });
-        alertDialogBuilder.show();
-
-    }
 }

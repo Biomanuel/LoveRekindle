@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/media_preview_mobile_navigation"
+    app:startDestination="@id/navigation_media_preview">
+
+    <fragment
+        android:id="@+id/navigation_media_preview"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewFragment"
+        android:label="@string/title_media_preview"
+        tools:layout="@layout/fragment_media_preview">
+        <argument
+            android:name="mediaId"
+            app:argType="string" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <argument
+            android:name="startMediaPlayer"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_navigation_media_preview_self"
+            app:destination="@id/navigation_media_preview" />
+        <action
+            android:id="@+id/action_navigation_media_preview_to_audioPlayer"
+            app:destination="@id/audioPlayer"
+            app:enterAnim="@anim/slide_in_up" />
+        <action
+            android:id="@+id/action_navigation_media_preview_to_ebookReaderFragment"
+            app:destination="@id/ebookReaderFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/audioPlayer"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.mediareader.AudioPlayerFragment"
+        android:label="AudioPlayer"
+        tools:layout="@layout/fragment_audio_player">
+        <argument
+            android:name="mediaUrl"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/ebookReaderFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.mediareader.EbookReaderFragment"
+        android:label="EbookReaderFragment"
+        tools:layout="@layout/fragment_ebook_reader">
+        <argument
+            android:name="mediaUrl"
+            app:argType="string" />
+
+    </fragment>
+
+</navigation>

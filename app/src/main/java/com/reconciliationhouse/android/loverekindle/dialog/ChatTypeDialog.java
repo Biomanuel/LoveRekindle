@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -22,7 +23,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.reconciliationhouse.android.loverekindle.R;
+import com.reconciliationhouse.android.loverekindle.models.ChatItem;
 import com.reconciliationhouse.android.loverekindle.models.ChatModel;
+import com.reconciliationhouse.android.loverekindle.models.ChatType;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 import com.reconciliationhouse.android.loverekindle.ui.chat.ChatCategoriesFragmentDirections;
 
@@ -30,19 +33,75 @@ import java.util.Objects;
 
 public class ChatTypeDialog extends DialogFragment {
     Fragment fragment;
-    String counsellorName;
-    String category;
+    String counsellorEmail, counsellorName;
+    UserModel.Category category;
     String counsellorId;
     String profileImageUrl;
-    public ChatTypeDialog(Fragment fragment, String counsellorName,String counsellorId, String category,String profileImageUrl){
-        this.fragment=fragment;
-        this.counsellorName =counsellorName;
-        this.counsellorId=counsellorId;
-        this.category=category;
-        this.profileImageUrl=profileImageUrl;
+    private View.OnClickListener navigateToGroupChat = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Objects.requireNonNull(getDialog()).dismiss();
+            FragmentManager fm = fragment.getActivity().getSupportFragmentManager();
+          CreateGroupDialog custom=new CreateGroupDialog(fragment,counsellorEmail);
+            custom.show(fm,"");
+
+        }
+    };
+    private View.OnClickListener navigateToSingleChat = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Objects.requireNonNull(getDialog()).dismiss();
+            final NavController navController = NavHostFragment.findNavController(fragment);
+            ChatType chatType=new ChatType(counsellorId, counsellorName, category, profileImageUrl, ChatItem.ChatType.Single_Chat);
+
+            Gson gson = new Gson();
+            final String jsonString = gson.toJson(chatType);
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            String username = null;
+            final FirebaseUser firebaseUser = auth.getCurrentUser();
+            if (firebaseUser != null) {
+                username = firebaseUser.getDisplayName();
+            }
+            final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            assert username != null;
+
+            DocumentReference reference = db.collection("User").document(firebaseUser.getEmail()).collection("chat").document(counsellorEmail + " and " + firebaseUser.getEmail());
+
+            reference.set(new ChatItem(counsellorEmail + " and " + firebaseUser.getEmail(), ChatItem.ChatType.Single_Chat, counsellorName, profileImageUrl))
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                DocumentReference reference = db.collection("User").document(counsellorEmail).collection("chat").document(counsellorEmail + " and " + firebaseUser.getEmail());
+                                reference.set(new ChatItem(counsellorEmail + " and " + firebaseUser.getEmail(), ChatItem.ChatType.Single_Chat, firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl()))).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        ChatCategoriesFragmentDirections.ActionNavigationChatToChatFragment actionNavigationChatToChatFragment = ChatCategoriesFragmentDirections.actionNavigationChatToChatFragment();
+                                        actionNavigationChatToChatFragment.setCounsellorData(jsonString);
+                                        navController.navigate(actionNavigationChatToChatFragment);
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
+
+        }
+    };
+
+    public ChatTypeDialog(Fragment fragment, String counsellorName, String counsellorEmail, String counsellorId, UserModel.Category category, String profileImageUrl) {
+        this.fragment = fragment;
+        this.counsellorEmail = counsellorEmail;
+        this.counsellorId = counsellorId;
+        this.category = category;
+        this.profileImageUrl = profileImageUrl;
+        this.counsellorName = counsellorName;
+
 
     }
-
 
     @NonNull
     @Override
@@ -52,65 +111,16 @@ public class ChatTypeDialog extends DialogFragment {
         final View dialogView = inflater.inflate(R.layout.chat_type_dialog, null);
 
 
-        Button groupChat=dialogView.findViewById(R.id.group_chat);
-        Button singleChat=dialogView.findViewById(R.id.single_chat);
+        Button groupChat = dialogView.findViewById(R.id.group_chat);
+        Button singleChat = dialogView.findViewById(R.id.single_chat);
         singleChat.setOnClickListener(navigateToSingleChat);
         groupChat.setOnClickListener(navigateToGroupChat);
 
-        MaterialAlertDialogBuilder builder=new MaterialAlertDialogBuilder(getActivity());
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setView(dialogView);
-
 
 
         return builder.create();
     }
-
-    private   View.OnClickListener navigateToGroupChat = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Objects.requireNonNull(getDialog()).dismiss();
-
-        }
-    };
-  private   View.OnClickListener navigateToSingleChat = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Objects.requireNonNull(getDialog()).dismiss();
-            final NavController navController = NavHostFragment.findNavController(fragment);
-            UserModel userModel=new UserModel(counsellorId,counsellorName,category,profileImageUrl);
-            Gson gson=new Gson();
-            final String jsonString=gson.toJson(userModel);
-            FirebaseAuth auth=FirebaseAuth.getInstance();
-            String username=null;
-          final FirebaseUser firebaseUser=auth.getCurrentUser();
-            if (firebaseUser!=null){
-                username=firebaseUser.getDisplayName();
-            }
-            final FirebaseFirestore db=FirebaseFirestore.getInstance();
-
-            assert username != null;
-
-            DocumentReference reference=db.collection("User").document("regular").collection("users").document(username).collection("single").document(counsellorName+" and "+firebaseUser.getDisplayName());
-            reference.set(new ChatModel(counsellorId,counsellorName,profileImageUrl)).addOnCompleteListener (new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                               if (task.isSuccessful()){
-                                   DocumentReference reference=db.collection("User").document("counsellor").collection(category).document(counsellorName).collection("single").document(counsellorName+" and "+firebaseUser.getDisplayName());
-                                   reference.set(new ChatModel(firebaseUser.getUid(),firebaseUser.getDisplayName(),String.valueOf(firebaseUser.getPhotoUrl()))).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()){
-                                                ChatCategoriesFragmentDirections.ActionNavigationChatToChatFragment actions=ChatCategoriesFragmentDirections.actionNavigationChatToChatFragment().setCounsellorData(jsonString);
-                                                navController.navigate(actions);
-                                            }
-                                        }
-                                    });
-                               }
-                }
-            });
-
-
-
-        }
-    };}
+}
 

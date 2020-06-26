@@ -10,6 +10,15 @@ public class ChatModel {
     String name;
     String imageUrl;
     Date dateCreated;
+    ChatItem.ChatType chatType;
+
+    public ChatItem.ChatType getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(ChatItem.ChatType chatType) {
+        this.chatType = chatType;
+    }
 
     public String getId() {
         return id;
@@ -44,11 +53,11 @@ public class ChatModel {
         this.dateCreated = dateCreated;
     }
 
-    public ChatModel(String id, String name, String imageUrl) {
-        this.id = id;
-        this.name = name;
-        this.imageUrl = imageUrl;
-    }
+//    public ChatModel(String id, String name, String imageUrl,) {
+//        this.id = id;
+//        this.name = name;
+//        this.imageUrl = imageUrl;
+//    }
 
 public ChatModel (){
 

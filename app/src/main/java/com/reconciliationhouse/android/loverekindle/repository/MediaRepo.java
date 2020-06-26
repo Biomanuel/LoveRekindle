@@ -8,6 +8,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.SetOptions;
 import com.reconciliationhouse.android.loverekindle.livedata.MediaItemListLiveData;
 import com.reconciliationhouse.android.loverekindle.livedata.MediaItemLiveData;
 import com.reconciliationhouse.android.loverekindle.models.MediaItem;
@@ -22,6 +23,7 @@ public class MediaRepo {
     public static final String collectionPath = "Media";
     private static MediaRepo ourInstance;
     private FirebaseFirestore db;
+    private MutableLiveData<List<MediaItem>> allMedia;
     private CollectionReference mCollectionRef;
 
     private MediaRepo() {
@@ -34,12 +36,17 @@ public class MediaRepo {
         return ourInstance;
     }
 
+    public MutableLiveData<List<MediaItem>> getAllMedia() {
+        return allMedia;
+    }
+
     public MediaItemListLiveData getFireStoreAllMediaLiveData() {
         // Prepare Query as you like.
         Query query = mCollectionRef
                 .whereIn("type", Arrays.asList(MediaItem.MediaType.values()))
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
+        allMedia = new MediaItemListLiveData(query);
         return new MediaItemListLiveData(query);
     }
 
@@ -113,5 +120,10 @@ public class MediaRepo {
         mediaListLiveData.setValue(mediaItemList);
 
         return mediaListLiveData;
+    }
+
+    public void updateDownloadCount(MediaItem media) {
+        mCollectionRef.document(media.getId()).update("download_count", media.getDownload_count());
+//        mCollectionRef.document(media.getId()).set(media, SetOptions.merge());
     }
 }

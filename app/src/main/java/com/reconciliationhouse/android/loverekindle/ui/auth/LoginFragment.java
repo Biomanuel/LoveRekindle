@@ -139,21 +139,21 @@ public class LoginFragment extends Fragment {
                                 final FirebaseUser user = mAuth.getCurrentUser();
                                 FirebaseFirestore db=FirebaseFirestore.getInstance();
                                // DocumentReference collectionReference = db.collection("User").document("counsellor").collection("spiritual").document(Objects.requireNonNull(user.getDisplayName()));
-                               DocumentReference collectionReference = db.collection("User").document("regular").collection("users").document(user.getDisplayName());
+                               DocumentReference collectionReference = db.collection("User").document(user.getEmail());
                                 collectionReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                                         if (task.isSuccessful()){
-                                            UserModel model=task.getResult().toObject(UserModel.class);
+                                            UserModel model = task.getResult().toObject(UserModel.class);
 
 
                                             assert model != null;
-                                            UserPreferences.saveCategory(model.getCategory(),getContext());
+                                UserPreferences.saveCategory(String.valueOf(model.getCategory()),getContext());
                                            UserPreferences.saveId(user.getUid(),getContext());
                                             UserPreferences.saveUserName(user.getDisplayName(),getContext());
                                             UserPreferences.saveEmail(user.getEmail(),getContext());
-                                            UserPreferences.saveRole(model.getRole(),getContext());
+                                            UserPreferences.saveRole(String.valueOf(model.getRole()),getContext());
                                            UserPreferences.saveBalance(model.getBalance(),getContext());
                                             NavController controller=Navigation.findNavController(getView());
                                             controller.navigate(R.id.action_loginFragment_to_navigation_explore);

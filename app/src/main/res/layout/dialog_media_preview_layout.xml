@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="com.reconciliationhouse.android.loverekindle.ui.explore.mediapreview.DialogMediaPreview.Assignment" />
+        <import type="com.reconciliationhouse.android.loverekindle.ui.mediapreview.DialogMediaPreview.Assignment" />
 
         <variable
             name="viewModel"
-            type="com.reconciliationhouse.android.loverekindle.ui.explore.mediapreview.MediaPreviewViewModel" />
+            type="com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewViewModel" />
 
         <variable
             name="appbarClickListener"
@@ -17,7 +17,7 @@
 
         <variable
             name="purpose"
-            type="com.reconciliationhouse.android.loverekindle.ui.explore.mediapreview.DialogMediaPreview.Assignment" />
+            type="com.reconciliationhouse.android.loverekindle.ui.mediapreview.DialogMediaPreview.Assignment" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -35,6 +35,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+
                 <ImageButton
                     android:id="@+id/bt_close"
                     android:layout_width="?attr/actionBarSize"
@@ -44,6 +45,7 @@
                     android:src="@drawable/ic_arrow_back"
                     android:tint="@android:color/white"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:purpose="@{purpose}"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -72,6 +74,23 @@
                     android:paddingRight="@dimen/spacing_xsmall"
                     android:src="@drawable/ic_share"
                     android:textColor="@android:color/white"
+                    app:isVisible="@{purpose != Assignment.EDIT_REVIEW}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/bt_save"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:onClick="@{(view)->appbarClickListener.onClick(view)}"
+                    android:paddingLeft="@dimen/spacing_xsmall"
+                    android:paddingRight="@dimen/spacing_xsmall"
+                    android:text="@{viewModel.userReview == null || viewModel.userReview.review.empty ? @string/post : @string/action_save}"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    app:isVisible="@{purpose == Assignment.EDIT_REVIEW}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -123,7 +142,7 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/none_rv_contents_container"
+                        android:id="@+id/about_book_contents_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentStart="true"
@@ -133,10 +152,10 @@
                         android:background="@color/white"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
-                        app:isVisible="@{purpose == Assignment.MORE_ABOUT || purpose == Assignment.EDIT_REVIEW}">
+                        app:isVisible="@{purpose == Assignment.MORE_ABOUT}">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/none_rv_content"
+                            android:id="@+id/about_book_content"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
@@ -241,6 +260,38 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/edit_review_contents_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/white"
+                        android:minHeight="200dp"
+                        app:isVisible="@{purpose == Assignment.EDIT_REVIEW}">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etxt_review_comment"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="start"
+                            android:hint="Write your review"
+                            android:inputType="text|textMultiLine"
+                            android:minLines="8"
+                            android:padding="4dp"
+                            android:singleLine="false"
+                            android:text="@{viewModel.userReview.review}"
+                            android:textColor="@color/deeper_grey"
+                            android:textSize="20sp" />
+
+                    </FrameLayout>
+
+
                 </RelativeLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

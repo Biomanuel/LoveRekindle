@@ -12,21 +12,30 @@ public class UserModel {
     private String email;
     private String profileImageUrl;
     private String balance;
-    private List<String>saveMedia;
-    private List<String>likedMedia;
+    private List<String> saveMedia;
+    private List<String> likedMedia;
     private Role role;
     private Category category;
 
-
-
-    public enum Role{
-        Regular,Counsellor,Admin
-    }
-    public enum Category{
-        Spiritual_Growth, Godly_Parenting, Marriage_and_Relationship,Health
+    public enum Role {
+        Regular, Counsellor, Admin
     }
 
-    public UserModel() {
+    public enum Category {
+        Spiritual_Growth, Godly_Parenting, Marriage_and_Relationship, Health
+    }
+
+    public UserModel (){
+
+    }
+
+    public UserModel(String counsellorId, String counsellorName, Category category, String profileImageUrl) {
+        this.userId = counsellorId;
+        this.name = counsellorName;
+
+        this.profileImageUrl = profileImageUrl;
+
+        this.category = category;
 
     }
 

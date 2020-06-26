@@ -1,5 +1,6 @@
 package com.reconciliationhouse.android.loverekindle.ui.settings;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -18,6 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.SettingsFragmentBinding;
+import com.reconciliationhouse.android.loverekindle.dialog.CounsellorshipFormDialog;
+import com.reconciliationhouse.android.loverekindle.dialog.InviteUserDialog;
+import com.reconciliationhouse.android.loverekindle.models.UserModel;
+import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
+import com.reconciliationhouse.android.loverekindle.ui.chat.ChatFragment;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -27,7 +33,7 @@ public class SettingsFragment extends Fragment {
    private FirebaseAuth mAuth;
    private boolean isEditable;
 
-    private SettingsViewModel mViewModel;
+
 
 
     public static SettingsFragment newInstance() {
@@ -46,7 +52,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
+
 
         //check if user is already Authenticated
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -57,6 +63,9 @@ public class SettingsFragment extends Fragment {
             Picasso.get().load(currentUser.getPhotoUrl()).into(mBinding.userProfileImage);
         }
 mBinding.changeImage.setEnabled(false);
+        mBinding.applyAsCounsellor.setVisibility(View.GONE);
+        mBinding.counsellorStatus.setVisibility(View.GONE);
+
         mBinding.changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +82,16 @@ mBinding.changeImage.setEnabled(false);
             @Override
             public void onClick(View view) {
                 isEditable=true;
+                if (UserPreferences.getRole(getContext()).equals(String.valueOf(UserModel.Role.Counsellor))){
+                    mBinding.counsellorStatus.setText("You are a Counsellor");
+                    mBinding.applyAsCounsellor.setVisibility(View.GONE);
+
+                }
+                else {
+                    mBinding.counsellorStatus.setText("You are a Normal User");
+                    mBinding.applyAsCounsellor.setVisibility(View.VISIBLE);
+                }
+                mBinding.counsellorStatus.setVisibility(View.VISIBLE);
                 mBinding.changeImage.setEnabled(true);
                 mBinding.email.setFocusable(true);
                 mBinding.email.setFocusableInTouchMode(true);
@@ -91,10 +110,20 @@ mBinding.changeImage.setEnabled(false);
 
             }
         });
+        mBinding.applyAsCounsellor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = SettingsFragment.this.getActivity().getSupportFragmentManager();
+                CounsellorshipFormDialog dialog=new CounsellorshipFormDialog();
+                dialog.show(fm,"");
+            }
+        });
         mBinding.saveProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isEditable=false;
+                mBinding.applyAsCounsellor.setVisibility(View.GONE);
+                mBinding.counsellorStatus.setVisibility(View.GONE);
                 mBinding.changeImage.setEnabled(false);
                 mBinding.email.setFocusable(false);
                 mBinding.email.setFocusableInTouchMode(false);

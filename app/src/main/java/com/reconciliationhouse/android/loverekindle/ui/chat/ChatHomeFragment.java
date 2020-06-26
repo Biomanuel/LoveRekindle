@@ -1,30 +1,41 @@
 package com.reconciliationhouse.android.loverekindle.ui.chat;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.reconciliationhouse.android.loverekindle.R;
-import com.reconciliationhouse.android.loverekindle.adapters.ChatTypePagerAdapter;
-import com.reconciliationhouse.android.loverekindle.adapters.LibraryPagerAdapter;
+import com.reconciliationhouse.android.loverekindle.adapters.chat.ChatListAdapter;
+import com.reconciliationhouse.android.loverekindle.databinding.ChatHomeFragmentBinding;
+import com.reconciliationhouse.android.loverekindle.models.ChatItem;
+import com.reconciliationhouse.android.loverekindle.models.ChatModel;
+import com.reconciliationhouse.android.loverekindle.models.UserModel;
+import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ChatHomeFragment extends Fragment {
-
-
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager2;
+    ChatHomeFragmentBinding binding ;
+    private List<ChatItem> mList;
 
     public static ChatHomeFragment newInstance() {
         return new ChatHomeFragment();
@@ -33,23 +44,72 @@ public class ChatHomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view;
-        view= inflater.inflate(R.layout.chat_home_fragment, container, false);
-         tabLayout=view.findViewById(R.id.chat_tabs);
-         viewPager2=view.findViewById(R.id.chat_pager);
-        viewPager2.setAdapter(new ChatTypePagerAdapter(this));
-        new TabLayoutMediator(tabLayout,viewPager2, new TabLayoutMediator.OnConfigureTabCallback() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(ChatTypePagerAdapter.getPageTitle(position));
-            }
-        }).attach();
-        return view;
+        binding=ChatHomeFragmentBinding.inflate(inflater,container,false);
+
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (UserPreferences.getRole(getContext())!=null){
+
+            if (UserPreferences.getRole(getContext()).equals(String.valueOf(UserModel.Role.Counsellor))) {
+                binding.addChat.setVisibility(View.GONE);
+
+            }
+        }
+        else  {
+            binding.addChat.setVisibility(View.VISIBLE);
+        }
+        binding.progressBar.setVisibility(View.VISIBLE);
+        FirebaseAuth auth=FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser=auth.getCurrentUser();
+
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        assert firebaseUser != null;
+        mList=new ArrayList<>();
+
+
+
+
+
+        CollectionReference reference = db.collection("User").document(Objects.requireNonNull(firebaseUser.getEmail())).collection("chat");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    binding.progressBar.setVisibility(View.GONE);
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        ChatItem model = document.toObject(ChatItem.class);
+                        mList.add(model);
+
+
+                    }
+                    ChatListAdapter adapter=new ChatListAdapter();
+
+                    adapter.setChatItems(mList);
+                    binding.allSingleChat.setLayoutManager(new LinearLayoutManager(getContext()));
+                    binding.allSingleChat.setAdapter(adapter);
+                }
+
+            }
+        });
+
+
+
+
+
+
+        binding.addChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController controller= Navigation.findNavController(v);
+                controller.navigate(R.id.action_chatHomeFragment_to_navigation_chat);
+            }
+        });
 
     }
 

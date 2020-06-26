@@ -21,6 +21,7 @@ import java.util.List;
 public class ChatViewModel extends AndroidViewModel {
     private ChatMessagesRepo chatMessagesRepo;
     private MutableLiveData<List<Message>> getSingleChat;
+    private MutableLiveData<List<Message>> getGroupChat;
     public ChatViewModel(@NonNull Application application) {
         super(application);
         chatMessagesRepo=new ChatMessagesRepo(application);
@@ -28,6 +29,10 @@ public class ChatViewModel extends AndroidViewModel {
     public LiveData<List<Message>> getAllSingleChat(String counsellorName,String username) {
         getSingleChat =chatMessagesRepo.getAllSingleChatMessages(counsellorName,username);
         return getSingleChat;
+    }
+    public LiveData<List<Message>> getAllGroupChat(String groupName) {
+        getGroupChat =chatMessagesRepo.getAllGroupChatMessages(groupName);
+        return getGroupChat;
     }
 
 }

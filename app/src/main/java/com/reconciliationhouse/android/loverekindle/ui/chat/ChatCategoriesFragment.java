@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.reconciliationhouse.android.loverekindle.R;
-import com.reconciliationhouse.android.loverekindle.adapters.CounsellorRequestAdapters;
+import com.reconciliationhouse.android.loverekindle.adapters.counsellor.CounsellorRequestAdapters;
 import com.reconciliationhouse.android.loverekindle.databinding.ChatCategoriesFragmentBinding;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 
@@ -165,22 +165,19 @@ public class ChatCategoriesFragment extends Fragment implements View.OnClickList
                 adapters = new CounsellorRequestAdapters(ChatCategoriesFragment.this);
 
                 mViewModel.getAllParentingCounsellors(progressBar,selectCounsellors).observe(getViewLifecycleOwner(), new Observer<List<UserModel>>() {
-
-
                     @Override
                     public void onChanged(List<UserModel> userModels) {
-                        parentingCounsellors = userModels;
+                        parentingCounsellors=userModels;
 
                         adapters.setCounsellors(userModels);
-
-
                     }
                 });
 
-                        if (parentingCounsellors.size()!=0) {
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                            recyclerView.setAdapter(adapters);
-                        }
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                recyclerView.setAdapter(adapters);
+
+
 
                 break;
             case R.id.relationship_councellor:
