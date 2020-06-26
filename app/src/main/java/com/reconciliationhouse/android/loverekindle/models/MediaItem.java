@@ -32,16 +32,21 @@ public class MediaItem {
     private String publisher;
     private String contributors;
 
-    public enum MediaType {
-        AUDIO, EBOOK, SERMON
-    }
-
-    public MediaItem(MediaType mediaType){
+    public MediaItem(MediaType mediaType) {
         this.type = mediaType;
         this.id = String.valueOf((new Date()).getTime());
     }
-    public MediaItem(){
+
+    public MediaItem() {
         this.id = String.valueOf((new Date()).getTime());
+    }
+
+    public void downloaded() {
+        this.download_count++;
+    }
+
+    public enum MediaType {
+        AUDIO, EBOOK, SERMON
     }
 
     public MediaItem(String id, String image_url, String title, String category, String author,

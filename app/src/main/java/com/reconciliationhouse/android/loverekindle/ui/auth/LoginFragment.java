@@ -145,11 +145,11 @@ public class LoginFragment extends Fragment {
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                                         if (task.isSuccessful()){
-                                            UserModel model=task.getResult().toObject(UserModel.class);
+                                            UserModel model = task.getResult().toObject(UserModel.class);
 
 
                                             assert model != null;
-                                            UserPreferences.saveCategory(String.valueOf(model.getCategory()),getContext());
+                                UserPreferences.saveCategory(String.valueOf(model.getCategory()),getContext());
                                            UserPreferences.saveId(user.getUid(),getContext());
                                             UserPreferences.saveUserName(user.getDisplayName(),getContext());
                                             UserPreferences.saveEmail(user.getEmail(),getContext());

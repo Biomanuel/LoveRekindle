@@ -2,14 +2,15 @@ package com.reconciliationhouse.android.loverekindle.adapters.bindingadapters;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.models.MediaReview;
-import com.reconciliationhouse.android.loverekindle.ui.explore.mediapreview.DialogMediaPreview;
-import com.reconciliationhouse.android.loverekindle.ui.explore.mediapreview.MediaPreviewViewModel;
+import com.reconciliationhouse.android.loverekindle.ui.mediapreview.DialogMediaPreview;
+import com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewViewModel;
 
 import java.util.List;
 
@@ -62,6 +63,12 @@ public abstract class ExploreLayoutsBindingAdapters {
                 view.setText(vContext.getResources().getString(R.string.txt_about_book_title));
                 break;
         }
+    }
+
+    @BindingAdapter("android:purpose")
+    public static void setDrawableSrc(ImageButton view, DialogMediaPreview.Assignment purpose) {
+        if (purpose == DialogMediaPreview.Assignment.EDIT_REVIEW)
+            view.setImageDrawable(view.getContext().getResources().getDrawable(R.drawable.ic_close));
     }
 
 }

@@ -17,11 +17,14 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_navigation_media_gallery_to_mediaPreviewActivity"
+            app:destination="@id/mediaPreviewActivity" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_media_preview"
-        android:name="com.reconciliationhouse.android.loverekindle.ui.explore.mediapreview.MediaPreviewFragment"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewFragment"
         android:label="@string/title_media_preview"
         tools:layout="@layout/fragment_media_preview">
         <argument
@@ -34,5 +37,20 @@
             android:id="@+id/action_navigation_media_preview_self"
             app:destination="@id/navigation_media_preview" />
     </fragment>
+
+    <activity
+        android:id="@+id/mediaPreviewActivity"
+        android:name="com.reconciliationhouse.android.loverekindle.ui.mediapreview.MediaPreviewActivity"
+        android:label="activity_media_preview"
+        tools:layout="@layout/activity_media_preview">
+
+        <argument
+            android:name="mediaId"
+            app:argType="string" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+
+    </activity>
 
 </navigation>

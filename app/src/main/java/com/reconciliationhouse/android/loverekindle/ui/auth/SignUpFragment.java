@@ -29,7 +29,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -119,7 +118,7 @@ public class SignUpFragment extends Fragment {
         binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                signUp();
             }
         });
     }
@@ -145,7 +144,7 @@ public class SignUpFragment extends Fragment {
 
     }
 
-    private void login() {
+    private void signUp() {
         final String name = Objects.requireNonNull(binding.textInputFirstName.getEditText()).getText().toString();
         final String email = Objects.requireNonNull(binding.textInputEmail.getEditText()).getText().toString();
         String password = Objects.requireNonNull(binding.textInputPassword.getEditText()).getText().toString();
@@ -175,8 +174,6 @@ public class SignUpFragment extends Fragment {
             binding.textInputReTypePassword.setError(null);
             binding.textInputFirstName.setError(null);
             binding.textInputEmail.setError(null);
-            binding.textInputEmail.setError(null);
-            binding.textInputFirstName.setError(null);
             binding.progressBar.setVisibility(View.VISIBLE);
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -187,7 +184,6 @@ public class SignUpFragment extends Fragment {
                                 Log.d(TAG, "createUserWithEmail:success");
                                 user = mAuth.getCurrentUser();
                                 uploadUserImageToStorage("images/user_profile/", name,email);
-
 
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -219,6 +215,7 @@ public class SignUpFragment extends Fragment {
         }
     }
 
+    //TODO: Move this to User Repo
     private void uploadUserImageToStorage(String path, final String name ,String email) {
         final Uri uri = Uri.parse(imagePath);
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -247,6 +244,7 @@ public class SignUpFragment extends Fragment {
                                                 DocumentReference collectionReference = db.collection("User").document(user.getEmail());
                                                 // for counsellor
                                                 //DocumentReference collectionReference = db.collection("User").document("counsellor").collection("Spiritual Growth").document(Objects.requireNonNull(user.getDisplayName()));
+
                                                //final UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "counsellor","Spiritual Growth");
                                               // final UserModel model = new UserModel(user.getUid(), user.getDisplayName(),user.getEmail(), String.valueOf(user.getPhotoUrl()), "0",null,null, UserModel.Role.Regular);
                                                 final UserModel model = new UserModel(user.getUid(),name,user.getEmail(), String.valueOf(user.getPhotoUrl()), "0",null,null, UserModel.Role.Regular, null);
@@ -270,8 +268,6 @@ public class SignUpFragment extends Fragment {
                                                         }
                                                     }
                                                 });
-
-
                                             }
                                         }
                                     });
