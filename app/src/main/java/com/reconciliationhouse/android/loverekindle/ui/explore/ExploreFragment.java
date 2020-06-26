@@ -6,11 +6,25 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-
 import com.reconciliationhouse.android.loverekindle.MainActivity;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentExploreBinding;
@@ -37,7 +51,26 @@ public class ExploreFragment extends Fragment {
         return mBinding.getRoot();
     }
 
-//    @Nullable
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseAuth auth=FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser!= null) {
+
+            Toast.makeText(getContext(), "You are welcome", Toast.LENGTH_SHORT).show();
+
+        }
+        else {
+            NavController controller = Navigation.findNavController(getView());
+
+
+            controller.navigate(R.id.action_navigation_explore_to_signUpFragment);
+        }
+    }
+
+
+    //    @Nullable
 //    @Override
 //    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
 //        if (getParentFragment() != null && getParentFragment().isDetached()) {

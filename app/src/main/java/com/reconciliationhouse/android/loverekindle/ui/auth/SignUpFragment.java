@@ -184,7 +184,6 @@ public class SignUpFragment extends Fragment {
                                 Log.d(TAG, "createUserWithEmail:success");
                                 user = mAuth.getCurrentUser();
                                 uploadUserImageToStorage("images/user_profile/", name,email);
-
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -214,7 +213,6 @@ public class SignUpFragment extends Fragment {
             controller.navigate(R.id.action_signUpFragment_to_navigation_explore);
         }
     }
-
     //TODO: Move this to User Repo
     private void uploadUserImageToStorage(String path, final String name ,String email) {
         final Uri uri = Uri.parse(imagePath);
@@ -244,8 +242,7 @@ public class SignUpFragment extends Fragment {
                                                 DocumentReference collectionReference = db.collection("User").document(user.getEmail());
                                                 // for counsellor
                                                 //DocumentReference collectionReference = db.collection("User").document("counsellor").collection("Spiritual Growth").document(Objects.requireNonNull(user.getDisplayName()));
-
-                                               //final UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "counsellor","Spiritual Growth");
+                        //final UserModel model = new UserModel(user.getUid(), user.getDisplayName(), String.valueOf(user.getPhotoUrl()), user.getEmail(), "0", "counsellor","Spiritual Growth");
                                               // final UserModel model = new UserModel(user.getUid(), user.getDisplayName(),user.getEmail(), String.valueOf(user.getPhotoUrl()), "0",null,null, UserModel.Role.Regular);
                                                 final UserModel model = new UserModel(user.getUid(),name,user.getEmail(), String.valueOf(user.getPhotoUrl()), "0",null,null, UserModel.Role.Regular, null);
 
