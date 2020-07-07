@@ -15,6 +15,7 @@ public class Message {
     private Boolean isSeen;
 
 
+
     public   static enum MessageType{
         TEXT,IMAGE,Audio
     }

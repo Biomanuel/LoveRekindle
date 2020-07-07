@@ -47,7 +47,7 @@ public class UserPreferences {
 
 
     //   role such as counsellor , regular and super
-    public static boolean saveRole(UserModel.Role role, Context context) {
+    public static boolean saveRole(String role, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString(UserConstants.USER_ROLE, role.toString());
@@ -61,7 +61,7 @@ public class UserPreferences {
     }
 
     // category is only apply to a counsellor with the four categories
-    public static boolean saveCategory(UserModel.Category category, Context context) {
+    public static boolean saveCategory(String category, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString(UserConstants.USER_CATEGORY, category.toString());

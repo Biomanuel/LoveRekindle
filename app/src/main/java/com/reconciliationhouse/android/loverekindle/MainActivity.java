@@ -29,21 +29,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
 
         final BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        if(UserPreferences.getRole(getApplicationContext())!=null) {
-            if (UserPreferences.getRole(getApplicationContext()).equals(String.valueOf(UserModel.Role.Regular))) {
-                navView.getMenu().findItem(R.id.listOfRequestFragment).setVisible(false);
-            } else if (UserPreferences.getRole(getApplicationContext()).equals(String.valueOf(UserModel.Role.Counsellor))) {
-                navView.getMenu().findItem(R.id.listOfRequestFragment).setVisible(false);
-            } else {
-                navView.getMenu().findItem(R.id.listOfRequestFragment).setVisible(true);
-            }
-        }
+
+//            if (String.valueOf(UserRepo.user.getRole()).equals(String.valueOf(UserModel.Role.Regular))) {
+//                navView.getMenu().findItem(R.id.listOfRequestFragment).setVisible(false);
+//            } else if (String.valueOf(UserRepo.user.getRole()).equals(String.valueOf(UserModel.Role.Counsellor))) {
+//                navView.getMenu().findItem(R.id.listOfRequestFragment).setVisible(false);
+//            } else {
+//                navView.getMenu().findItem(R.id.listOfRequestFragment).setVisible(true);
+//
+//        }
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 

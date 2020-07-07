@@ -14,6 +14,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +45,7 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +77,8 @@ import com.reconciliationhouse.android.loverekindle.models.Message;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 import com.reconciliationhouse.android.loverekindle.models.UserSender;
 import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
+import com.reconciliationhouse.android.loverekindle.repository.UserRepo;
+import com.reconciliationhouse.android.loverekindle.utils.NetworkCheck;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -123,15 +128,17 @@ public class ChatFragment extends Fragment {
     private String recordPermission= RECORD_AUDIO;
      List<Message>mMessages;
     private MediaRecorder mRecorder;
+
+
     private boolean isRecording =false;
 
     private static final String LOG_TAG = "AudioRecording";
     private static String mFileName = null;
-
+    MediaPlayer mPlayer;
 
     private static final int GALLERY_PICK=123;
     private Chronometer timer;
-
+    private  File audio;
     private String filePath;
 
 
@@ -213,32 +220,37 @@ public class ChatFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==GALLERY_PICK&&resultCode==RESULT_OK){
+
+        if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
+
+
+
             progressBar.setVisibility(View.VISIBLE);
-            Uri imageUri=data.getData();
+            Uri imageUri = data.getData();
             assert imageUri != null;
-            String imageName=imageUri.getLastPathSegment();
-            fileStorage=FirebaseStorage.getInstance();
+            String imageName = imageUri.getLastPathSegment();
+            fileStorage = FirebaseStorage.getInstance();
             String path = null;
 
 
-            FirebaseFirestore db1=FirebaseFirestore.getInstance();
-            CollectionReference reference1=null;
-
+            FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+            CollectionReference reference1 = null;
 
 
             if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)) {
-                if (UserPreferences.getRole(getContext()).equals(String.valueOf(UserModel.Role.Regular))) {
+                String ref = null;
+                if (String.valueOf(UserRepo.user.getRole()).equals(String.valueOf(UserModel.Role.Regular))) {
 
                     reference1 = db1.collection("Chat").document("single").collection(name + " and " + firebaseUser.getDisplayName());
-                    path=name + " and " + firebaseUser.getDisplayName();
+                    path = name + " and " + firebaseUser.getDisplayName();
+
                 } else {
                     reference1 = db1.collection("Chat").document("single").collection(firebaseUser.getDisplayName() + " and " + name);
-                     path=firebaseUser.getDisplayName() + " and " + name;
+                    path = firebaseUser.getDisplayName() + " and " + name;
                 }
-                String push_id=reference1.getId();
+                String push_id = reference1.getId();
 
-                final StorageReference filepath=fileStorage.getReference("images/chat/"+path).child(imageName+".jpg");
+                final StorageReference filepath = fileStorage.getReference("images/chat/" + path).child(imageName + ".jpg");
 
                 Task<UploadTask.TaskSnapshot> uploadTask = filepath.putFile(imageUri);
 
@@ -261,8 +273,7 @@ public class ChatFragment extends Fragment {
                             Uri downloadUri = task.getResult();
 
 
-
-                            final Message message = new Message(Message.MessageType.IMAGE, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())),String.valueOf(downloadUri),false);
+                            final Message message = new Message(Message.MessageType.IMAGE, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())), String.valueOf(downloadUri), false);
 
                             finalReference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                 @Override
@@ -271,21 +282,18 @@ public class ChatFragment extends Fragment {
                                     messagesText.setText("");
 
 
-
                                 }
                             });
-
 
 
                         } else {
                             // Handle failures
                             // ...
                             progressBar.setVisibility(View.GONE);
-                            Snackbar.make(getView(),"Error sending image ",Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(getView(), "Error sending image ", Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });
-
 
 
 //                reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -297,12 +305,11 @@ public class ChatFragment extends Fragment {
 //                        }
 //                    }
 //                });
-            }
-            else {
+            } else {
                 reference1 = db1.collection("Chat").document("group").collection(model.getChatId());
-                String push_id=reference1.getId();
+                String push_id = reference1.getId();
 
-                final StorageReference filepath=fileStorage.getReference("images/chat/"+path).child(imageName+".jpg");
+                final StorageReference filepath = fileStorage.getReference("images/chat/" + path).child(imageName + ".jpg");
 
                 Task<UploadTask.TaskSnapshot> uploadTask = filepath.putFile(imageUri);
 
@@ -326,8 +333,7 @@ public class ChatFragment extends Fragment {
                             Uri downloadUri = task.getResult();
 
 
-
-                            final Message message = new Message(Message.MessageType.IMAGE, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())),String.valueOf(downloadUri),false);
+                            final Message message = new Message(Message.MessageType.IMAGE, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())), String.valueOf(downloadUri), false);
 
                             finalReference1.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                 @Override
@@ -336,17 +342,15 @@ public class ChatFragment extends Fragment {
                                     messagesText.setText("");
 
 
-
                                 }
                             });
-
 
 
                         } else {
                             // Handle failures
                             // ...
                             progressBar.setVisibility(View.GONE);
-                            Snackbar.make(getView(),"Error sending image ",Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(getView(), "Error sending image ", Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -355,11 +359,11 @@ public class ChatFragment extends Fragment {
             }
 
 
-
         }
-
-
     }
+
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -375,6 +379,7 @@ public class ChatFragment extends Fragment {
 
 
         if (getArguments() != null) {
+
 
 
             ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
@@ -427,7 +432,7 @@ public class ChatFragment extends Fragment {
 
 
               if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)){
-        if (UserPreferences.getRole(getContext()).equals("Regular")){
+        if (String.valueOf(UserRepo.user.getRole()).equals(String.valueOf(UserModel.Role.Regular))){
             mViewModel.getAllSingleChat(name,firebaseUser.getDisplayName()).observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
                 @Override
                 public void onChanged(List<Message> messages) {
@@ -486,8 +491,10 @@ public class ChatFragment extends Fragment {
                   @Override
                   public void onClick(View v) {
 
+
                       if (isRecording){
-                          stopRecording();
+                          if (mRecorder!=null){
+                          stopRecording();}
 
 
                           addVoiceRecording.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_voice_black_24dp));
@@ -502,10 +509,11 @@ public class ChatFragment extends Fragment {
                                startRecording();
                                addEmoji.setVisibility(View.GONE);
                                timer.setVisibility(View.VISIBLE);
+                              isRecording=true;
+                              addVoiceRecording.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_none_black_24dp));
                           }
 
-                          isRecording=true;
-                          addVoiceRecording.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_none_black_24dp));
+
                       }
                      // Toast.makeText(getContext(), "Clicked", Toast.LENGTH_LONG).show();
 //                      if(CheckPermissions()) {
@@ -551,51 +559,50 @@ public class ChatFragment extends Fragment {
                     String text = Objects.requireNonNull(messagesText.getText()).toString();
                     if (!(TextUtils.isEmpty(text))) {
 
-                        Message message = new Message(Message.MessageType.TEXT,text, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())),false);
-                        db = FirebaseFirestore.getInstance();
 
-                           if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)) {
-                               if (UserPreferences.getRole(getContext()).equals("Regular")) {
-                                   reference = db.collection("Chat").document("single").collection(name + " and " + firebaseUser.getDisplayName());
-                               } else {
-                                   reference = db.collection("Chat").document("single").collection(firebaseUser.getDisplayName() + " and " + name);
+                            Message message = new Message(Message.MessageType.TEXT, text, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())), false);
+                            db = FirebaseFirestore.getInstance();
 
-                               }
+                            if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)) {
+                                if (String.valueOf((UserRepo.user.getRole())).equals("Regular")) {
+                                    reference = db.collection("Chat").document("single").collection(name + " and " + firebaseUser.getDisplayName());
+                                } else {
+                                    reference = db.collection("Chat").document("single").collection(firebaseUser.getDisplayName() + " and " + name);
 
-                               reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                   @Override
-                                   public void onComplete(@NonNull Task<DocumentReference> task) {
-                                       if (task.isSuccessful()) {
-                                           messagesText.setText("");
+                                }
+
+                                reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        if (task.isSuccessful()) {
+                                            messagesText.setText("");
 //
-                                       }
-                                   }
-                               });
-                           }
-                           else {
-                               reference = db.collection("Chat").document("group").collection(model.getChatId());
-                               reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                   @Override
-                                   public void onComplete(@NonNull Task<DocumentReference> task) {
-                                       if (task.isSuccessful()) {
-                                           messagesText.setText("");}
+                                        }
+                                    }
+                                });
+                            } else {
+                                reference = db.collection("Chat").document("group").collection(model.getChatId());
+                                reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        if (task.isSuccessful()) {
+                                            messagesText.setText("");
+                                        }
 
-                                   }
-                               });
+                                    }
+                                });
 
-                           }
+                            }
+                        }
+
+
                     }
-
-
-
-
-
-                }
-            });
+                } );
 
         }
 
     private void stopRecording(){
+
         timer.stop();
         mRecorder.stop();
         mRecorder.release();
@@ -731,7 +738,7 @@ public class ChatFragment extends Fragment {
 
 
     }
-    private void   showDialog(Activity activity){
+    private void   showDialog(Activity activity) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -740,80 +747,110 @@ public class ChatFragment extends Fragment {
 
         Button cancel = (Button) dialog.findViewById(R.id.cancel);
         Button send = (Button) dialog.findViewById(R.id.send);
-        send.setOnClickListener(new View.OnClickListener() {
+        final ImageView play=dialog.findViewById(R.id.play);
+
+        play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),filePath,Toast.LENGTH_SHORT).show();
-                final File audio =new File(filePath);
-                dialog.dismiss();
-                progressBar.setVisibility(View.VISIBLE);
-                FirebaseFirestore db1=FirebaseFirestore.getInstance();
-                CollectionReference reference1=null;
-                String path=null;
-                fileStorage=FirebaseStorage.getInstance();
+                audio = new File(filePath);
 
 
 
-                if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)) {
-                    if (UserPreferences.getRole(getContext()).equals(String.valueOf(UserModel.Role.Regular))) {
 
-                        reference1 = db1.collection("Chat").document("single").collection(name + " and " + firebaseUser.getDisplayName());
-                        path=name + " and " + firebaseUser.getDisplayName();
-                    } else {
-                        reference1 = db1.collection("Chat").document("single").collection(firebaseUser.getDisplayName() + " and " + name);
-                        path=firebaseUser.getDisplayName() + " and " + name;
-                    }
-                    String push_id=reference1.getId();
 
-                    final StorageReference filepath=fileStorage.getReference("audio/chat/"+path).child(audio.getName());
+                MediaPlayer mediaPlayer = new MediaPlayer();
 
-                    Task<UploadTask.TaskSnapshot> uploadTask = filepath.putFile(Uri.fromFile(audio));
+                try {
+                    mediaPlayer.setDataSource(audio.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mediaPlayer.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mediaPlayer.start();
 
-                    final CollectionReference finalReference = reference1;
-                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                        @Override
-                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                            if (!task.isSuccessful()) {
-                                throw task.getException();
-                            }
 
-                            // Continue with the task to get the download URL
-                            return filepath.getDownloadUrl();
+
+
+
+
+
+            }
+        });
+
+
+            send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getContext(), filePath, Toast.LENGTH_SHORT).show();
+                      audio = new File(filePath);
+                    dialog.dismiss();
+                    progressBar.setVisibility(View.VISIBLE);
+                    FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+                    CollectionReference reference1 = null;
+                    String path = null;
+                    fileStorage = FirebaseStorage.getInstance();
+
+
+                    if (model.getChatType().equals(ChatItem.ChatType.Single_Chat)) {
+                        if (UserPreferences.getRole(getContext()).equals(String.valueOf(UserModel.Role.Regular))) {
+
+                            reference1 = db1.collection("Chat").document("single").collection(name + " and " + firebaseUser.getDisplayName());
+                            path = name + " and " + firebaseUser.getDisplayName();
+                        } else {
+                            reference1 = db1.collection("Chat").document("single").collection(firebaseUser.getDisplayName() + " and " + name);
+                            path = firebaseUser.getDisplayName() + " and " + name;
                         }
-                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            if (task.isSuccessful()) {
-                                audio.delete();
+                        String push_id = reference1.getId();
 
-                                Uri downloadUri = task.getResult();
+                        final StorageReference filepath = fileStorage.getReference("audio/chat/" + path).child(audio.getName());
 
+                        Task<UploadTask.TaskSnapshot> uploadTask = filepath.putFile(Uri.fromFile(audio));
 
+                        final CollectionReference finalReference = reference1;
+                        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                            @Override
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful()) {
+                                    throw task.getException();
+                                }
 
-                                final Message message = new Message(Message.MessageType.Audio, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())),String.valueOf(downloadUri),false);
-
-                                finalReference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                                        progressBar.setVisibility(View.GONE);
-                                        messagesText.setText("");
-
-
-
-                                    }
-                                });
-
-
-
-                            } else {
-                                // Handle failures
-                                // ...
-                                progressBar.setVisibility(View.GONE);
-                                Snackbar.make(getView(),"Error sending image ",Snackbar.LENGTH_SHORT).show();
+                                // Continue with the task to get the download URL
+                                return filepath.getDownloadUrl();
                             }
-                        }
-                    });
+                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    audio.delete();
 
+                                    Uri downloadUri = task.getResult();
+
+
+                                    final Message message = new Message(Message.MessageType.Audio, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())), String.valueOf(downloadUri), false);
+
+                                    finalReference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            progressBar.setVisibility(View.GONE);
+                                            messagesText.setText("");
+
+
+                                        }
+                                    });
+
+
+                                } else {
+                                    // Handle failures
+                                    // ...
+                                    progressBar.setVisibility(View.GONE);
+                                    Snackbar.make(getView(), "Error sending image ", Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
 
 //                reference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -825,30 +862,86 @@ public class ChatFragment extends Fragment {
 //                        }
 //                    }
 //                });
+                    } else {
+
+                        reference1 = db1.collection("Chat").document("group").collection(model.getChatId());
+                        String push_id = reference1.getId();
+                        path = model.getChatId();
+
+                        final StorageReference filepath = fileStorage.getReference("audio/chat/" + path).child(audio.getName());
+
+                        Task<UploadTask.TaskSnapshot> uploadTask = filepath.putFile(Uri.fromFile(audio));
+
+                        final CollectionReference finalReference = reference1;
+                        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                            @Override
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful()) {
+                                    throw task.getException();
+                                }
+
+                                // Continue with the task to get the download URL
+                                return filepath.getDownloadUrl();
+                            }
+                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    audio.delete();
+
+                                    Uri downloadUri = task.getResult();
+
+
+                                    final Message message = new Message(Message.MessageType.Audio, new UserSender(firebaseUser.getUid(), firebaseUser.getDisplayName(), String.valueOf(firebaseUser.getPhotoUrl())), String.valueOf(downloadUri), false);
+
+                                    finalReference.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            progressBar.setVisibility(View.GONE);
+                                            messagesText.setText("");
+
+
+                                        }
+                                    });
+
+
+                                } else {
+                                    // Handle failures
+                                    // ...
+                                    progressBar.setVisibility(View.GONE);
+                                    Snackbar.make(getView(), "Error sending image ", Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+
+
+                    }
+
                 }
 
 
-            }
-        });
+            });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                File audio =new File(filePath);
-                audio.delete();
-                //Toast.makeText(getContext(),"",Toast.LENGTH_SHORT).show();
-
-
-                dialog.dismiss();
-            }
-        });
+                    File audio = new File(filePath);
+                    audio.delete();
+                    //Toast.makeText(getContext(),"",Toast.LENGTH_SHORT).show();
 
 
-        dialog.show();
+                    dialog.dismiss();
+                }
+            });
 
+
+            dialog.show();
+
+        }
     }
-}
+
 
 
 

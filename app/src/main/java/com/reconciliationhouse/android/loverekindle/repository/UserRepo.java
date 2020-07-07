@@ -24,7 +24,7 @@ public class UserRepo {
     public static final String collectionPath = "User";
     private static final String TAG = UserRepo.class.getSimpleName();
     private static UserRepo ourInstance;
-    private UserModel user;
+    public static UserModel user;
     private String userId;
     private FirebaseFirestore db;
     private CollectionReference mCollectionRef;
@@ -38,7 +38,7 @@ public class UserRepo {
     }
 
     public static void initializeWithUser(Activity startActivity) {
-        String userId = UserPreferences.getUserId(startActivity);
+        String userId = UserPreferences.getEmail(startActivity);
         ourInstance.initialize(userId, startActivity);
     }
 
@@ -52,7 +52,7 @@ public class UserRepo {
         this.userId = userId;
         this.db = FirebaseFirestore.getInstance();
         mCollectionRef = db.collection(collectionPath);
-        mCollectionRef.document("user2@gmail.com").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mCollectionRef.document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (!task.isSuccessful()) {

@@ -8,7 +8,8 @@
     android:layout_height="match_parent"
     android:background="#f1f1f1"
     tools:context=".ui.chat.ChatFragment">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,7 +17,8 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/materialToolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_weight="0.08"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +34,8 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImageView"
                 android:layout_width="50dp"
+
+
                 android:layout_height="40dp"
                 android:src="@drawable/profile_picture_placeholder"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -46,7 +50,7 @@
                 android:gravity="center"
                 android:text="Group name"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
 
@@ -57,18 +61,18 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
+             android:layout_weight="2"
+            android:id="@+id/messages_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
 
-        android:id="@+id/messages_recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
 
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
-        tools:listitem="@layout/chat_sender_layout" />
-
+            app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
+            tools:listitem="@layout/chat_sender_layout" />
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -76,6 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_weight="0.07"
             android:background="@color/white"
 
 
@@ -87,24 +92,24 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
+
+                android:layout_weight="0.1"
                 android:background="@drawable/message_edittext_design"
-                android:gravity="center"
+
                 android:orientation="horizontal">
 
 
                 <Chronometer
                     android:id="@+id/timer"
 
-                      android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-
                     android:layout_marginStart="16dp"
+
+
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/add"
                     app:layout_constraintHorizontal_bias="0.6"
@@ -118,7 +123,7 @@
 
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                     android:layout_marginStart="8dp"
+                    android:layout_marginStart="8dp"
                     android:background="@null"
                     android:src="@drawable/ic_insert_emoticon_black_24dp"
 
@@ -136,11 +141,12 @@
 
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:gravity="center"
+                    android:gravity="start|center_horizontal"
                     android:hint="@string/message_a_counsellor"
                     android:inputType="text"
                     android:minHeight="40dp"
                     android:paddingLeft="10dp"
+
                     android:paddingTop="5dp"
                     android:paddingRight="10dp"
 
@@ -197,8 +203,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
 
-
-                android:layout_gravity="center"
+                       android:layout_marginStart="8dp"
+                   android:layout_weight="0.1"
                 android:layout_marginEnd="8dp"
 
                 android:background="@android:color/transparent"
@@ -219,7 +225,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
     <include layout="@layout/view_image_bottom_sheet"/>
 
 

@@ -1,5 +1,7 @@
 package com.reconciliationhouse.android.loverekindle.adapters.chat;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.reconciliationhouse.android.loverekindle.models.Message;
 import com.reconciliationhouse.android.loverekindle.models.UserSender;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +38,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         List<Message>mList;
         ChatItem.ChatType chatType;
-     CoordinatorLayout bottomSheetLayout;
+
     boolean isPlaying = false;
+    MediaPlayer mediaPlayer;
+
+
 
 
 
@@ -49,6 +55,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public ChatAdapter(ChatItem.ChatType chatType, OnItemClickListener onItemClickListener){
             this.chatType=chatType;
             this.mOnItemClickListener=onItemClickListener;
+
 
         }
 
@@ -173,20 +180,29 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         @Override
                         public void onClick(View v) {
                             if (isPlaying){
+                                stopAudio();
+
+
+                                receiverItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp));
                                 isPlaying=false;
-                                //pausePlaying;
-                                receiverItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.pause));
+
 
 
 
                             }
                             else {
-                                receiverItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.play));
+
+
+                                String url = mList.get(position).getImageUrl(); // your URL here
+                                playAudio(url);
+                                receiverItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_pause_black_24dp));
+
                                 isPlaying=true;
 
                                 //startPlaying()
 
                             }
+
 
                         }
                     });
@@ -242,19 +258,28 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         }
                     });
 
+
                     senderItemHolder.play.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (isPlaying){
-                                isPlaying=false;
-                                //pausePlaying;
-                                senderItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.pause));
+                                stopAudio();
+
+
+                             senderItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_play_arrow_black_24dp));
+                               isPlaying=false;
+
 
 
 
                             }
                             else {
-                                senderItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.play));
+
+
+                                String url = mList.get(position).getImageUrl(); // your URL here
+                                playAudio(url);
+                                senderItemHolder.play.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_pause_black_24dp));
+
                                 isPlaying=true;
 
                                 //startPlaying()
@@ -271,6 +296,32 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     break;
             }
 
+
+    }
+//    private void updateSeekBar(SeekBar seekBar){
+//        if (mediaPlayer.isPlaying()){
+//            seekBar.setProgress((int)(((float)mediaPlayer.getCurrentPosition()/mediaPlayer.getDuration())*100));
+//        }
+//    }
+
+    private void playAudio(String url){
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mediaPlayer.setDataSource(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            mediaPlayer.prepare(); // might take long! (for buffering, etc)
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.start();
+
+
+    }
+    private void stopAudio(){
 
     }
 
@@ -346,5 +397,6 @@ class SenderItemHolder extends RecyclerView.ViewHolder {
 
 
     }
+
 
 }

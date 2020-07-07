@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +22,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
+import com.reconciliationhouse.android.loverekindle.MainActivity;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.adapters.chat.ChatListAdapter;
 import com.reconciliationhouse.android.loverekindle.databinding.ChatHomeFragmentBinding;
@@ -28,6 +31,7 @@ import com.reconciliationhouse.android.loverekindle.models.ChatItem;
 import com.reconciliationhouse.android.loverekindle.models.ChatModel;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
+import com.reconciliationhouse.android.loverekindle.repository.UserRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,13 @@ import java.util.Objects;
 public class ChatHomeFragment extends Fragment {
     ChatHomeFragmentBinding binding ;
     private List<ChatItem> mList;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        UserRepo.initializeWithUser((MainActivity) requireActivity());
+        Toast.makeText(getContext(),UserRepo.user.getName(),Toast.LENGTH_SHORT).show();
+    }
 
     public static ChatHomeFragment newInstance() {
         return new ChatHomeFragment();
@@ -52,9 +63,9 @@ public class ChatHomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (UserPreferences.getRole(getContext())!=null){
+        if (UserRepo.user.getRole()!=null){
 
-            if (UserPreferences.getRole(getContext()).equals(String.valueOf(UserModel.Role.Counsellor))) {
+            if (String.valueOf(UserRepo.user.getRole()).equals(String.valueOf(UserModel.Role.Counsellor))) {
                 binding.addChat.setVisibility(View.GONE);
 
             }

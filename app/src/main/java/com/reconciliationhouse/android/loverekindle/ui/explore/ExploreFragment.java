@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import com.reconciliationhouse.android.loverekindle.MainActivity;
 import com.reconciliationhouse.android.loverekindle.R;
 import com.reconciliationhouse.android.loverekindle.databinding.FragmentExploreBinding;
+import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
 import com.reconciliationhouse.android.loverekindle.repository.UserRepo;
 
 
@@ -41,11 +42,15 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        UserRepo.initializeWithUser((MainActivity) requireActivity());
+         if (UserPreferences.getEmail(getContext())!=null){
+        UserRepo.initializeWithUser((MainActivity) requireActivity());}
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        if (UserPreferences.getEmail(getContext())!=null){
+        UserRepo.initInstance();}
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_explore, container, false);
 
         return mBinding.getRoot();
@@ -54,6 +59,7 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         FirebaseAuth auth=FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser!= null) {

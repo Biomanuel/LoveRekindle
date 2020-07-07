@@ -23,6 +23,7 @@ import com.reconciliationhouse.android.loverekindle.dialog.CounsellorshipFormDia
 import com.reconciliationhouse.android.loverekindle.dialog.InviteUserDialog;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
+import com.reconciliationhouse.android.loverekindle.repository.UserRepo;
 import com.reconciliationhouse.android.loverekindle.ui.chat.ChatFragment;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -82,7 +83,7 @@ mBinding.changeImage.setEnabled(false);
             @Override
             public void onClick(View view) {
                 isEditable=true;
-                if (UserPreferences.getRole(getContext()).equals(String.valueOf(UserModel.Role.Counsellor))){
+                if (String.valueOf(UserRepo.user.getCategory()).equals(String.valueOf(UserModel.Role.Counsellor))){
                     mBinding.counsellorStatus.setText("You are a Counsellor");
                     mBinding.applyAsCounsellor.setVisibility(View.GONE);
 
@@ -148,6 +149,8 @@ mBinding.changeImage.setEnabled(false);
      @Override
      public void onClick(View v) {
          mAuth.signOut();
+         UserPreferences.saveId(null,getContext());
+         UserPreferences.saveEmail(null,getContext());
          NavController controller= Navigation.findNavController(getView());
          controller.navigate(R.id.action_settingsFragment_to_loginFragment);
 

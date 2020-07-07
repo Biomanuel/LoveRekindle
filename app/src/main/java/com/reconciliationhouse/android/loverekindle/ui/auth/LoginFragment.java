@@ -40,6 +40,7 @@ import com.reconciliationhouse.android.loverekindle.databinding.LoginFragmentBin
 import com.reconciliationhouse.android.loverekindle.models.UserDetails;
 import com.reconciliationhouse.android.loverekindle.models.UserModel;
 import com.reconciliationhouse.android.loverekindle.preferences.UserPreferences;
+import com.reconciliationhouse.android.loverekindle.repository.UserRepo;
 
 import java.util.Objects;
 
@@ -71,6 +72,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
 
@@ -115,17 +117,17 @@ public class LoginFragment extends Fragment {
 
     }
     private  void login(){
-        String email= Objects.requireNonNull(binding.textInputEmail.getEditText()).getText().toString();
+        final String email= Objects.requireNonNull(binding.textInputEmail.getEditText()).getText().toString();
         String password= Objects.requireNonNull(binding.textInputPassword.getEditText()).getText().toString();
         if (TextUtils.isEmpty(email)){
             binding.textInputEmail.setError("Enter Email Address");
 
         }
-       else if (TextUtils.isEmpty(password)){
+        else if (TextUtils.isEmpty(password)){
             binding.textInputPassword.setError("Enter Password");
         }
-       else {
-           binding.progressBar.setVisibility(View.VISIBLE);
+        else {
+            binding.progressBar.setVisibility(View.VISIBLE);
             binding.textInputPassword.setError(null);
             binding.textInputEmail.setError(null);
             mAuth.signInWithEmailAndPassword(email, password)
@@ -138,23 +140,29 @@ public class LoginFragment extends Fragment {
                                 Log.d(TAG, "signInWithEmail:success");
                                 final FirebaseUser user = mAuth.getCurrentUser();
                                 FirebaseFirestore db=FirebaseFirestore.getInstance();
-                               // DocumentReference collectionReference = db.collection("User").document("counsellor").collection("spiritual").document(Objects.requireNonNull(user.getDisplayName()));
-                               DocumentReference collectionReference = db.collection("User").document(user.getEmail());
+                                // DocumentReference collectionReference = db.collection("User").document("counsellor").collection("spiritual").document(Objects.requireNonNull(user.getDisplayName()));
+                                DocumentReference collectionReference = db.collection("User").document(user.getEmail());
                                 collectionReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                                         if (task.isSuccessful()){
-                                            UserModel model = task.getResult().toObject(UserModel.class);
+                                            UserModel model=task.getResult().toObject(UserModel.class);
 
 
                                             assert model != null;
+
+
+                                            //UserRepo.getInstance().initialize(email,getActivity());
+
                                             UserPreferences.saveCategory(String.valueOf(model.getCategory()),getContext());
-                                           UserPreferences.saveId(user.getUid(),getContext());
-                                            UserPreferences.saveUserName(user.getDisplayName(),getContext());
+                                            UserPreferences.saveId(user.getUid(),getContext());
+
                                             UserPreferences.saveEmail(user.getEmail(),getContext());
-                                            UserPreferences.saveRole(String.valueOf(model.getRole()),getContext());
-                                           UserPreferences.saveBalance(model.getBalance(),getContext());
+                                            UserRepo.getInstance();
+                                            UserRepo.initInstance();
+                                            UserRepo.initializeWithUser(getActivity());
+
                                             NavController controller=Navigation.findNavController(getView());
                                             controller.navigate(R.id.action_loginFragment_to_navigation_explore);
                                         }
@@ -232,5 +240,7 @@ public class LoginFragment extends Fragment {
                     }
                 });
     }
+
+
 
 }
