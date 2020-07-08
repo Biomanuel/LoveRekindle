@@ -252,11 +252,11 @@ public class SignUpFragment extends Fragment {
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
                                                             binding.progressBar.setVisibility(View.GONE);
-                                                            UserPreferences.saveRole(String.valueOf(model.getRole()),getContext());
-                                                            UserPreferences.saveId(user.getUid(),getContext());
-                                                            UserPreferences.saveUserName(user.getDisplayName(),getContext());
-                                                            UserPreferences.saveEmail(user.getEmail(),getContext());
-                                                            UserPreferences.saveBalance(model.getBalance(),getContext());
+                                                            UserPreferences.saveRole(model.getRole().toString(), getContext());
+                                                            UserPreferences.saveId(user.getUid(), getContext());
+                                                            UserPreferences.saveUserName(user.getDisplayName(), getContext());
+                                                            UserPreferences.saveEmail(user.getEmail(), getContext());
+                                                            UserPreferences.saveBalance(model.getBalance(), getContext());
                                                             NavController controller = Navigation.findNavController(getView());
                                                             controller.navigate(R.id.action_signUpFragment_to_navigation_explore);
                                                         } else {

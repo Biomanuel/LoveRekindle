@@ -3,10 +3,12 @@ package com.reconciliationhouse.android.loverekindle.ui.mediareader;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -14,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,7 +50,7 @@ import java.io.IOException;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-public class AudioPlayerFragment extends Fragment implements View.OnClickListener, AudioManager.OnAudioFocusChangeListener {
+public class AudioPlayerFragment extends Fragment implements View.OnClickListener, AudioManager.OnAudioFocusChangeListener, MusicService.Callbacks {
 
     public static final String MEDIA_ID_KEY = "mediaId";
     private static final String TAG = AudioPlayerFragment.class.getSimpleName();
@@ -71,74 +74,10 @@ public class AudioPlayerFragment extends Fragment implements View.OnClickListene
     private IntentFilter mFilter = new IntentFilter();
     private AudioManager mAudioManager;
     private boolean repeat = false;
-    MediaSessionCompat.Callback myMediaSessionCallback = new MediaSessionCompat.Callback() {
-        /**
-         * Override to handle media button events.
-         *
-         * @return True if the event was handled, false otherwise.
-         */
-        @Override
-        public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
-            return super.onMediaButtonEvent(mediaButtonEvent);
-        }
-
-        @Override
-        public void onPlay() {
-            super.onPlay();
-            mMediaPlayer.start();
-        }
-
-        @Override
-        public void onPause() {
-            super.onPause();
-            mMediaPlayer.pause();
-        }
-
-        @Override
-        public void onSkipToNext() {
-            super.onSkipToNext();
-            try {
-                mBinding.btSkip.callOnClick();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onSkipToPrevious() {
-            super.onSkipToPrevious();
-            try {
-                mBinding.btBackward.callOnClick();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onStop() {
-            super.onStop();
-            mMediaPlayer.stop();
-        }
-
-        @Override
-        public void onSeekTo(long pos) {
-            super.onSeekTo(pos);
-            mMediaPlayer.seekTo((int) pos);
-            try {
-                updateTimerAndSeekbar(pos);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onSetRepeatMode(int repeatMode) {
-            super.onSetRepeatMode(repeatMode);
-            repeat = !repeat;
-        }
-    };
     private MediaSessionCompat mMediaSession;
     private MusicService mService;
+    private Intent serviceIntent;
+
     /**
      * Background Runnable thread
      */
@@ -170,26 +109,26 @@ public class AudioPlayerFragment extends Fragment implements View.OnClickListene
     public AudioPlayerFragment() {
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = FragmentAudioPlayerBinding.inflate(inflater, container, false);
-        mBinding.setLifecycleOwner(this);
-        mBinding.setControlsClickListener(this);
+    private ServiceConnection mConnection = new ServiceConnection() {
 
-        mService = MusicService.getInstance();
-        mMediaSession = new MediaSessionCompat(requireContext(), TAG);
-        mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-        mMediaSession.setCallback(myMediaSessionCallback);
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            Toast.makeText(requireContext(), "onServiceConnected called", Toast.LENGTH_SHORT).show();
+            // We've binded to LocalService, cast the IBinder and get LocalService instance
+            MusicService.LocalBinder binder = (MusicService.LocalBinder) service;
+            mService = binder.getServiceInstance(); //Get instance of your service!
+            mService.registerClient(AudioPlayerFragment.this); //Activity register in the service as client for callabcks!
+            mBinding.btPlay.setEnabled(true);
+        }
 
-        Bundle mediaMetaBundle = new Bundle();
-//        MediaMetadataCompat mediaMetadataCompat = new MediaMetadataCompat(mediaMetaBundle);
-
-//        initToolbar();
-        initComponent();
-        Tools.setSystemBarColor(requireActivity(), R.color.grey_90);
-        return mBinding.getRoot();
-    }
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            Toast.makeText(requireContext(), "onServiceDisconnected called", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Service disconnected", Toast.LENGTH_SHORT).show();
+            mBinding.btPlay.setEnabled(false);
+        }
+    };
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -373,6 +312,27 @@ public class AudioPlayerFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mBinding = FragmentAudioPlayerBinding.inflate(inflater, container, false);
+        mBinding.setLifecycleOwner(this);
+        mBinding.setControlsClickListener(this);
+
+        serviceIntent = new Intent(requireContext(), MusicService.class);
+        mService = MusicService.getInstance();
+        mMediaSession = new MediaSessionCompat(requireContext(), TAG);
+
+        Bundle mediaMetaBundle = new Bundle();
+//        MediaMetadataCompat mediaMetadataCompat = new MediaMetadataCompat(mediaMetaBundle);
+
+//        initToolbar();
+        initComponent();
+        Tools.setSystemBarColor(requireActivity(), R.color.grey_90);
+        return mBinding.getRoot();
+    }
+
+
     private boolean toggleButtonColor(ImageButton bt) {
         String selected = (String) bt.getTag(bt.getId());
         if (selected != null) { // selected
@@ -536,6 +496,11 @@ public class AudioPlayerFragment extends Fragment implements View.OnClickListene
     public void createNotificationChannel() {
         mNotifyManager = (NotificationManager)
                 requireContext().getSystemService(NOTIFICATION_SERVICE);
+    }
+
+    @Override
+    public void updateClient(long data) {
+
     }
 
     /**

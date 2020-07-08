@@ -1,5 +1,6 @@
 package com.reconciliationhouse.android.loverekindle.utils;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
+import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -16,6 +18,7 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import java.util.HashMap;
 
@@ -47,6 +50,10 @@ public class MusicService extends Service {
     private static MediaSessionCompat mMediaSession;
     MediaSessionCompat mSession;
     private MediaSessionCompat.Token mToken;
+
+    LocalBinder mBinder = new LocalBinder();
+    Callbacks activity;
+
     private MediaPlayer mMediaPlayer;
     private boolean running = false;
 
@@ -69,24 +76,12 @@ public class MusicService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-//        // Return the communication channel to the service.
-//        throw new UnsupportedOperationException("Not yet implemented");
-        return null;
+        return mBinder;
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (mMediaPlayer == null) createMediaPlayer();
-        running = true;
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        if (mMediaSession != null) mMediaSession.release();
-        running = false;
-        mMediaPlayer = null;
-        INSTANCE = null;
+    //Here Activity register to the service as Callbacks client
+    public void registerClient(Callbacks activity) {
+        this.activity = (Callbacks) activity;
     }
 
     private void configureMediaSession() {
@@ -142,10 +137,48 @@ public class MusicService extends Service {
                 mpReset(); // Stop and/or reset the player.
                 super.onStop();
             }
+
+            @Override
+            public void onSetRepeatMode(int repeatMode) {
+                Log.d(TAG, "onRepeatMode called (media button pressed)");
+                mpRepeat(repeatMode); // handle repeat the player.
+                super.onSetRepeatMode(repeatMode);
+            }
         });
 
         mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
         mMediaSession.setActive(true);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (mMediaPlayer == null) createMediaPlayer();
+        running = true;
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mMediaSession != null) mMediaSession.release();
+        running = false;
+        mMediaPlayer = null;
+        INSTANCE = null;
+    }
+
+    private void mpRepeat(int repeatMode) {
+        switch (repeatMode) {
+            case PlaybackStateCompat.REPEAT_MODE_ONE:
+                break;
+            case PlaybackStateCompat.REPEAT_MODE_ALL:
+                break;
+            case PlaybackStateCompat.REPEAT_MODE_NONE:
+                break;
+        }
+    }
+
+    //callbacks interface for communication with service clients!
+    public interface Callbacks {
+        void updateClient(long data);
     }
 
     public void mpReset() {
@@ -219,5 +252,11 @@ public class MusicService extends Service {
 
     public boolean isRunning() {
         return running;
+    }
+
+    public class LocalBinder extends Binder {
+        public MusicService getServiceInstance() {
+            return MusicService.this;
+        }
     }
 }
